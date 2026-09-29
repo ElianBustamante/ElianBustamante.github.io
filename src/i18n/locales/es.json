@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Elian Bustamante | Desarrollo de software y fotografía de paisaje",
+    "description": "Portafolio de Elian Bustamante: proyectos de software (bots, datos y web) y fotografía de paisaje."
+  },
+  "nav": {
+    "aria": "Navegación principal",
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "photography": "Fotografía",
+    "about": "Sobre mí",
+    "contact": "Contacto",
+    "cta": "Contáctame",
+    "menuOpen": "Abrir menú",
+    "menuClose": "Cerrar menú",
+    "switchToEn": "Cambiar idioma a inglés",
+    "switchToEs": "Cambiar idioma a español"
+  },
+  "hero": {
+    "titleLine1": "Capturando paisajes.",
+    "titleLine2": "Construyendo software.",
+    "subtitle": "Desarrollo de software y fotografía de paisaje, desde Chile.",
+    "description": "Me formé en Ingeniería Informática en la Universidad de La Frontera. Aquí están mis proyectos de código y una selección de mis fotos.",
+    "ctaProjects": "Ver proyectos",
+    "ctaPhotography": "Ver fotografía"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "prev": "Proyecto anterior",
+    "next": "Proyecto siguiente",
+    "viewCode": "Ver código",
+    "viewDemo": "Ver demo",
+    "items": {
+      "gamesDealTracker": {
+        "name": "Games Deal Tracker",
+        "category": "Bot de Discord",
+        "description": "Bot de Discord que rastrea ofertas de videojuegos. Está desplegado en PebbleHost. Próximo paso: soporte para Epic Games Store."
+      },
+      "priceAlertBot": {
+        "name": "Price Alert Bot",
+        "category": "Bot de Telegram",
+        "description": "Bot de Telegram de uso personal que envía alertas de precios de tiendas chilenas como Falabella, Ripley, Paris, MercadoLibre y PCFactory. Usa SerpAPI y seguimiento de URLs de tiendas."
+      },
+      "pipeline3d": {
+        "name": "Pipeline de procesamiento 3D",
+        "category": "Investigación",
+        "description": "Optimización de un pipeline de procesamiento 3D dentro de un proyecto de investigación FONDECYT."
+      }
+    }
+  },
+  "photography": {
+    "title": "Fotografía",
+    "intro": "Una selección de fotos de paisaje.",
+    "lightboxLabel": "Visor de fotografías",
+    "close": "Cerrar",
+    "prev": "Foto anterior",
+    "next": "Foto siguiente",
+    "counter": "Foto {{current}} de {{total}}",
+    "exif": {
+      "camera": "Cámara",
+      "lens": "Lente",
+      "focalLength": "Distancia focal",
+      "aperture": "Apertura",
+      "shutter": "Obturador",
+      "iso": "ISO"
+    }
+  },
+  "about": {
+    "title": "Sobre mí",
+    "p1": "Vivo en Chile y me formé en Ingeniería Informática en la Universidad de La Frontera. Tengo menos de dos años de experiencia profesional, entre prácticas y un período corto de empleo formal.",
+    "p2": "Trabajo sobre todo con Python, JavaScript y bases de datos. Me gusta construir herramientas que resuelvan problemas concretos, como los bots de este portafolio.",
+    "p3": "Fuera del código hago fotografía de paisaje. La galería de esta página es una selección.",
+    "p4": "Busco oportunidades en desarrollo Full Stack, desarrollo web e ingeniería de datos, a nivel junior.",
+    "skills": {
+      "title": "Tecnologías",
+      "languages": "Lenguajes",
+      "databases": "Bases de datos",
+      "tools": "Herramientas"
+    }
+  },
+  "contact": {
+    "title": "Contacto",
+    "text": "¿Tienes una oportunidad o quieres conversar? Escríbeme.",
+    "email": "Enviar correo",
+    "github": "GitHub",
+    "linkedin": "LinkedIn"
+  },
+  "footer": {
+    "text": "© {{year}} Elian Bustamante. Hecho con React, Vite y Tailwind CSS."
+  }
+}

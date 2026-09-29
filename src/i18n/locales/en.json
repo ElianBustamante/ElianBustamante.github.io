@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Elian Bustamante | Software development and landscape photography",
+    "description": "Elian Bustamante's portfolio: software projects (bots, data and web) and landscape photography."
+  },
+  "nav": {
+    "aria": "Main navigation",
+    "home": "Home",
+    "projects": "Projects",
+    "photography": "Photography",
+    "about": "About me",
+    "contact": "Contact",
+    "cta": "Get in touch",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "switchToEn": "Switch language to English",
+    "switchToEs": "Switch language to Spanish"
+  },
+  "hero": {
+    "titleLine1": "Capturing landscapes.",
+    "titleLine2": "Building software.",
+    "subtitle": "Software development and landscape photography, from Chile.",
+    "description": "I trained in Informatics Engineering at Universidad de La Frontera. Here are my code projects and a selection of my photos.",
+    "ctaProjects": "View projects",
+    "ctaPhotography": "View photography"
+  },
+  "projects": {
+    "title": "Projects",
+    "prev": "Previous project",
+    "next": "Next project",
+    "viewCode": "View code",
+    "viewDemo": "View demo",
+    "items": {
+      "gamesDealTracker": {
+        "name": "Games Deal Tracker",
+        "category": "Discord bot",
+        "description": "Discord bot that tracks video game deals. It is deployed on PebbleHost. Next step: Epic Games Store support."
+      },
+      "priceAlertBot": {
+        "name": "Price Alert Bot",
+        "category": "Telegram bot",
+        "description": "Personal-use Telegram bot that sends price alerts from Chilean stores such as Falabella, Ripley, Paris, MercadoLibre and PCFactory. It uses SerpAPI and store URL tracking."
+      },
+      "pipeline3d": {
+        "name": "3D processing pipeline",
+        "category": "Research",
+        "description": "Optimization of a 3D processing pipeline within a FONDECYT research project."
+      }
+    }
+  },
+  "photography": {
+    "title": "Photography",
+    "intro": "A selection of landscape photos.",
+    "lightboxLabel": "Photo viewer",
+    "close": "Close",
+    "prev": "Previous photo",
+    "next": "Next photo",
+    "counter": "Photo {{current}} of {{total}}",
+    "exif": {
+      "camera": "Camera",
+      "lens": "Lens",
+      "focalLength": "Focal length",
+      "aperture": "Aperture",
+      "shutter": "Shutter speed",
+      "iso": "ISO"
+    }
+  },
+  "about": {
+    "title": "About me",
+    "p1": "I live in Chile and trained in Informatics Engineering at Universidad de La Frontera. I have under two years of professional experience, split between internships and a short period of formal employment.",
+    "p2": "I mostly work with Python, JavaScript and databases. I like building tools that solve concrete problems, like the bots in this portfolio.",
+    "p3": "Outside of code I shoot landscape photography. The gallery on this page is a selection.",
+    "p4": "I am looking for junior opportunities in Full Stack development, web development and data engineering.",
+    "skills": {
+      "title": "Technologies",
+      "languages": "Languages",
+      "databases": "Databases",
+      "tools": "Tools"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "text": "Have an opportunity or want to chat? Write to me.",
+    "email": "Send email",
+    "github": "GitHub",
+    "linkedin": "LinkedIn"
+  },
+  "footer": {
+    "text": "© {{year}} Elian Bustamante. Built with React, Vite and Tailwind CSS."
+  }
+}
