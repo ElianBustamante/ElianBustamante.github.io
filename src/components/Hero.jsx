@@ -1,41 +1,27 @@
 import { useTranslation } from 'react-i18next'
 
-const bgModules = import.meta.glob('../assets/hero-bg.webp', { eager: true, query: '?url', import: 'default' })
-const bgUrl = bgModules['../assets/hero-bg.webp']
-
 export default function Hero() {
   const { t } = useTranslation()
-
-  const backgroundStyle = bgUrl
-    ? {
-        backgroundImage: `linear-gradient(to right, rgba(10,10,10,0.95), rgba(10,10,10,0.6)), url(${bgUrl})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }
-    : {
-        backgroundImage: 'radial-gradient(ellipse at top right, rgba(255,106,26,0.18), transparent 60%)',
-      }
 
   return (
     <section
       id="inicio"
-      style={backgroundStyle}
-      className="min-h-[70svh] flex flex-col justify-center px-4 md:px-6 lg:px-8"
+      className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 min-h-[70svh] flex flex-col justify-center pt-16 md:pt-24"
     >
-      <div className="max-w-[1200px] w-full mx-auto">
-        <div className="max-w-[42rem] text-left">
-          <h1 className="uppercase font-extrabold text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05]">
-            <span className="block text-accent hero-in" style={{ animationDelay: '0ms' }}>
-              {t('hero.titleLine1')}
-            </span>
-            <span className="block text-text hero-in" style={{ animationDelay: '120ms' }}>
-              {t('hero.titleLine2')}
-            </span>
-          </h1>
+      <div className="w-full text-left">
+        <h1 className="uppercase font-extrabold text-[clamp(2.25rem,5vw,4rem)] leading-[1.05] max-w-[60rem]">
+          <span className="block text-accent hero-in lg:whitespace-nowrap" style={{ animationDelay: '0ms' }}>
+            {t('hero.titleLine1')}
+          </span>
+          <span className="block text-text hero-in lg:whitespace-nowrap" style={{ animationDelay: '120ms' }}>
+            {t('hero.titleLine2')}
+          </span>
+        </h1>
+        <div className="max-w-[42rem]">
           <p className="text-[1.125rem] text-text mt-6 hero-in" style={{ animationDelay: '240ms' }}>
             {t('hero.subtitle')}
           </p>
-          <p className="text-muted max-w-[52ch] mt-4 hero-in" style={{ animationDelay: '360ms' }}>
+          <p className="text-muted mt-4 hero-in" style={{ animationDelay: '360ms' }}>
             {t('hero.description')}
           </p>
           <div className="flex flex-wrap gap-4 mt-8 hero-in" style={{ animationDelay: '480ms' }}>
