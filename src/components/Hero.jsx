@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 min-h-[70svh] flex flex-col justify-center pt-16 md:pt-24"
+      className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 min-h-[70svh] flex flex-col justify-start pt-10 md:pt-16"
     >
       <div className="w-full text-left">
         <h1 className="uppercase font-extrabold text-[clamp(2.25rem,5vw,4rem)] leading-[1.05] max-w-[60rem]">
