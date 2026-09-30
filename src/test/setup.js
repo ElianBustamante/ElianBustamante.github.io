@@ -9,3 +9,12 @@ HTMLDialogElement.prototype.close = vi.fn(function close() {
   this.removeAttribute('open')
   this.dispatchEvent(new Event('close'))
 })
+
+class IntersectionObserver {
+  constructor() {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+window.IntersectionObserver = IntersectionObserver;
+

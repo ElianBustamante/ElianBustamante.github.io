@@ -1,12 +1,21 @@
-import { useTranslation } from 'react-i18next'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import Section from './components/Section'
+import Footer from './components/Footer'
 
 function App() {
-  const { t } = useTranslation()
-
   return (
-    <main className="hero-in p-8">
-      <h1 className="text-4xl font-extrabold text-accent">{t('hero.titleLine1')}</h1>
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <Section id="proyectos" titleKey="projects.title"></Section>
+        <Section id="fotografia" titleKey="photography.title"></Section>
+        <Section id="sobre-mi" titleKey="about.title"></Section>
+        <Section id="contacto" titleKey="contact.title"></Section>
+      </main>
+      <Footer />
+    </>
   )
 }
 
