@@ -105,7 +105,7 @@ export default function PhotoGallery() {
           {photosData.map((photo, index) => (
             <li
               key={photo.id}
-              className="h-[min(240px,calc((100vw-2rem)/1.5))] sm:h-[300px] lg:h-[360px] shrink-0 snap-start"
+              className="h-[min(calc((100vw-2rem)/1.5),360px)] sm:h-[280px] lg:h-[330px] shrink-0 snap-start"
             >
               <button
                 type="button"
