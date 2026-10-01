@@ -15,6 +15,16 @@ export default function Navbar() {
   const { t } = useTranslation()
   const [activeId, setActiveId] = useState('inicio')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 8)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,11 +55,12 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <header className="sticky top-0 z-50 pt-4 px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto">
-      <nav
-        aria-label={t('nav.aria')}
-        className="flex items-center justify-between rounded-[14px] bg-surface/80 backdrop-blur border border-border px-4 py-2"
-      >
+    <header className={`sticky top-0 z-50 w-full transition-colors duration-200 ${scrolled ? 'bg-bg/80 backdrop-blur-md' : 'bg-transparent'}`}>
+      <div className="pt-4 pb-4 px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto">
+        <nav
+          aria-label={t('nav.aria')}
+          className="flex items-center justify-between rounded-[14px] bg-surface/80 backdrop-blur border border-border px-4 py-2"
+        >
         <a href="#inicio" onClick={closeMenu} className="font-extrabold text-accent">
           ELIAN BUSTAMANTE
         </a>
@@ -124,6 +135,7 @@ export default function Navbar() {
           </a>
         </div>
       )}
+      </div>
     </header>
   )
 }
