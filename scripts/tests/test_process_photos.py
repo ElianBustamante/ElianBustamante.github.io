@@ -2,88 +2,99 @@ import os
 import json
 import pytest
 import subprocess
-from PIL import Image, ExifTags
+from PIL import Image
+from PIL.TiffImagePlugin import IFDRational
 
-def test_process_photos(tmp_path):
+@pytest.fixture
+def env(tmp_path):
     input_dir = tmp_path / "photos-originals"
     output_dir = tmp_path / "public/photos"
     data_file = tmp_path / "src/data/photos.json"
-    
     os.makedirs(input_dir)
-    os.makedirs(output_dir.parent)
-    os.makedirs(data_file.parent)
+    os.makedirs(output_dir.parent, exist_ok=True)
+    os.makedirs(data_file.parent, exist_ok=True)
+    return input_dir, output_dir, data_file
+
+def run_script(input_dir, output_dir, data_file):
+    return subprocess.run([
+        "python", "scripts/process_photos.py", 
+        "--input", str(input_dir), 
+        "--output", str(output_dir), 
+        "--data", str(data_file)
+    ], capture_output=True)
+
+def test_1_horizontal(env):
+    input_dir, output_dir, data_file = env
+    img = Image.new('RGB', (3000, 2000), color='red')
+    img.save(input_dir / "01-horizontal.jpg")
+    run_script(*env)
     
-    # 1. Horizontal image 3000x2000
-    img1 = Image.new('RGB', (3000, 2000), color='red')
-    img1.save(input_dir / "01-horizontal.jpg")
-    
-    # 2. Vertical image 2000x3000
-    img2 = Image.new('RGB', (2000, 3000), color='green')
-    img2.save(input_dir / "02-vertical.jpg")
-    
-    # 3. Small image 1000x700
-    img3 = Image.new('RGB', (1000, 700), color='blue')
-    img3.save(input_dir / "03-small.jpg")
-    
-    # 4. GPS and camera EXIF
-    img4 = Image.new('RGB', (2000, 2000), color='yellow')
-    exif = img4.getexif()
-    exif[271] = "Nikon" # Make
-    exif[272] = "Nikon D3200" # Model (starts with Make)
-    # create IFD for Exif
-    exif_ifd = exif.get_ifd(34665)
-    exif_ifd[42036] = "35mm f/1.8" # LensModel
-    exif_ifd[37386] = 35.0 # FocalLength
-    exif_ifd[33437] = 8.0 # FNumber
-    exif_ifd[33434] = 0.004 # ExposureTime (1/250)
-    exif_ifd[34855] = 100 # ISO
-    
-    from PIL.TiffImagePlugin import IFDRational
-    # add GPS
-    gps_ifd = exif.get_ifd(34853)
-    gps_ifd[2] = (IFDRational(33, 1), IFDRational(26, 1), IFDRational(15, 1)) # Latitude
-    
-    img4.save(input_dir / "04-exif.jpg", exif=exif)
-    
-    # 7. Test empty directory
-    empty_dir = tmp_path / "empty"
-    os.makedirs(empty_dir)
-    result = subprocess.run(["python", "scripts/process_photos.py", "--input", str(empty_dir), "--output", str(output_dir), "--data", str(data_file)], capture_output=True)
-    assert result.returncode != 0
-    assert not os.path.exists(data_file)
-    
-    # Run the script normally
-    result = subprocess.run(["python", "scripts/process_photos.py", "--input", str(input_dir), "--output", str(output_dir), "--data", str(data_file)], capture_output=True)
-    assert result.returncode == 0
-    
-    assert os.path.exists(data_file)
     with open(data_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
-        
-    assert len(data) == 4
+    assert data[0]['thumb']['width'] == 800
+    assert data[0]['large']['width'] == 2400
+
+def test_2_vertical(env):
+    input_dir, output_dir, data_file = env
+    img = Image.new('RGB', (2000, 3000), color='green')
+    img.save(input_dir / "01-vertical.jpg")
+    run_script(*env)
     
-    # 1. horizontal
-    h_data = data[0]
-    assert h_data['thumb']['width'] == 800
-    assert h_data['large']['width'] == 2400
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    assert data[0]['large']['height'] == 2400
+
+def test_3_small(env):
+    input_dir, output_dir, data_file = env
+    img = Image.new('RGB', (1000, 700), color='blue')
+    img.save(input_dir / "01-small.jpg")
+    run_script(*env)
     
-    # 2. vertical
-    v_data = data[1]
-    assert v_data['large']['height'] == 2400
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    assert data[0]['large']['width'] == 1000
+    assert data[0]['large']['height'] == 700
+
+def test_4_gps(env):
+    input_dir, output_dir, data_file = env
+    img = Image.new('RGB', (2000, 2000), color='yellow')
+    exif = img.getexif()
+    gps_ifd = exif.get_ifd(34853)
+    gps_ifd[2] = (IFDRational(33, 1), IFDRational(26, 1), IFDRational(15, 1))
+    img.save(input_dir / "01-gps.jpg", exif=exif)
     
-    # 3. small
-    s_data = data[2]
-    assert s_data['large']['width'] == 1000
-    assert s_data['large']['height'] == 700
+    run_script(*env)
     
-    # 4. EXIF & GPS
-    e_data = data[3]
-    # Verify no GPS in JSON
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    e_data = data[0]
     assert 'gps' not in e_data
     assert 'latitude' not in e_data
     assert 'longitude' not in e_data
     
-    # Verify EXIF format
+    webp_img = Image.open(output_dir / "01-gps-large.webp")
+    assert not dict(webp_img.getexif())
+
+def test_5_exif(env):
+    input_dir, output_dir, data_file = env
+    img = Image.new('RGB', (2000, 2000), color='yellow')
+    exif = img.getexif()
+    exif[271] = "Nikon" 
+    exif[272] = "Nikon D3200" 
+    exif_ifd = exif.get_ifd(34665)
+    exif_ifd[42036] = "35mm f/1.8" 
+    exif_ifd[37386] = 35.0 
+    exif_ifd[33437] = 8.0 
+    exif_ifd[33434] = 0.004 
+    exif_ifd[34855] = 100 
+    img.save(input_dir / "01-exif.jpg", exif=exif)
+    
+    run_script(*env)
+    
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    e_data = data[0]
+    
     assert e_data['exif']['camera'] == "Nikon D3200"
     assert e_data['exif']['lens'] == "35mm f/1.8"
     assert e_data['exif']['focalLength'] == "35 mm"
@@ -91,23 +102,47 @@ def test_process_photos(tmp_path):
     assert e_data['exif']['shutter'] == "1/250 s"
     assert e_data['exif']['iso'] == 100
     
-    # Verify webp has no EXIF
-    webp_img = Image.open(output_dir / "04-exif-large.webp")
-    assert not dict(webp_img.getexif())
+    # Test without EXIF
+    img2 = Image.new('RGB', (2000, 2000), color='black')
+    img2.save(input_dir / "02-noexif.jpg")
+    run_script(*env)
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    assert data[1]['exif']['camera'] is None
+    assert data[1]['exif']['lens'] is None
+
+def test_6_default_captions(env):
+    input_dir, output_dir, data_file = env
+    img = Image.new('RGB', (2000, 2000), color='red')
+    img.save(input_dir / "01-cap.jpg")
+    run_script(*env)
     
-    # 6. Default captions
-    assert h_data['alt']['es'] == "Fotografía de paisaje 1"
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    assert data[0]['alt']['es'] == "Fotografía de paisaje 1"
+
+def test_7_empty_dir(env):
+    input_dir, output_dir, data_file = env
+    result = run_script(*env)
+    assert result.returncode != 0
+    assert not os.path.exists(data_file)
+
+def test_8_idempotent_and_orphans(env):
+    input_dir, output_dir, data_file = env
+    img = Image.new('RGB', (2000, 2000), color='red')
+    img.save(input_dir / "01-idem.jpg")
     
-    # 8. Idempotent and no orphans
-    # Add a dummy webp to output
+    run_script(*env)
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data1 = json.load(f)
+        
+    os.makedirs(output_dir, exist_ok=True)
     with open(output_dir / "orphan.webp", "wb") as f:
         f.write(b"dummy")
         
-    result = subprocess.run(["python", "scripts/process_photos.py", "--input", str(input_dir), "--output", str(output_dir), "--data", str(data_file)], capture_output=True)
-    assert result.returncode == 0
-    
-    assert not os.path.exists(output_dir / "orphan.webp")
-    
+    run_script(*env)
     with open(data_file, 'r', encoding='utf-8') as f:
         data2 = json.load(f)
-    assert data == data2
+        
+    assert data1 == data2
+    assert not os.path.exists(output_dir / "orphan.webp")
