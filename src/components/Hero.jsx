@@ -1,14 +1,41 @@
 import { useTranslation } from 'react-i18next'
 
+const bgModules = import.meta.glob('../assets/hero-bg.webp', { eager: true, query: '?url', import: 'default' })
+const bgUrl = bgModules['../assets/hero-bg.webp']
+
 export default function Hero() {
   const { t } = useTranslation()
 
   return (
     <section
       id="inicio"
-      className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 min-h-[70svh] flex flex-col justify-start pt-10 md:pt-16"
+      className="relative min-h-[70svh] flex flex-col justify-start pt-10 md:pt-16"
     >
-      <div className="w-full text-left">
+      {bgUrl && (
+        <div 
+          className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage: `url(${bgUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          <div 
+            className="absolute inset-0 md:hidden"
+            style={{
+              backgroundImage: 'linear-gradient(to top, #0a0a0a 0%, transparent 6rem), linear-gradient(to bottom, rgba(10,10,10,0.85), rgba(10,10,10,0.7))'
+            }}
+          />
+          <div 
+            className="absolute inset-0 hidden md:block"
+            style={{
+              backgroundImage: 'linear-gradient(to top, #0a0a0a 0%, transparent 6rem), linear-gradient(to right, rgba(10,10,10,0.95), rgba(10,10,10,0.6))'
+            }}
+          />
+        </div>
+      )}
+      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 text-left">
         <h1 className="uppercase font-extrabold text-[clamp(2.25rem,5vw,4rem)] leading-[1.05] max-w-[60rem]">
           <span className="block text-accent hero-in lg:whitespace-nowrap" style={{ animationDelay: '0ms' }}>
             {t('hero.titleLine1')}
