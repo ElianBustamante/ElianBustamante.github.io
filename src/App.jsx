@@ -2,6 +2,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Section from './components/Section'
 import Footer from './components/Footer'
+import PhotoGallery from './components/PhotoGallery'
 
 const bgModules = import.meta.glob('./assets/hero-bg.webp', { eager: true, query: '?url', import: 'default' })
 const bgUrl = bgModules['./assets/hero-bg.webp']
@@ -25,7 +26,7 @@ function App() {
       <main>
         <Hero />
         <Section id="proyectos" titleKey="projects.title"></Section>
-        <Section id="fotografia" titleKey="photography.title"></Section>
+        <PhotoGallery />
         <Section id="sobre-mi" titleKey="about.title"></Section>
         <Section id="contacto" titleKey="contact.title"></Section>
       </main>

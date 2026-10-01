@@ -63,7 +63,9 @@
       "aperture": "Apertura",
       "shutter": "Obturador",
       "iso": "ISO"
-    }
+    },
+    "scrollPrev": "Fotos anteriores",
+    "scrollNext": "Más fotos"
   },
   "about": {
     "title": "Sobre mí",
