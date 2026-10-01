@@ -31,7 +31,7 @@ describe('PhotoGallery', () => {
     const listItems = screen.getAllByRole('listitem')
     expect(listItems).toHaveLength(3)
     listItems.forEach(li => {
-      expect(li.className).toContain('h-[220px]')
+      expect(li.className).toContain('h-[min(240px,calc((100vw-2rem)/1.5))]')
     })
   })
 
