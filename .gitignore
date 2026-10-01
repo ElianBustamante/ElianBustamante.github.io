@@ -27,7 +27,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# secrets and originals
+# secrets and originals photos
 .env
 .env.*
 photos-originals/
