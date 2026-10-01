@@ -92,21 +92,6 @@ export default function PhotoGallery() {
       </button>
     </div>
   ) : null
-  
-  const maskStyle = (() => {
-    if (!canPrev && !canNext) return {}
-    const stops = []
-    if (canPrev) stops.push('transparent 0px', 'black 48px')
-    else stops.push('black 0px')
-    if (canNext) stops.push('black calc(100% - 48px)', 'transparent 100%')
-    else stops.push('black 100%')
-    
-    const gradient = `linear-gradient(to right, ${stops.join(', ')})`
-    return {
-      maskImage: gradient,
-      WebkitMaskImage: gradient
-    }
-  })()
 
   return (
     <>
@@ -116,7 +101,6 @@ export default function PhotoGallery() {
           role="list"
           ref={listRef}
           className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none]"
-          style={maskStyle}
         >
           {photosData.map((photo, index) => (
             <li
