@@ -24,13 +24,13 @@ export default function Hero() {
           <div 
             className="absolute inset-0 md:hidden"
             style={{
-              backgroundImage: 'linear-gradient(to top, #0a0a0a 0%, transparent 6rem), linear-gradient(to bottom, rgba(10,10,10,0.85), rgba(10,10,10,0.7))'
+              backgroundImage: 'linear-gradient(to top, #0a0a0a 0%, transparent 6rem), linear-gradient(to bottom, rgba(10,10,10,0.65), rgba(10,10,10,0.55))'
             }}
           />
           <div 
             className="absolute inset-0 hidden md:block"
             style={{
-              backgroundImage: 'linear-gradient(to top, #0a0a0a 0%, transparent 6rem), linear-gradient(to right, rgba(10,10,10,0.95), rgba(10,10,10,0.6))'
+              backgroundImage: 'linear-gradient(to top, #0a0a0a 0%, transparent 6rem), linear-gradient(to right, rgba(10,10,10,0.9), rgba(10,10,10,0.4))'
             }}
           />
         </div>
