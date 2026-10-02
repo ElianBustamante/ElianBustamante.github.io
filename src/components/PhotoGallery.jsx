@@ -158,7 +158,7 @@ export default function PhotoGallery() {
                   style={{
                     height: pagesData.height,
                     gap: 12,
-                    justifyContent: pageIndices.length > 1 ? 'space-between' : 'center'
+                    justifyContent: pageIndex === pagesData.pages.length - 1 ? 'flex-start' : (pageIndices.length > 1 ? 'space-between' : 'center')
                   }}
                 >
                   {pageIndices.map(index => {

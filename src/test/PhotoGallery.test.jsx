@@ -95,6 +95,18 @@ describe('PhotoGallery', () => {
     expect(screen.getByText('Foto 2 de 3')).toBeInTheDocument()
   })
 
+  it('aligns last page to flex-start and previous pages to space-between or center', () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 400 }) // Forces multiple pages
+    Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
+    render(<PhotoGallery />)
+    
+    // We expect 2 pages: first page has 2 photos, second page has 1 photo
+    const lists = screen.getAllByRole('list').filter(ul => ul.style.justifyContent)
+    
+    expect(lists[0].style.justifyContent).toBe('space-between')
+    expect(lists[lists.length - 1].style.justifyContent).toBe('flex-start')
+  })
+
   it('renders no list when photos is empty', () => {
     mockPhotos.length = 0
     render(<PhotoGallery />)
