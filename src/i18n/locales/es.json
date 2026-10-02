@@ -65,7 +65,8 @@
       "iso": "ISO"
     },
     "scrollPrev": "Fotos anteriores",
-    "scrollNext": "Más fotos"
+    "scrollNext": "Más fotos",
+    "pageCounter": "Página {{current}} de {{total}}"
   },
   "about": {
     "title": "Sobre mí",
