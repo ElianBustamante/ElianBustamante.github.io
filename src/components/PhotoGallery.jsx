@@ -11,7 +11,7 @@ export default function PhotoGallery() {
   const containerRef = useRef(null)
   const listRef = useRef(null)
   
-  const [pagesData, setPagesData] = useState({ pages: [], height: 360 })
+  const [pagesData, setPagesData] = useState({ pages: [], height: 360, width: 0 })
   const [currentPage, setCurrentPage] = useState(0)
   
   const visiblePhotoRef = useRef(0)
@@ -33,7 +33,7 @@ export default function PhotoGallery() {
     const aspects = photosData.map(p => p.thumb.width / p.thumb.height)
     const newPages = paginatePhotos(aspects, h, W, 12)
     
-    setPagesData({ pages: newPages, height: h })
+    setPagesData({ pages: newPages, height: h, width: W })
 
     let newPageIdx = newPages.findIndex(p => p.includes(visiblePhotoRef.current))
     if (newPageIdx === -1) newPageIdx = 0
@@ -150,15 +150,37 @@ export default function PhotoGallery() {
             ref={listRef}
             className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none]"
           >
-            {pagesData.pages.map((pageIndices, pageIndex) => (
+            {pagesData.pages.map((pageIndices, pageIndex) => {
+              const isLastPage = pageIndex === pagesData.pages.length - 1
+              let flexAlign = isLastPage ? 'flex-start' : 'center'
+              let gapValue = 12
+
+              if (!isLastPage && pageIndices.length > 1) {
+                let usedWidth = 0
+                pageIndices.forEach(index => {
+                  const photo = photosData[index]
+                  usedWidth += Math.floor(pagesData.height * (photo.thumb.width / photo.thumb.height))
+                })
+                const remaining = pagesData.width - usedWidth
+                const theoreticalGap = remaining / (pageIndices.length - 1)
+                
+                if (theoreticalGap <= 32) {
+                  flexAlign = 'space-between'
+                } else {
+                  flexAlign = 'center'
+                  gapValue = 32
+                }
+              }
+
+              return (
               <li key={pageIndex} className="w-full shrink-0 snap-start">
                 <ul
                   role="list"
                   className="flex w-full items-center"
                   style={{
                     height: pagesData.height,
-                    gap: 12,
-                    justifyContent: pageIndex === pagesData.pages.length - 1 ? 'flex-start' : (pageIndices.length > 1 ? 'space-between' : 'center')
+                    gap: gapValue,
+                    justifyContent: flexAlign
                   }}
                 >
                   {pageIndices.map(index => {
@@ -191,7 +213,8 @@ export default function PhotoGallery() {
                   })}
                 </ul>
               </li>
-            ))}
+              )
+            })}
           </ul>
           {showArrows && (
             <p aria-live="polite" className="text-muted text-[0.875rem] mt-4 text-center">
