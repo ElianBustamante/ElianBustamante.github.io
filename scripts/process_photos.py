@@ -67,7 +67,10 @@ def parse_exif(exif):
             if t < 1 and t > 0:
                 data["shutter"] = f"1/{round(1/t)} s"
             else:
-                data["shutter"] = f"{t} s"
+                if t.is_integer():
+                    data["shutter"] = f"{int(t)} s"
+                else:
+                    data["shutter"] = f"{t} s"
 
         iso = exif_ifd.get(34855)
         if iso is not None:

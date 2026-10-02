@@ -111,6 +111,29 @@ def test_5_exif(env):
     assert data[1]['exif']['camera'] is None
     assert data[1]['exif']['lens'] is None
 
+def test_5_1_shutter_format(env):
+    input_dir, output_dir, data_file = env
+    from PIL.ExifTags import IFD
+    img = Image.new('RGB', (200, 200), color='white')
+    exif = img.getexif()
+    exif_ifd = exif.get_ifd(34665)
+    exif_ifd[33434] = 30.0
+    img.save(input_dir / '01-s30.jpg', exif=exif)
+
+    img2 = Image.new('RGB', (200, 200), color='white')
+    exif2 = img2.getexif()
+    exif2_ifd = exif2.get_ifd(34665)
+    exif2_ifd[33434] = 2.5
+    img2.save(input_dir / '02-s25.jpg', exif=exif2)
+
+    run_script(*env)
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    # Sort by id to ensure order matches
+    data.sort(key=lambda x: x['id'])
+    assert data[0]['exif']['shutter'] == '30 s'
+    assert data[1]['exif']['shutter'] == '2.5 s'
+
 def test_6_default_captions(env):
     input_dir, output_dir, data_file = env
     img = Image.new('RGB', (2000, 2000), color='red')

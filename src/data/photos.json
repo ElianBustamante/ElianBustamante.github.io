@@ -1,15 +1,15 @@
 [
   {
-    "id": "20220516005359-img-7350-2",
+    "id": "01",
     "thumb": {
-      "src": "/photos/20220516005359-img-7350-2-thumb.webp",
+      "src": "/photos/01-thumb.webp",
       "width": 800,
-      "height": 533
+      "height": 1200
     },
     "large": {
-      "src": "/photos/20220516005359-img-7350-2-large.webp",
-      "width": 2400,
-      "height": 1599
+      "src": "/photos/01-large.webp",
+      "width": 1599,
+      "height": 2400
     },
     "alt": {
       "es": "Fotografía de paisaje 1",
@@ -21,22 +21,22 @@
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
-      "lens": "EF75-300mm f/4-5.6",
-      "focalLength": "290 mm",
-      "aperture": "f/5.6",
-      "shutter": "1/2 s",
-      "iso": 3200
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "18 mm",
+      "aperture": "f/13",
+      "shutter": "30 s",
+      "iso": 400
     }
   },
   {
-    "id": "img-0547-10",
+    "id": "02",
     "thumb": {
-      "src": "/photos/img-0547-10-thumb.webp",
+      "src": "/photos/02-thumb.webp",
       "width": 800,
       "height": 1200
     },
     "large": {
-      "src": "/photos/img-0547-10-large.webp",
+      "src": "/photos/02-large.webp",
       "width": 1599,
       "height": 2400
     },
@@ -51,22 +51,22 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "18 mm",
-      "aperture": "f/22",
-      "shutter": "13.0 s",
-      "iso": 100
+      "focalLength": "35 mm",
+      "aperture": "f/10",
+      "shutter": "1/1000 s",
+      "iso": 400
     }
   },
   {
-    "id": "img-2232-2",
+    "id": "03",
     "thumb": {
-      "src": "/photos/img-2232-2-thumb.webp",
+      "src": "/photos/03-thumb.webp",
       "width": 800,
       "height": 1200
     },
     "large": {
-      "src": "/photos/img-2232-2-large.webp",
-      "width": 1599,
+      "src": "/photos/03-large.webp",
+      "width": 1600,
       "height": 2400
     },
     "alt": {
@@ -87,16 +87,16 @@
     }
   },
   {
-    "id": "img-2241-2",
+    "id": "04",
     "thumb": {
-      "src": "/photos/img-2241-2-thumb.webp",
+      "src": "/photos/04-thumb.webp",
       "width": 800,
-      "height": 533
+      "height": 1200
     },
     "large": {
-      "src": "/photos/img-2241-2-large.webp",
-      "width": 2400,
-      "height": 1600
+      "src": "/photos/04-large.webp",
+      "width": 1599,
+      "height": 2400
     },
     "alt": {
       "es": "Fotografía de paisaje 4",
@@ -116,16 +116,16 @@
     }
   },
   {
-    "id": "img-2242-3",
+    "id": "05",
     "thumb": {
-      "src": "/photos/img-2242-3-thumb.webp",
+      "src": "/photos/05-thumb.webp",
       "width": 800,
-      "height": 1200
+      "height": 533
     },
     "large": {
-      "src": "/photos/img-2242-3-large.webp",
-      "width": 1600,
-      "height": 2400
+      "src": "/photos/05-large.webp",
+      "width": 2400,
+      "height": 1600
     },
     "alt": {
       "es": "Fotografía de paisaje 5",
@@ -145,16 +145,16 @@
     }
   },
   {
-    "id": "img-2396-3",
+    "id": "06",
     "thumb": {
-      "src": "/photos/img-2396-3-thumb.webp",
+      "src": "/photos/06-thumb.webp",
       "width": 800,
-      "height": 1200
+      "height": 533
     },
     "large": {
-      "src": "/photos/img-2396-3-large.webp",
-      "width": 1599,
-      "height": 2400
+      "src": "/photos/06-large.webp",
+      "width": 2400,
+      "height": 1600
     },
     "alt": {
       "es": "Fotografía de paisaje 6",
@@ -167,22 +167,22 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "18 mm",
-      "aperture": "f/13",
-      "shutter": "30.0 s",
-      "iso": 400
+      "focalLength": "35 mm",
+      "aperture": "f/10",
+      "shutter": "1/250 s",
+      "iso": 800
     }
   },
   {
-    "id": "img-2425-2",
+    "id": "07",
     "thumb": {
-      "src": "/photos/img-2425-2-thumb.webp",
+      "src": "/photos/07-thumb.webp",
       "width": 800,
       "height": 1200
     },
     "large": {
-      "src": "/photos/img-2425-2-large.webp",
-      "width": 1599,
+      "src": "/photos/07-large.webp",
+      "width": 1600,
       "height": 2400
     },
     "alt": {
@@ -196,23 +196,23 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "35 mm",
+      "focalLength": "135 mm",
       "aperture": "f/10",
-      "shutter": "1/1000 s",
-      "iso": 400
+      "shutter": "1/200 s",
+      "iso": 800
     }
   },
   {
-    "id": "img-3693-2",
+    "id": "08",
     "thumb": {
-      "src": "/photos/img-3693-2-thumb.webp",
+      "src": "/photos/08-thumb.webp",
       "width": 800,
-      "height": 1066
+      "height": 533
     },
     "large": {
-      "src": "/photos/img-3693-2-large.webp",
-      "width": 1799,
-      "height": 2400
+      "src": "/photos/08-large.webp",
+      "width": 2400,
+      "height": 1600
     },
     "alt": {
       "es": "Fotografía de paisaje 8",
@@ -225,22 +225,22 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "29 mm",
-      "aperture": "f/11",
-      "shutter": "3.2 s",
-      "iso": 1600
+      "focalLength": "64 mm",
+      "aperture": "f/10",
+      "shutter": "1/320 s",
+      "iso": 800
     }
   },
   {
-    "id": "img-3702-2",
+    "id": "09",
     "thumb": {
-      "src": "/photos/img-3702-2-thumb.webp",
+      "src": "/photos/09-thumb.webp",
       "width": 800,
-      "height": 1200
+      "height": 1199
     },
     "large": {
-      "src": "/photos/img-3702-2-large.webp",
-      "width": 1599,
+      "src": "/photos/09-large.webp",
+      "width": 1600,
       "height": 2400
     },
     "alt": {
@@ -254,22 +254,22 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "85 mm",
-      "aperture": "f/14",
-      "shutter": "25.0 s",
-      "iso": 200
+      "focalLength": "35 mm",
+      "aperture": "f/10",
+      "shutter": "1/320 s",
+      "iso": 800
     }
   },
   {
-    "id": "img-3919-2",
+    "id": "10",
     "thumb": {
-      "src": "/photos/img-3919-2-thumb.webp",
+      "src": "/photos/10-thumb.webp",
       "width": 800,
-      "height": 1066
+      "height": 1200
     },
     "large": {
-      "src": "/photos/img-3919-2-large.webp",
-      "width": 1799,
+      "src": "/photos/10-large.webp",
+      "width": 1600,
       "height": 2400
     },
     "alt": {
@@ -283,22 +283,22 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "35 mm",
-      "aperture": "f/22",
-      "shutter": "220.0 s",
-      "iso": 100
+      "focalLength": "24 mm",
+      "aperture": "f/10",
+      "shutter": "1/250 s",
+      "iso": 800
     }
   },
   {
-    "id": "img-4374-2",
+    "id": "11",
     "thumb": {
-      "src": "/photos/img-4374-2-thumb.webp",
+      "src": "/photos/11-thumb.webp",
       "width": 800,
       "height": 1200
     },
     "large": {
-      "src": "/photos/img-4374-2-large.webp",
-      "width": 1600,
+      "src": "/photos/11-large.webp",
+      "width": 1599,
       "height": 2400
     },
     "alt": {
@@ -312,23 +312,23 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "67 mm",
-      "aperture": "f/11",
-      "shutter": "1/200 s",
-      "iso": 400
+      "focalLength": "35 mm",
+      "aperture": "f/10",
+      "shutter": "1/320 s",
+      "iso": 800
     }
   },
   {
-    "id": "img-4383-2",
+    "id": "12",
     "thumb": {
-      "src": "/photos/img-4383-2-thumb.webp",
+      "src": "/photos/12-thumb.webp",
       "width": 800,
-      "height": 1200
+      "height": 533
     },
     "large": {
-      "src": "/photos/img-4383-2-large.webp",
-      "width": 1599,
-      "height": 2400
+      "src": "/photos/12-large.webp",
+      "width": 2400,
+      "height": 1600
     },
     "alt": {
       "es": "Fotografía de paisaje 12",
@@ -348,14 +348,14 @@
     }
   },
   {
-    "id": "img-4383-3",
+    "id": "13",
     "thumb": {
-      "src": "/photos/img-4383-3-thumb.webp",
+      "src": "/photos/13-thumb.webp",
       "width": 800,
       "height": 533
     },
     "large": {
-      "src": "/photos/img-4383-3-large.webp",
+      "src": "/photos/13-large.webp",
       "width": 2400,
       "height": 1600
     },
@@ -370,21 +370,21 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "135 mm",
+      "focalLength": "24 mm",
       "aperture": "f/11",
-      "shutter": "1/320 s",
+      "shutter": "1/250 s",
       "iso": 400
     }
   },
   {
-    "id": "img-4394-2",
+    "id": "14",
     "thumb": {
-      "src": "/photos/img-4394-2-thumb.webp",
+      "src": "/photos/14-thumb.webp",
       "width": 800,
-      "height": 1199
+      "height": 1200
     },
     "large": {
-      "src": "/photos/img-4394-2-large.webp",
+      "src": "/photos/14-large.webp",
       "width": 1600,
       "height": 2400
     },
@@ -399,23 +399,23 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "29 mm",
+      "focalLength": "67 mm",
       "aperture": "f/11",
-      "shutter": "1/160 s",
+      "shutter": "1/200 s",
       "iso": 400
     }
   },
   {
-    "id": "img-4409-1",
+    "id": "15",
     "thumb": {
-      "src": "/photos/img-4409-1-thumb.webp",
+      "src": "/photos/15-thumb.webp",
       "width": 800,
-      "height": 533
+      "height": 1200
     },
     "large": {
-      "src": "/photos/img-4409-1-large.webp",
-      "width": 2400,
-      "height": 1600
+      "src": "/photos/15-large.webp",
+      "width": 1600,
+      "height": 2400
     },
     "alt": {
       "es": "Fotografía de paisaje 15",
@@ -428,21 +428,21 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "24 mm",
+      "focalLength": "29 mm",
       "aperture": "f/11",
-      "shutter": "1/250 s",
-      "iso": 400
+      "shutter": "3.2 s",
+      "iso": 1600
     }
   },
   {
-    "id": "img-8169-1",
+    "id": "16",
     "thumb": {
-      "src": "/photos/img-8169-1-thumb.webp",
+      "src": "/photos/16-thumb.webp",
       "width": 800,
       "height": 1200
     },
     "large": {
-      "src": "/photos/img-8169-1-large.webp",
+      "src": "/photos/16-large.webp",
       "width": 1599,
       "height": 2400
     },
@@ -457,22 +457,22 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "35 mm",
-      "aperture": "f/10",
-      "shutter": "1/320 s",
-      "iso": 800
+      "focalLength": "85 mm",
+      "aperture": "f/14",
+      "shutter": "25 s",
+      "iso": 200
     }
   },
   {
-    "id": "img-8186-3",
+    "id": "17",
     "thumb": {
-      "src": "/photos/img-8186-3-thumb.webp",
+      "src": "/photos/17-thumb.webp",
       "width": 800,
       "height": 1200
     },
     "large": {
-      "src": "/photos/img-8186-3-large.webp",
-      "width": 1600,
+      "src": "/photos/17-large.webp",
+      "width": 1599,
       "height": 2400
     },
     "alt": {
@@ -486,23 +486,23 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "24 mm",
-      "aperture": "f/10",
-      "shutter": "1/250 s",
-      "iso": 800
+      "focalLength": "35 mm",
+      "aperture": "f/22",
+      "shutter": "220 s",
+      "iso": 100
     }
   },
   {
-    "id": "img-8191-2",
+    "id": "18",
     "thumb": {
-      "src": "/photos/img-8191-2-thumb.webp",
+      "src": "/photos/18-thumb.webp",
       "width": 800,
-      "height": 533
+      "height": 1200
     },
     "large": {
-      "src": "/photos/img-8191-2-large.webp",
-      "width": 2400,
-      "height": 1600
+      "src": "/photos/18-large.webp",
+      "width": 1599,
+      "height": 2400
     },
     "alt": {
       "es": "Fotografía de paisaje 18",
@@ -515,23 +515,23 @@
     "exif": {
       "camera": "Canon EOS Rebel T7i",
       "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "35 mm",
-      "aperture": "f/10",
-      "shutter": "1/250 s",
-      "iso": 800
+      "focalLength": "18 mm",
+      "aperture": "f/22",
+      "shutter": "13 s",
+      "iso": 100
     }
   },
   {
-    "id": "img-8192-2",
+    "id": "19",
     "thumb": {
-      "src": "/photos/img-8192-2-thumb.webp",
+      "src": "/photos/19-thumb.webp",
       "width": 800,
-      "height": 1200
+      "height": 533
     },
     "large": {
-      "src": "/photos/img-8192-2-large.webp",
-      "width": 1600,
-      "height": 2400
+      "src": "/photos/19-large.webp",
+      "width": 2400,
+      "height": 1599
     },
     "alt": {
       "es": "Fotografía de paisaje 19",
@@ -543,69 +543,11 @@
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
-      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "135 mm",
-      "aperture": "f/10",
-      "shutter": "1/200 s",
-      "iso": 800
-    }
-  },
-  {
-    "id": "img-8194-2",
-    "thumb": {
-      "src": "/photos/img-8194-2-thumb.webp",
-      "width": 800,
-      "height": 523
-    },
-    "large": {
-      "src": "/photos/img-8194-2-large.webp",
-      "width": 2400,
-      "height": 1571
-    },
-    "alt": {
-      "es": "Fotografía de paisaje 20",
-      "en": "Landscape photograph 20"
-    },
-    "title": {
-      "es": null,
-      "en": null
-    },
-    "exif": {
-      "camera": "Canon EOS Rebel T7i",
-      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "64 mm",
-      "aperture": "f/10",
-      "shutter": "1/320 s",
-      "iso": 800
-    }
-  },
-  {
-    "id": "img-8198-2",
-    "thumb": {
-      "src": "/photos/img-8198-2-thumb.webp",
-      "width": 800,
-      "height": 1199
-    },
-    "large": {
-      "src": "/photos/img-8198-2-large.webp",
-      "width": 1600,
-      "height": 2400
-    },
-    "alt": {
-      "es": "Fotografía de paisaje 21",
-      "en": "Landscape photograph 21"
-    },
-    "title": {
-      "es": null,
-      "en": null
-    },
-    "exif": {
-      "camera": "Canon EOS Rebel T7i",
-      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
-      "focalLength": "35 mm",
-      "aperture": "f/10",
-      "shutter": "1/320 s",
-      "iso": 800
+      "lens": "EF75-300mm f/4-5.6",
+      "focalLength": "290 mm",
+      "aperture": "f/5.6",
+      "shutter": "1/2 s",
+      "iso": 3200
     }
   }
 ]
