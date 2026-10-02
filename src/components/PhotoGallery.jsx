@@ -26,7 +26,7 @@ export default function PhotoGallery() {
     if (W === 0) return
     
     let h = 360
-    if (W >= 1024) h = 330
+    if (W >= 1024) h = 360
     else if (W >= 640) h = 280
     else h = Math.min(Math.floor(W / 1.5), 360)
 

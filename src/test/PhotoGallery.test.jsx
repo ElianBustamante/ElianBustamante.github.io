@@ -37,7 +37,7 @@ describe('PhotoGallery', () => {
     const images = screen.getAllByRole('button').filter(b => b.querySelector('img'))
     expect(images).toHaveLength(3)
     const firstLi = images[0].parentElement
-    expect(firstLi.style.height).toBe('330px') // from W=1200 -> h=330
+    expect(firstLi.style.height).toBe('360px') // from W=1200 -> h=360
   })
 
   it('renders alt in Spanish and changes to English', async () => {
