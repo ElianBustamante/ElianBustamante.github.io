@@ -95,51 +95,17 @@ describe('PhotoGallery', () => {
     expect(screen.getByText('Foto 2 de 3')).toBeInTheDocument()
   })
 
-  it('aligns last page to flex-start and previous pages to space-between', () => {
-    const oldPhotos = [...mockPhotos]
-    mockPhotos.length = 0
-    // W=1024, h=360. Add two photos of width 496 -> 992 total.
-    // 496 / 360 = 1.3777
-    mockPhotos.push(
-      { id: '1', thumb: { src: '/a', width: 496, height: 360 }, large: { src: '/a', width: 496, height: 360 }, alt: { es: '', en: '' }, exif: {} },
-      { id: '2', thumb: { src: '/b', width: 496, height: 360 }, large: { src: '/b', width: 496, height: 360 }, alt: { es: '', en: '' }, exif: {} },
-      { id: '3', thumb: { src: '/c', width: 100, height: 360 }, large: { src: '/c', width: 100, height: 360 }, alt: { es: '', en: '' }, exif: {} }
-    )
-    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1024 }) 
+  it('aligns all pages to flex-start', () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 400 }) // Forces multiple pages
     Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
     render(<PhotoGallery />)
     
     const lists = screen.getAllByRole('list').filter(ul => ul.style.justifyContent)
     
-    // Page 1: 496 + 496 = 992. Remaining = 1024 - 992 = 32. 32 <= 32 => space-between.
-    expect(lists[0].style.justifyContent).toBe('space-between')
-    expect(lists[lists.length - 1].style.justifyContent).toBe('flex-start')
-    
-    mockPhotos.length = 0
-    mockPhotos.push(...oldPhotos)
-  })
-
-  it('aligns intermediate page to center with 32px gap when theoretical gap > 32px', () => {
-    const oldPhotos = [...mockPhotos]
-    mockPhotos.length = 0
-    mockPhotos.push(
-      { id: '1', thumb: { src: '', width: 100, height: 100 }, large: { src: '', width: 100, height: 100 }, alt: { es: '', en: '' }, exif: {} },
-      { id: '2', thumb: { src: '', width: 100, height: 100 }, large: { src: '', width: 100, height: 100 }, alt: { es: '', en: '' }, exif: {} },
-      { id: '3', thumb: { src: '', width: 100, height: 100 }, large: { src: '', width: 100, height: 100 }, alt: { es: '', en: '' }, exif: {} },
-      { id: '4', thumb: { src: '', width: 100, height: 100 }, large: { src: '', width: 100, height: 100 }, alt: { es: '', en: '' }, exif: {} }
-    )
-    
-    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
-    Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
-    render(<PhotoGallery />)
-    
-    const lists = screen.getAllByRole('list').filter(ul => ul.style.justifyContent)
-    
-    expect(lists[0].style.justifyContent).toBe('center')
-    expect(lists[0].style.gap).toBe('32px')
-    
-    mockPhotos.length = 0
-    mockPhotos.push(...oldPhotos)
+    lists.forEach(list => {
+      expect(list.style.justifyContent).toBe('flex-start')
+      expect(list.style.gap).toBe('12px')
+    })
   })
 
   it('renders no list when photos is empty', () => {

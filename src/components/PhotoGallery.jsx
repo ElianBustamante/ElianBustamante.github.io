@@ -150,37 +150,15 @@ export default function PhotoGallery() {
             ref={listRef}
             className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none]"
           >
-            {pagesData.pages.map((pageIndices, pageIndex) => {
-              const isLastPage = pageIndex === pagesData.pages.length - 1
-              let flexAlign = isLastPage ? 'flex-start' : 'center'
-              let gapValue = 12
-
-              if (!isLastPage && pageIndices.length > 1) {
-                let usedWidth = 0
-                pageIndices.forEach(index => {
-                  const photo = photosData[index]
-                  usedWidth += Math.floor(pagesData.height * (photo.thumb.width / photo.thumb.height))
-                })
-                const remaining = pagesData.width - usedWidth
-                const theoreticalGap = remaining / (pageIndices.length - 1)
-                
-                if (theoreticalGap <= 32) {
-                  flexAlign = 'space-between'
-                } else {
-                  flexAlign = 'center'
-                  gapValue = 32
-                }
-              }
-
-              return (
+            {pagesData.pages.map((pageIndices, pageIndex) => (
               <li key={pageIndex} className="w-full shrink-0 snap-start">
                 <ul
                   role="list"
                   className="flex w-full items-center"
                   style={{
                     height: pagesData.height,
-                    gap: gapValue,
-                    justifyContent: flexAlign
+                    gap: 12,
+                    justifyContent: 'flex-start'
                   }}
                 >
                   {pageIndices.map(index => {
@@ -213,8 +191,7 @@ export default function PhotoGallery() {
                   })}
                 </ul>
               </li>
-              )
-            })}
+            ))}
           </ul>
           {showArrows && (
             <p aria-live="polite" className="text-muted text-[0.875rem] mt-4 text-center">
