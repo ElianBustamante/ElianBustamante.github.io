@@ -11,7 +11,7 @@ export default function PhotoGallery() {
   const containerRef = useRef(null)
   const listRef = useRef(null)
   
-  const [pagesData, setPagesData] = useState({ pages: [], height: 360, width: 0 })
+  const [pagesData, setPagesData] = useState({ pages: [], height: 375, width: 0 })
   const [currentPage, setCurrentPage] = useState(0)
   
   const visiblePhotoRef = useRef(0)
@@ -25,8 +25,8 @@ export default function PhotoGallery() {
     const W = containerRef.current.clientWidth
     if (W === 0) return
     
-    let h = 360
-    if (W >= 1024) h = 360
+    let h = 375
+    if (W >= 1024) h = 375
     else if (W >= 640) h = 280
     else h = Math.min(Math.floor(W / 1.5), 360)
 
