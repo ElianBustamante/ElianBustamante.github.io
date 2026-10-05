@@ -15,16 +15,6 @@ export default function Navbar() {
   const { t } = useTranslation()
   const [activeId, setActiveId] = useState('inicio')
   const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 8)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,18 +45,21 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <header className={`sticky top-0 z-50 w-full transition-colors duration-200 ${scrolled ? 'bg-bg/80 backdrop-blur-md' : 'bg-transparent'}`}>
-      <div className="pt-4 pb-4 px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto">
+    <header className="sticky top-0 z-50 w-full pointer-events-none">
+      <div className="pt-4 pb-4 px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto pointer-events-auto">
         <nav
           aria-label={t('nav.aria')}
-          className="flex items-center justify-between rounded-[14px] bg-surface/80 backdrop-blur border border-border px-4 py-2"
+          className="flex items-center justify-between rounded-[22px] bg-surface/80 backdrop-blur-md border border-border px-3 py-2"
         >
-        <a href="#inicio" onClick={closeMenu} className="font-extrabold text-accent">
-          ELIAN BUSTAMANTE
+        <a href="#inicio" onClick={closeMenu} className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-[11px] pr-2">
+          <div aria-hidden="true" className="flex items-center justify-center w-8 h-8 md:w-9 md:h-9 bg-accent/15 rounded-[11px] text-accent font-bold text-[0.875rem]">
+            EB
+          </div>
+          <span className="text-text font-semibold text-base">Elian Bustamante</span>
         </a>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-1">
           {links.map((link) => {
             const isActive = activeId === link.href.substring(1)
             return (
@@ -74,8 +67,10 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 aria-current={isActive ? 'true' : undefined}
-                className={`text-sm hover:text-accent transition-colors ${
-                  isActive ? 'text-accent font-semibold' : 'text-text'
+                className={`rounded-full px-3.5 py-2 text-[0.9375rem] border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  isActive 
+                    ? 'bg-accent/15 text-accent border-accent/40' 
+                    : 'bg-surface-2 text-text border-transparent hover:border-border'
                 }`}
               >
                 {t(link.key)}
@@ -89,14 +84,14 @@ export default function Navbar() {
           
           <a
             href="#contacto"
-            className="hidden md:flex items-center justify-center min-h-[44px] px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors"
+            className="hidden md:flex items-center justify-center min-h-[44px] px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             {t('nav.cta')}
           </a>
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden flex items-center justify-center min-h-[44px] min-w-[44px] border border-border rounded-full hover:bg-surface-2 transition-colors"
+            className="md:hidden flex items-center justify-center min-h-[44px] min-w-[44px] border border-border rounded-full bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
@@ -109,7 +104,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div id="mobile-menu" className="md:hidden mt-2 bg-surface border border-border rounded-[14px] p-4 flex flex-col gap-4">
+        <div id="mobile-menu" className="md:hidden mt-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto">
           {links.map((link) => {
             const isActive = activeId === link.href.substring(1)
             return (
@@ -118,8 +113,10 @@ export default function Navbar() {
                 href={link.href}
                 onClick={closeMenu}
                 aria-current={isActive ? 'true' : undefined}
-                className={`min-h-[44px] flex items-center px-4 rounded-lg hover:bg-surface-2 transition-colors ${
-                  isActive ? 'text-accent font-semibold bg-surface-2' : 'text-text'
+                className={`min-h-[44px] w-full flex items-center px-4 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  isActive 
+                    ? 'bg-accent/15 text-accent border-accent/40' 
+                    : 'bg-surface-2 text-text border-transparent'
                 }`}
               >
                 {t(link.key)}
@@ -129,7 +126,7 @@ export default function Navbar() {
           <a
             href="#contacto"
             onClick={closeMenu}
-            className="min-h-[44px] flex items-center justify-center bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors"
+            className="min-h-[44px] w-full mt-2 flex items-center justify-center bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             {t('nav.cta')}
           </a>
