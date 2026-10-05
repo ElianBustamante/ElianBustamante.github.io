@@ -21,3 +21,11 @@ export const IconMenu = (props) => (
     <path d="M4 6h16M4 12h16M4 18h16" />
   </svg>
 )
+
+export const IconGlobe = (props) => (
+  <svg aria-hidden="true" focusable="false" width="24" height="24" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+    <path d="M2 12h20" />
+  </svg>
+)

@@ -28,6 +28,10 @@ body {
   line-height: 1.6;
 }
 
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 [id] {
   scroll-margin-top: 6rem;
 }
