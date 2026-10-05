@@ -173,7 +173,7 @@ export default function PhotoGallery() {
                         <button
                           type="button"
                           onClick={(e) => openLightbox(index, e)}
-                          className="block h-full w-full overflow-hidden rounded-card border border-accent/40 hover:border-accent"
+                          className="group block h-full w-full overflow-hidden rounded-card border border-accent/40 transition-all duration-200 hover:border-accent hover:shadow-[0_0_24px_rgba(255,106,26,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         >
                           <img
                             src={photo.thumb.src}
@@ -182,7 +182,7 @@ export default function PhotoGallery() {
                             alt={photo.alt[i18n.language] || photo.alt.es}
                             loading={pageIndex === 0 ? 'eager' : 'lazy'}
                             decoding="async"
-                            className="block h-full w-full object-cover"
+                            className="block h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                             style={{ aspectRatio: `${photo.thumb.width} / ${photo.thumb.height}` }}
                           />
                         </button>
