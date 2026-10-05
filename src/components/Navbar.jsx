@@ -61,7 +61,9 @@ export default function Navbar() {
           <div aria-hidden="true" className="flex items-center justify-center w-8 h-8 md:w-9 md:h-9 bg-accent/15 rounded-[11px] text-accent font-bold text-[0.875rem]">
             EB
           </div>
-          <span className="text-text font-semibold text-base">Elian Bustamante</span>
+          <span className="text-text font-semibold text-base whitespace-nowrap">
+            Elian <span className="hidden min-[400px]:inline">Bustamante</span>
+          </span>
         </a>
 
         {/* Desktop nav */}
