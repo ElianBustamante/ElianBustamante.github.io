@@ -37,8 +37,23 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     img2.src = photos[next].large.src
   }, [index, photos, total])
 
-  const goNext = () => onIndexChange((index + 1) % total)
-  const goPrev = () => onIndexChange((index - 1 + total) % total)
+  const goNext = () => {
+    const nextIdx = (index + 1) % total
+    if (document.startViewTransition) {
+      document.startViewTransition(() => onIndexChange(nextIdx))
+    } else {
+      onIndexChange(nextIdx)
+    }
+  }
+
+  const goPrev = () => {
+    const prevIdx = (index - 1 + total) % total
+    if (document.startViewTransition) {
+      document.startViewTransition(() => onIndexChange(prevIdx))
+    } else {
+      onIndexChange(prevIdx)
+    }
+  }
 
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowRight') goNext()
@@ -110,7 +125,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             <IconChevronLeft />
           </button>
           
-          <figure key={index} className="flex flex-col items-center justify-center animate-fade-in">
+          <figure className="flex flex-col items-center justify-center">
             <img
               src={photo.large.src}
               width={photo.large.width}
