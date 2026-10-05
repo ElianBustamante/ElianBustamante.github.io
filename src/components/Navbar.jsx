@@ -59,7 +59,7 @@ export default function Navbar() {
         </a>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden lg:flex items-center gap-1">
           {links.map((link) => {
             const isActive = activeId === link.href.substring(1)
             return (
@@ -84,14 +84,14 @@ export default function Navbar() {
           
           <a
             href="#contacto"
-            className="hidden md:flex items-center justify-center min-h-[44px] px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="hidden lg:flex items-center justify-center min-h-[44px] px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             {t('nav.cta')}
           </a>
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden flex items-center justify-center min-h-[44px] min-w-[44px] border border-border rounded-full bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="lg:hidden flex items-center justify-center min-h-[44px] min-w-[44px] border border-border rounded-full bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
@@ -104,7 +104,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div id="mobile-menu" className="md:hidden mt-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto">
+        <div id="mobile-menu" className="lg:hidden mt-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto">
           {links.map((link) => {
             const isActive = activeId === link.href.substring(1)
             return (
