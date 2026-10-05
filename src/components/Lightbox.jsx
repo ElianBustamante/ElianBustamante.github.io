@@ -110,7 +110,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             <IconChevronLeft />
           </button>
           
-          <figure className="flex flex-col items-center justify-center">
+          <figure key={index} className="flex flex-col items-center justify-center animate-fade-in">
             <img
               src={photo.large.src}
               width={photo.large.width}
