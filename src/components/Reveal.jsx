@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 
-export default function Reveal({ children, as: Component = 'div', className = '', delay = 0 }) {
+export default function Reveal({ children, as: Component = 'div', className = '', delay = 0, style = {} }) {
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          if (ref.current) observer.unobserve(ref.current)
-        }
+        setIsVisible(entry.isIntersecting)
       },
       { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
     )
@@ -29,7 +26,7 @@ export default function Reveal({ children, as: Component = 'div', className = ''
       className={`transition-all duration-500 ease-out motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       } ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={{ ...style, transitionDelay: isVisible ? `${delay}ms` : '0ms' }}
     >
       {children}
     </Component>

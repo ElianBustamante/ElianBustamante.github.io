@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useRef, useState, useEffect, useCallback } from 'react'
 import Section from './Section'
+import Reveal from './Reveal'
 import { IconChevronLeft, IconChevronRight } from './icons'
 import Lightbox from './Lightbox'
 import photosData from '../data/photos.json'
@@ -161,19 +162,21 @@ export default function PhotoGallery() {
                     justifyContent: 'flex-start'
                   }}
                 >
-                  {pageIndices.map(index => {
+                  {pageIndices.map((index, i) => {
                     const photo = photosData[index]
                     const aspect = photo.thumb.width / photo.thumb.height
                     const w = Math.floor(pagesData.height * aspect)
                     return (
-                      <li
+                      <Reveal
+                        as="li"
                         key={photo.id}
+                        delay={i * 80}
                         style={{ height: pagesData.height, width: w }}
                       >
                         <button
                           type="button"
                           onClick={(e) => openLightbox(index, e)}
-                          className="group block h-full w-full overflow-hidden rounded-card border border-accent/40 transition-all duration-200 hover:border-accent hover:shadow-[0_0_24px_rgba(255,106,26,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                          className="group block h-full w-full overflow-hidden rounded-card transition-all duration-200 hover:shadow-[0_0_24px_rgba(255,106,26,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         >
                           <img
                             src={photo.thumb.src}
@@ -182,11 +185,11 @@ export default function PhotoGallery() {
                             alt={photo.alt[i18n.language] || photo.alt.es}
                             loading={pageIndex === 0 ? 'eager' : 'lazy'}
                             decoding="async"
-                            className="block h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                            className="block h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:transform-none"
                             style={{ aspectRatio: `${photo.thumb.width} / ${photo.thumb.height}` }}
                           />
                         </button>
-                      </li>
+                      </Reveal>
                     )
                   })}
                 </ul>
