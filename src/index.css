@@ -80,3 +80,15 @@ button:not(:disabled) {
 @media (prefers-reduced-motion: reduce) {
   .animate-menu-in { animation: none; }
 }
+
+@keyframes nav-in {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-nav-in {
+  opacity: 0;
+  animation: nav-in 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-nav-in { opacity: 1; animation: none; }
+}
