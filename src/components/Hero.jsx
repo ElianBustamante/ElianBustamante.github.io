@@ -9,7 +9,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="relative z-0 min-h-[70svh] flex flex-col justify-start pt-10 md:pt-16"
+      className="relative z-0 min-h-[100svh] flex flex-col justify-center pb-16"
     >
       {bgUrl && (
         <div 
