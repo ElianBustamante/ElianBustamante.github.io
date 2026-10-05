@@ -45,7 +45,7 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full pointer-events-none">
+    <header className="fixed top-0 z-50 w-full pointer-events-none">
       <div className="pt-4 pb-4 px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto pointer-events-auto">
         <nav
           aria-label={t('nav.aria')}
