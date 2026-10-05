@@ -104,7 +104,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div id="mobile-menu" className="lg:hidden mt-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto">
+        <div id="mobile-menu" className="lg:hidden mt-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto max-h-[calc(100svh-6rem)] overflow-y-auto [scrollbar-width:none]">
           {links.map((link) => {
             const isActive = activeId === link.href.substring(1)
             return (
