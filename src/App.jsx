@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import Section from './components/Section'
 import Footer from './components/Footer'
 import PhotoGallery from './components/PhotoGallery'
+import ProjectsCarousel from './components/ProjectsCarousel'
 
 function App() {
   const backgroundStyle = {
@@ -16,7 +17,7 @@ function App() {
       <Navbar />
       <main>
         <Hero />
-        <Section id="proyectos" titleKey="projects.title"></Section>
+        <ProjectsCarousel />
         <PhotoGallery />
         <Section id="sobre-mi" titleKey="about.title"></Section>
         <Section id="contacto" titleKey="contact.title"></Section>

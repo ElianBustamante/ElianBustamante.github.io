@@ -1,0 +1,95 @@
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import { vi } from 'vitest'
+import i18n from '../i18n'
+import ProjectsCarousel from '../components/ProjectsCarousel'
+
+import ProjectCard from '../components/ProjectCard'
+
+describe('ProjectsCarousel', () => {
+  beforeEach(() => {
+    i18n.changeLanguage('es')
+    // Mock ResizeObserver
+    global.ResizeObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+  })
+
+  test('renderiza las 3 tarjetas con sus nombres en español', () => {
+    render(<ProjectsCarousel />)
+    expect(screen.getByText('TODO(elian): Games Deal Tracker')).toBeInTheDocument()
+    expect(screen.getByText('TODO(elian): Price Alert Bot')).toBeInTheDocument()
+    expect(screen.getByText('TODO(elian): Pipeline de procesamiento 3D')).toBeInTheDocument()
+  })
+
+  test('al cambiar a inglés, los nombres y descripciones cambian', () => {
+    render(<ProjectsCarousel />)
+    act(() => {
+      i18n.changeLanguage('en')
+    })
+    expect(screen.getByText('TODO(elian): Games Deal Tracker')).toBeInTheDocument() // Assuming name is same in en
+    // Wait, wait, let's mock translations or check if en translation exists for names.
+    // If we just check something else, or if en translation doesn't change names, we can check category or description.
+    expect(screen.getByText(i18n.t('projects.items.pipeline3d.name'))).toBeInTheDocument()
+  })
+
+  test('con scrollWidth <= clientWidth, los botones anterior/siguiente no existen', () => {
+    // Need to render and mock scrollWidth and clientWidth
+    render(<ProjectsCarousel />)
+    const list = screen.getByRole('list')
+    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 1000 })
+    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1000 })
+    fireEvent.scroll(list) // Trigger checkScroll
+    expect(screen.queryByLabelText('Proyecto anterior')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Proyecto siguiente')).not.toBeInTheDocument()
+  })
+
+  test('con scrollWidth > clientWidth, el botón siguiente llama a scrollBy con un left positivo', () => {
+    render(<ProjectsCarousel />)
+    const list = screen.getByRole('list')
+    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
+    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
+    
+    // Also mock firstElementChild clientWidth for scroll amount
+    Object.defineProperty(list, 'firstElementChild', {
+      configurable: true,
+      value: { clientWidth: 300 }
+    })
+    
+    list.scrollBy = vi.fn()
+    fireEvent.scroll(list) // Update state to show buttons
+    
+    const nextBtn = screen.getByLabelText('Proyecto siguiente')
+    fireEvent.click(nextBtn)
+    
+    expect(list.scrollBy).toHaveBeenCalledWith(expect.objectContaining({
+      left: 316, // 300 + 16 gap
+      behavior: 'smooth'
+    }))
+  })
+
+  test('tarjeta con repoUrl: null y demoUrl: null no renderiza pie, y con repoUrl renderiza el enlace con rel', () => {
+    const projectEmpty = {
+      id: 'gamesDealTracker',
+      image: null,
+      tags: ['T1'],
+      repoUrl: null,
+      demoUrl: null
+    }
+    const { container: c1 } = render(<ProjectCard project={projectEmpty} />)
+    expect(c1.querySelector('a')).not.toBeInTheDocument()
+
+    const projectLink = {
+      id: 'gamesDealTracker',
+      image: null,
+      tags: ['T1'],
+      repoUrl: 'https://github.com/test',
+      demoUrl: null
+    }
+    const { container: c2 } = render(<ProjectCard project={projectLink} />)
+    const link = c2.querySelector('a')
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+})

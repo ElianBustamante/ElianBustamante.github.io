@@ -32,17 +32,17 @@
     "viewDemo": "View demo",
     "items": {
       "gamesDealTracker": {
-        "name": "Games Deal Tracker",
+        "name": "TODO(elian): Games Deal Tracker",
         "category": "Discord bot",
         "description": "Discord bot that tracks video game deals. It is deployed on PebbleHost. Next step: Epic Games Store support."
       },
       "priceAlertBot": {
-        "name": "Price Alert Bot",
+        "name": "TODO(elian): Price Alert Bot",
         "category": "Telegram bot",
         "description": "Personal-use Telegram bot that sends price alerts from Chilean stores such as Falabella, Ripley, Paris, MercadoLibre and PCFactory. It uses SerpAPI and store URL tracking."
       },
       "pipeline3d": {
-        "name": "3D processing pipeline",
+        "name": "TODO(elian): 3D processing pipeline",
         "category": "Research",
         "description": "Optimization of a 3D processing pipeline within a FONDECYT research project."
       }
