@@ -52,17 +52,17 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 z-50 w-full pointer-events-none">
-      <div className="pt-4 pb-4 px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto pointer-events-auto">
+      <div className="pt-4 pb-4 px-2 min-[400px]:px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto pointer-events-auto">
         <nav
           aria-label={t('nav.aria')}
-          className="flex items-center justify-between rounded-[22px] bg-surface/80 backdrop-blur-md border border-border px-3 py-2"
+          className="flex items-center justify-between rounded-[22px] bg-surface/80 backdrop-blur-md border border-border px-2 min-[400px]:px-3 py-2"
         >
         <a href="#inicio" onClick={closeMenu} className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-[11px] pr-2">
           <div aria-hidden="true" className="flex items-center justify-center w-8 h-8 md:w-9 md:h-9 bg-accent/15 rounded-[11px] text-accent font-bold text-[0.875rem]">
             EB
           </div>
           <span className="text-text font-semibold text-base whitespace-nowrap">
-            Elian <span className="hidden min-[400px]:inline">Bustamante</span>
+            <span className="hidden min-[300px]:inline">Elian</span> <span className="hidden min-[400px]:inline">Bustamante</span>
           </span>
         </a>
 
