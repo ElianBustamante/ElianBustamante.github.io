@@ -170,7 +170,7 @@ export default function PhotoGallery() {
                       <Reveal
                         as="li"
                         key={photo.id}
-                        delay={i * 80}
+                        delay={150 + i * 120}
                         style={{ height: pagesData.height, width: w }}
                       >
                         <button
