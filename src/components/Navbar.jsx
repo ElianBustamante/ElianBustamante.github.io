@@ -42,7 +42,13 @@ export default function Navbar() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  const closeMenu = () => setMenuOpen(false)
+  const closeMenu = () => {
+    if (document.startViewTransition) {
+      document.startViewTransition(() => setMenuOpen(false))
+    } else {
+      setMenuOpen(false)
+    }
+  }
 
   return (
     <header className="fixed top-0 z-50 w-full pointer-events-none">
@@ -92,7 +98,13 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             className="lg:hidden flex items-center justify-center min-h-[44px] min-w-[44px] border border-border rounded-full bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => {
+              if (document.startViewTransition) {
+                document.startViewTransition(() => setMenuOpen(!menuOpen))
+              } else {
+                setMenuOpen(!menuOpen)
+              }
+            }}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? t('nav.menuClose') : t('nav.menuOpen')}
@@ -104,8 +116,8 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div id="mobile-menu" className="lg:hidden mt-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto max-h-[calc(100svh-6rem)] overflow-y-auto [scrollbar-width:none] animate-menu-in ml-auto max-w-[260px]">
-          {links.map((link) => {
+        <div id="mobile-menu" className="lg:hidden mt-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto max-h-[calc(100svh-6rem)] overflow-y-auto [scrollbar-width:none] ml-auto max-w-[260px]">
+          {links.map((link, index) => {
             const isActive = activeId === link.href.substring(1)
             return (
               <a
@@ -113,11 +125,12 @@ export default function Navbar() {
                 href={link.href}
                 onClick={closeMenu}
                 aria-current={isActive ? 'true' : undefined}
-                className={`min-h-[44px] w-full flex items-center px-4 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                className={`hero-in min-h-[44px] w-full flex items-center px-4 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                   isActive 
                     ? 'bg-accent/15 text-accent border-accent/40' 
                     : 'bg-surface-2 text-text border-transparent'
                 }`}
+                style={{ animationDelay: `${index * 60}ms` }}
               >
                 {t(link.key)}
               </a>
@@ -126,7 +139,8 @@ export default function Navbar() {
           <a
             href="#contacto"
             onClick={closeMenu}
-            className="min-h-[44px] w-full mt-2 flex items-center justify-center bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="hero-in min-h-[44px] w-full mt-2 flex items-center justify-center bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            style={{ animationDelay: `${links.length * 60}ms` }}
           >
             {t('nav.cta')}
           </a>
