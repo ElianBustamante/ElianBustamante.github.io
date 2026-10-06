@@ -144,7 +144,7 @@ export default function PhotoGallery() {
   return (
     <>
       <Section id="fotografia" titleKey="photography.title" actions={actions}>
-        <p className="text-muted mb-6">{t('photography.intro')}</p>
+        <p className="text-muted mb-4">{t('photography.intro')}</p>
         <div ref={containerRef} className="w-full">
           <ul
             role="list"

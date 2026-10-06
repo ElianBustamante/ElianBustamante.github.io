@@ -26,7 +26,7 @@ export default function Section({ id, titleKey, children, actions }) {
       </div>
       
       {/* Flecha Arriba */}
-      <button onClick={scrollPrev} aria-label="Subir" className="absolute top-20 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20">
+      <button onClick={scrollPrev} aria-label="Subir" className="absolute top-20 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 animate-bounce">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6"/></svg>
       </button>
 
