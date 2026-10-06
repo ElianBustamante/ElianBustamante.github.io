@@ -13,7 +13,7 @@ function App() {
   }
 
   return (
-    <div style={backgroundStyle} className="h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth">
+    <div style={backgroundStyle} className="h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-proximity scroll-smooth">
       <Navbar />
       <main>
         <Hero />

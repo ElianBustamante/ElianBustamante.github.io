@@ -73,7 +73,7 @@ export default function ProjectsCarousel() {
       <ul
         role="list"
         ref={listRef}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none]"
+        className="mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none]"
       >
         {projectsData.map((project, index) => (
           <Reveal
