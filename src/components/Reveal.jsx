@@ -7,12 +7,9 @@ export default function Reveal({ children, as: Component = 'div', className = ''
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.unobserve(entry.target)
-        }
+        setIsVisible(entry.isIntersecting)
       },
-      { threshold: 0.1, rootMargin: '0px 0px -5% 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px 0px 0px' }
     )
 
     const currentRef = ref.current

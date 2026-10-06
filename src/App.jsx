@@ -13,7 +13,7 @@ function App() {
   }
 
   return (
-    <div style={backgroundStyle} className="min-h-screen overflow-x-hidden w-full">
+    <div style={backgroundStyle} className="min-h-screen w-full">
       <Navbar />
       <main>
         <Hero />
