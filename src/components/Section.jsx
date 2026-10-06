@@ -14,7 +14,7 @@ export default function Section({ id, titleKey, children, actions }) {
   }
 
   return (
-    <section id={id} className="min-h-[100svh] flex flex-col justify-center relative py-24">
+    <section id={id} className="snap-start min-h-[100svh] flex flex-col justify-center relative pt-24 pb-10">
       <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 relative z-10">
         <Reveal delay={0} className="flex flex-wrap items-center gap-6 mb-8 mt-8">
           <h2 className="uppercase font-extrabold text-accent text-2xl">{t(titleKey)}</h2>
