@@ -7,12 +7,6 @@ import ProjectsCarousel from './components/ProjectsCarousel'
 import { useEffect } from 'react'
 
 function App() {
-  const backgroundStyle = {
-    backgroundImage: 'radial-gradient(ellipse at top right, rgba(255,106,26,0.18), transparent 60%)',
-    backgroundSize: '100% 100svh',
-    backgroundRepeat: 'no-repeat',
-  }
-
   // Controlador Profesional de Diapositivas
   useEffect(() => {
     let isAnimating = false;
@@ -69,16 +63,23 @@ function App() {
   }, []);
 
   return (
-    <div style={backgroundStyle} className="min-h-screen overflow-x-hidden w-full">
-      <Navbar />
-      <main>
-        <Hero />
-        <ProjectsCarousel />
-        <PhotoGallery />
-        <Section id="sobre-mi" titleKey="about.title"></Section>
-        <Section id="contacto" titleKey="contact.title"></Section>
-      </main>
-      <Footer />
+    <div className="min-h-screen overflow-x-hidden w-full relative">
+      {/* Fondo Animado */}
+      <div className="aurora-1"></div>
+      <div className="aurora-2"></div>
+      
+      {/* Contenido protegido por encima del fondo */}
+      <div className="relative z-10">
+        <Navbar />
+        <main>
+          <Hero />
+          <ProjectsCarousel />
+          <PhotoGallery />
+          <Section id="sobre-mi" titleKey="about.title"></Section>
+          <Section id="contacto" titleKey="contact.title"></Section>
+        </main>
+        <Footer />
+      </div>
     </div>
   )
 }
