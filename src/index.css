@@ -33,8 +33,8 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
-[id] {
-  scroll-margin-top: 6rem;
+section {
+  scroll-margin-top: 10rem;
 }
 
 :focus-visible {
