@@ -23,8 +23,8 @@ export default function Reveal({ children, as: Component = 'div', className = ''
   return (
     <Component
       ref={ref}
-      className={`transition-all duration-500 ease-out motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+      className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
       } ${className}`}
       style={{ ...style, transitionDelay: isVisible ? `${delay}ms` : '0ms' }}
     >

@@ -1,17 +1,16 @@
 import { useTranslation } from 'react-i18next'
 import Reveal from './Reveal'
-import { slowScrollTo } from '../lib/smoothScroll'
 
 export default function Section({ id, titleKey, children, actions }) {
   const { t } = useTranslation()
 
   const scrollNext = (e) => {
     const next = e.currentTarget.closest('section').nextElementSibling;
-    if (next) slowScrollTo(next);
+    if (next) next.scrollIntoView({ behavior: 'smooth' });
   }
   const scrollPrev = (e) => {
     const prev = e.currentTarget.closest('section').previousElementSibling;
-    if (prev) slowScrollTo(prev);
+    if (prev) prev.scrollIntoView({ behavior: 'smooth' });
   }
 
   return (
