@@ -21,7 +21,6 @@ html, body {
 html {
   scroll-behavior: smooth;
   background-color: var(--color-bg);
-  scroll-snap-type: y mandatory;
 }
 
 body {
