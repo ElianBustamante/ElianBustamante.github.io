@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { slowScrollTo } from '../lib/smoothScroll'
 
 const bgModules = import.meta.glob('../assets/hero-bg.webp', { eager: true, query: '?url', import: 'default' })
 const bgUrl = bgModules['../assets/hero-bg.webp']
@@ -72,7 +73,7 @@ export default function Hero() {
       <button 
         onClick={(e) => {
           const next = e.currentTarget.closest('section').nextElementSibling;
-          if (next) next.scrollIntoView({ behavior: 'smooth' });
+          if (next) slowScrollTo(next);
         }} 
         aria-label="Bajar" 
         className="absolute bottom-4 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 animate-bounce"

@@ -91,3 +91,8 @@ button:not(:disabled) {
   .animate-nav-in { opacity: 1; animation: none; }
 }
 
+@media (max-width: 768px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+}

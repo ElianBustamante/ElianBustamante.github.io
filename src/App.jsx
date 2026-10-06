@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import PhotoGallery from './components/PhotoGallery'
 import ProjectsCarousel from './components/ProjectsCarousel'
 import { useEffect } from 'react'
+import { slowScrollTo } from './lib/smoothScroll'
 
 function App() {
   const backgroundStyle = {
@@ -55,12 +56,12 @@ function App() {
 
       if (nextIndex !== closestIndex) {
         isAnimating = true;
-        sections[nextIndex].scrollIntoView({ behavior: 'smooth' });
+        slowScrollTo(sections[nextIndex]);
         
         // Tiempo de bloqueo para que la animación termine suavemente
         setTimeout(() => {
           isAnimating = false;
-        }, 850);
+        }, 1300);
       }
     };
 

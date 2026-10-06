@@ -1,16 +1,17 @@
 import { useTranslation } from 'react-i18next'
 import Reveal from './Reveal'
+import { slowScrollTo } from '../lib/smoothScroll'
 
 export default function Section({ id, titleKey, children, actions }) {
   const { t } = useTranslation()
 
   const scrollNext = (e) => {
     const next = e.currentTarget.closest('section').nextElementSibling;
-    if (next) next.scrollIntoView({ behavior: 'smooth' });
+    if (next) slowScrollTo(next);
   }
   const scrollPrev = (e) => {
     const prev = e.currentTarget.closest('section').previousElementSibling;
-    if (prev) prev.scrollIntoView({ behavior: 'smooth' });
+    if (prev) slowScrollTo(prev);
   }
 
   return (
@@ -26,7 +27,7 @@ export default function Section({ id, titleKey, children, actions }) {
       </div>
       
       {/* Flecha Arriba */}
-      <button onClick={scrollPrev} aria-label="Subir" className="absolute top-28 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20">
+      <button onClick={scrollPrev} aria-label="Subir" className="absolute top-20 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6"/></svg>
       </button>
 
