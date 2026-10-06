@@ -20,15 +20,15 @@
     "titleLine1": "Capturando paisajes.",
     "titleLine2": "Construyendo software.",
     "subtitle": "Desarrollo de software y fotografía de paisaje, desde Chile.",
-    "description": "Me formé en Ingeniería Informática en la Universidad de La Frontera. Aquí están mis proyectos de código y una selección de mis fotos.",
+    "description": "Me formé en Ingeniería Informática en la Universidad de La Frontera. Aquí están mis proyectos de código y una selección de mis fotografías.",
     "ctaProjects": "Ver proyectos",
-    "ctaPhotography": "Ver fotografía"
+    "ctaPhotography": "Ver fotografías"
   },
   "projects": {
     "title": "Proyectos",
     "prev": "Proyecto anterior",
     "next": "Proyecto siguiente",
-    "viewCode": "Ver código",
+    "viewCode": "Ver repositorio",
     "viewDemo": "Ver demo",
     "items": {
       "gamesDealTracker": {
@@ -50,8 +50,8 @@
   },
   "photography": {
     "title": "Fotografía",
-    "intro": "Una selección de fotos de paisaje.",
-    "lightboxLabel": "Visor de fotografías",
+    "intro": "Una selección de fotografías de los colores del otoño y el invierno en la Araucanía, entre Currarehue y el Paso Mamuil Malal. Además, algunos saltos de agua con efecto seda y, para cerrar, un eclipse lunar total.",
+    "viewDetails": "Ver detalles", "lightboxLabel": "Visor de fotografías",
     "close": "Cerrar",
     "prev": "Foto anterior",
     "next": "Foto siguiente",
