@@ -33,10 +33,6 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
-section {
-  scroll-margin-top: 20vh;
-}
-
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
@@ -92,3 +88,4 @@ section {
 @media (prefers-reduced-motion: reduce) {
   .animate-nav-in { opacity: 1; animation: none; }
 }
+

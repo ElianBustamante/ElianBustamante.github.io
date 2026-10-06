@@ -67,6 +67,18 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Flecha Abajo en Hero */}
+      <button 
+        onClick={(e) => {
+          const next = e.currentTarget.closest('section').nextElementSibling;
+          if (next) next.scrollIntoView({ behavior: 'smooth' });
+        }} 
+        aria-label="Bajar" 
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 animate-bounce"
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
     </section>
   )
 }
