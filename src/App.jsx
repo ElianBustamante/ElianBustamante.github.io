@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import PhotoGallery from './components/PhotoGallery'
 import ProjectsCarousel from './components/ProjectsCarousel'
 import { useEffect } from 'react'
+import AnimatedBackground from './components/AnimatedBackground'
 
 function App() {
   // Controlador Profesional de Diapositivas
@@ -64,9 +65,7 @@ function App() {
 
   return (
     <div className="min-h-screen overflow-x-hidden w-full relative">
-      {/* Fondo Animado */}
-      <div className="aurora-1"></div>
-      <div className="aurora-2"></div>
+      <AnimatedBackground />
       
       {/* Contenido protegido por encima del fondo */}
       <div className="relative z-10">
