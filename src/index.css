@@ -34,7 +34,7 @@ button:not(:disabled) {
 }
 
 section {
-  scroll-margin-top: 10rem;
+  scroll-margin-top: 20vh;
 }
 
 :focus-visible {
