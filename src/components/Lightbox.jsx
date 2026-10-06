@@ -8,6 +8,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   
   // To handle touch
   const [touchStart, setTouchStart] = useState(null)
+  const [isZoomed, setIsZoomed] = useState(false)
   
   const photo = photos[index]
   const total = photos.length
@@ -38,6 +39,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   }, [index, photos, total])
 
   const goNext = () => {
+    setIsZoomed(false)
     const nextIdx = (index + 1) % total
     if (document.startViewTransition) {
       document.startViewTransition(() => onIndexChange(nextIdx))
@@ -47,6 +49,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   }
 
   const goPrev = () => {
+    setIsZoomed(false)
     const prevIdx = (index - 1 + total) % total
     if (document.startViewTransition) {
       document.startViewTransition(() => onIndexChange(prevIdx))
@@ -125,17 +128,26 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             <IconChevronLeft />
           </button>
           
-          <figure className="flex flex-col items-center justify-center">
-            <img
-              src={photo.large.src}
-              width={photo.large.width}
-              height={photo.large.height}
-              alt={photo.alt[lang] || photo.alt.es}
-              className="max-h-[75dvh] max-w-full object-contain"
-            />
-            <figcaption className="mt-4 text-center">
-              {title && <p className="text-accent font-semibold">{title}</p>}
-              <p className="text-muted text-sm">{t('photography.counter', { current: index + 1, total })}</p>
+                      <figure className="flex flex-col items-center justify-center">
+              <img
+                src={photo.large.src}
+                alt={photo.alt[lang] || photo.alt.es}
+                onClick={() => setIsZoomed(!isZoomed)}
+                title="Click para hacer zoom"
+                className={`transition-transform duration-300 cursor-pointer ${
+                  isZoomed 
+                    ? 'scale-[1.7] md:scale-[2.5] relative z-20' 
+                    : 'max-h-[75dvh] max-w-full object-contain'
+                }`}
+              />
+              <figcaption className="mt-4 text-center">
+                {title && <p className="text-accent font-semibold">{title}</p>}
+                {photo.description && (
+                  <p className="text-text/90 text-[15px] mt-2 mb-2 max-w-2xl mx-auto">
+                    {photo.description[lang] || photo.description.es}
+                  </p>
+                )}
+                <p className="text-muted text-sm">{t('photography.counter', { current: index + 1, total })}</p>
               
               {hasExif && (
                 <dl className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted">
@@ -182,3 +194,5 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     </dialog>
   )
 }
+
+
