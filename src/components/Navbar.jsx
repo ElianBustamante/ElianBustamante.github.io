@@ -55,8 +55,7 @@ export default function Navbar() {
       <div className="pt-4 pb-4 px-2 min-[400px]:px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto pointer-events-auto">
         <nav
           aria-label={t('nav.aria')}
-          style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}
-          className="flex items-center justify-between rounded-[22px] bg-surface/30 border border-border px-2 min-[400px]:px-3 py-2"
+          className="flex items-center justify-between rounded-[22px] bg-surface-2 border border-border px-2 min-[400px]:px-3 py-2"
         >
         <a href="#inicio" onClick={closeMenu} className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-[11px] pr-2">
           <div aria-hidden="true" className="flex items-center justify-center w-8 h-8 md:w-9 md:h-9 bg-accent/15 rounded-[11px] text-accent font-bold text-[0.875rem]">
@@ -121,8 +120,7 @@ export default function Navbar() {
       {menuOpen && (
         <div 
           id="mobile-menu" 
-          style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}
-          className="lg:hidden mt-2 bg-surface/30 border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto max-h-[calc(100svh-6rem)] overflow-y-auto [scrollbar-width:none] ml-auto max-w-[260px]"
+          className="lg:hidden mt-2 bg-surface-2 border border-border rounded-[22px] p-4 flex flex-col gap-2 pointer-events-auto max-h-[calc(100svh-6rem)] overflow-y-auto [scrollbar-width:none] ml-auto max-w-[260px]"
         >
           {links.map((link, index) => {
             const isActive = activeId === link.href.substring(1)
