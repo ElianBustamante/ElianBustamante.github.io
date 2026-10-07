@@ -149,7 +149,7 @@ export default function PhotoGallery() {
           <ul
             role="list"
             ref={listRef}
-            className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] py-4 -my-4"
+            className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden [scrollbar-width:none] py-4 -my-4"
           >
             {pagesData.pages.map((pageIndices, pageIndex) => (
               <li key={pageIndex} className="w-full shrink-0 snap-start">
