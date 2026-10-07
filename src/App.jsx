@@ -64,7 +64,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden w-full relative">
+    <div className="w-full relative overflow-x-hidden min-h-screen max-md:min-h-0 max-md:h-[100dvh] max-md:overflow-y-auto max-md:snap-y max-md:snap-mandatory">
       <AnimatedBackground />
       
       {/* Contenido protegido por encima del fondo */}
