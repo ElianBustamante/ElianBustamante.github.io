@@ -114,3 +114,11 @@ button:not(:disabled) {
 .animate-corridor-right {
   animation: corridor-right linear infinite;
 }
+
+/* Transiciones cinematográficas suaves para el Lightbox */
+::view-transition-group(lightbox-image),
+::view-transition-old(lightbox-image),
+::view-transition-new(lightbox-image) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
