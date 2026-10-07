@@ -98,13 +98,14 @@ button:not(:disabled) {
 
 
 
-/* Animación para el fondo geométrico flotante */
-@keyframes float-shapes {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+/* Animación para código flotante */
+@keyframes float-code {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
   10% { opacity: 1; }
+  50% { transform: translateY(-60vh) translateX(20px); }
   90% { opacity: 1; }
-  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+  100% { transform: translateY(-120vh) translateX(-20px); opacity: 0; }
 }
-.animate-float {
-  animation: float-shapes linear infinite;
+.animate-float-code {
+  animation: float-code linear infinite;
 }
