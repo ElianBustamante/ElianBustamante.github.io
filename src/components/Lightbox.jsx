@@ -167,26 +167,26 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               className={`cursor-pointer ${
                 isZoomed 
                   ? 'max-w-none max-h-none relative z-20 shadow-[0_0_100px_rgba(0,0,0,0.8)]' 
-                  : 'max-h-[50dvh] md:max-h-[68dvh] max-w-full object-contain'
+                  : 'max-h-[55dvh] md:max-h-[72dvh] max-w-full object-contain'
               } ${isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-700'}`}
             />
             
             {!isZoomed && (
-              <figcaption className="mt-6 md:mt-8 text-center px-4 w-full animate-fade-in">
-                {title && <h3 className="text-lg md:text-xl font-light text-accent tracking-widest">{title}</h3>}
+              <figcaption className="mt-4 md:mt-5 text-center px-4 w-full animate-fade-in">
+                {title && <p className="text-sm md:text-[15px] font-semibold text-accent">{title}</p>}
                 {photo.description && (
-                  <p className="text-xs md:text-sm text-white/70 mt-2 max-w-2xl mx-auto font-light leading-relaxed">
+                  <p className="text-[12px] md:text-[13px] text-white/80 mt-1 max-w-2xl mx-auto leading-relaxed">
                     {photo.description[lang] || photo.description.es}
                   </p>
                 )}
                 
-                <div className="mt-5 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] tracking-[0.2em] text-white/40 uppercase">
+                <div className="mt-3 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] tracking-[0.2em] text-white/40 uppercase">
                   <span>{t('photography.counter', { current: index + 1, total })}</span>
                   
                   {hasExif && <span className="hidden md:inline-block opacity-30">|</span>}
                   
                   {hasExif && (
-                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
                       {e.camera && <span>{e.camera}</span>}
                       {e.focalLength && <span>{e.focalLength}</span>}
                       {e.aperture && <span>{e.aperture}</span>}
