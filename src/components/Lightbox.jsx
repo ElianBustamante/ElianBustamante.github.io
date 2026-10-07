@@ -135,12 +135,15 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               alt={photo.alt[lang] || photo.alt.es}
               onClick={() => {
                 setIsZoomed(!isZoomed);
-                setZoomLevel(2.5);
+                setZoomLevel(2.5); // Salto inicial al 250%
               }}
-              style={isZoomed ? { width: `${zoomLevel * 100}vw` } : {}}
-              className={`transition-all duration-300 cursor-pointer ${
+              style={{
+                ...(isZoomed ? { width: `${zoomLevel * 100}vw` } : {}),
+                transition: "all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)"
+              }}
+              className={`cursor-pointer ${
                 isZoomed 
-                  ? 'max-w-none max-h-none relative z-20' 
+                  ? 'max-w-none max-h-none relative z-20 shadow-[0_0_100px_rgba(0,0,0,0.8)]' 
                   : 'max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain'
               }`}
             />
@@ -170,17 +173,31 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           </figure>
 
           {isZoomed && (
-            <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[60] bg-black/80 px-6 py-3 rounded-full flex gap-4 items-center backdrop-blur-md shadow-lg border border-white/10">
-              <span className="text-white text-xl font-bold cursor-pointer hover:text-accent transition-colors" onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.max(1.5, zoomLevel - 0.5)); }}>-</span>
+            <div className="fixed bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-[60] bg-black/40 px-5 py-2.5 rounded-full flex gap-4 items-center backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] animate-fade-in">
+              <button 
+                onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.max(1, zoomLevel - 0.5)); }} 
+                className="text-white/60 hover:text-white transition-colors p-1"
+                aria-label="Alejar"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14"/></svg>
+              </button>
+              
               <input 
                 type="range" 
-                min="1.5" max="4" step="0.1" 
+                min="1" max="6" step="0.1" 
                 value={zoomLevel} 
                 onChange={(e) => setZoomLevel(parseFloat(e.target.value))} 
                 onClick={(e) => e.stopPropagation()}
-                className="w-32 accent-white"
+                className="w-24 md:w-32 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(255,255,255,0.8)]"
               />
-              <span className="text-white text-xl font-bold cursor-pointer hover:text-accent transition-colors" onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.min(4, zoomLevel + 0.5)); }}>+</span>
+              
+              <button 
+                onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.min(6, zoomLevel + 0.5)); }} 
+                className="text-white/60 hover:text-white transition-colors p-1"
+                aria-label="Acercar"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
             </div>
           )}
           
