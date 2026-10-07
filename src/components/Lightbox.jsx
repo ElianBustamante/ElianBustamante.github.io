@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useRef, useEffect, useState } from 'react'
 import { IconClose, IconChevronLeft, IconChevronRight } from './icons'
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
 
 export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   const { t, i18n } = useTranslation()
@@ -74,11 +75,12 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   }
 
   const handleTouchStart = (e) => {
+    if (isZoomed) return; // Candado: bloquea el swipe si hay zoom
     setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
   }
 
   const handleTouchEnd = (e) => {
-    if (!touchStart) return
+    if (isZoomed || !touchStart) return; // Candado: aborta si hay zoom
     const dx = e.changedTouches[0].clientX - touchStart.x
     const dy = e.changedTouches[0].clientY - touchStart.y
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
@@ -129,17 +131,18 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           </button>
           
                       <figure className="flex flex-col items-center justify-center">
-              <img
-                src={photo.large.src}
-                alt={photo.alt[lang] || photo.alt.es}
-                onClick={() => setIsZoomed(!isZoomed)}
-                title="Click para hacer zoom"
-                className={`transition-transform duration-300 cursor-pointer ${
-                  isZoomed 
-                    ? 'scale-[1.7] md:scale-[2.5] relative z-20' 
-                    : 'max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain'
-                }`}
-              />
+              <TransformWrapper
+                onTransformed={(ref) => setIsZoomed(ref.state.scale > 1.05)}
+                doubleClick={{ mode: "toggle" }}
+              >
+                <TransformComponent>
+                  <img
+                    src={photo.large.src}
+                    alt={photo.alt[lang] || photo.alt.es}
+                    className="max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain cursor-grab active:cursor-grabbing"
+                  />
+                </TransformComponent>
+              </TransformWrapper>
               <figcaption className="mt-4 text-center">
                 {title && <p className="text-accent font-semibold">{title}</p>}
                 {photo.description && (
