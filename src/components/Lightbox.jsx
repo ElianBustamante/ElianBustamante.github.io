@@ -10,6 +10,12 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   const [touchStart, setTouchStart] = useState(null)
   const [isZoomed, setIsZoomed] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(2.5) // Nivel exacto de zoom
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Reiniciar el spinner cuando cambiamos de foto
+  useEffect(() => {
+    setIsLoading(true)
+  }, [index])
   
   const photo = photos[index]
   const total = photos.length
@@ -129,16 +135,23 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             <IconChevronLeft />
           </button>
           
-          <figure className={`flex flex-col m-auto ${isZoomed ? 'min-w-max' : 'items-center justify-center'}`}>
+          <figure className={`flex flex-col m-auto relative ${isZoomed ? 'min-w-max' : 'items-center justify-center'}`}>
+            
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div className="w-12 h-12 border-4 border-white/10 border-t-accent rounded-full animate-spin shadow-[0_0_15px_rgba(255,106,26,0.3)]"></div>
+              </div>
+            )}
+
             <img
               src={photo.large.src}
               alt={photo.alt[lang] || photo.alt.es}
+              onLoad={() => setIsLoading(false)}
               onClick={() => {
                 const toggle = () => {
                   setIsZoomed(!isZoomed);
-                  if (!isZoomed) setZoomLevel(2.5); // Salta al 250% al entrar
+                  if (!isZoomed) setZoomLevel(2.5);
                 };
-                // Dispara el efecto especial cinematográfico al pinchar
                 if (document.startViewTransition) document.startViewTransition(toggle);
                 else toggle();
               }}
@@ -150,7 +163,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
                 isZoomed 
                   ? 'max-w-none max-h-none relative z-20 shadow-[0_0_100px_rgba(0,0,0,0.8)]' 
                   : 'max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain'
-              }`}
+              } ${isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-700'}`}
             />
             
             {!isZoomed && (
