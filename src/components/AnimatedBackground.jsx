@@ -3,12 +3,23 @@ import React from 'react';
 export default function AnimatedBackground() {
   // Bloques de código reales formateados
   const codeBlocks = [
-    { code: "async function fetch() {\n  const res = await api.get('/data');\n  return res.json();\n}", top: '5%', delay: '-5s', duration: '35s', depth: 'far', dir: 'left' },
-    { code: "try {\n  initSystem();\n  console.log('Online');\n} catch(e) {\n  reportError(e);\n}", top: '35%', delay: '-20s', duration: '45s', depth: 'mid', dir: 'left' },
-    { code: "if (status === 200) {\n  renderUI(data);\n  state.sync();\n}", top: '65%', delay: '-2s', duration: '28s', depth: 'near', dir: 'left' },
-    { code: "const pipeline = new Pipeline3D({\n  resolution: '4K',\n  engine: 'WebGL2'\n});", top: '15%', delay: '-15s', duration: '40s', depth: 'mid', dir: 'right' },
-    { code: "def analyze_data(df):\n  return df.groupby('date').sum()", top: '50%', delay: '-30s', duration: '32s', depth: 'far', dir: 'right' },
-    { code: "export const config = {\n  theme: 'dark',\n  accents: ['#ff6a1a']\n};", top: '75%', delay: '-10s', duration: '38s', depth: 'near', dir: 'right' }
+    // Pared Izquierda
+    { code: "async function fetch() {\n  const res = await api.get('/data');\n  return res.json();\n}", top: '2%', delay: '-5s', duration: '35s', depth: 'far', dir: 'left' },
+    { code: "try {\n  initSystem();\n  console.log('Online');\n} catch(e) {\n  reportError(e);\n}", top: '25%', delay: '-20s', duration: '45s', depth: 'mid', dir: 'left' },
+    { code: "if (status === 200) {\n  renderUI(data);\n  state.sync();\n}", top: '55%', delay: '-2s', duration: '28s', depth: 'near', dir: 'left' },
+    { code: "module.exports = {\n  plugins: [react()],\n  build: { outDir: 'dist' }\n};", top: '75%', delay: '-12s', duration: '38s', depth: 'far', dir: 'left' },
+    { code: "SELECT * FROM users\nWHERE active = 1\nORDER BY created_at DESC;", top: '85%', delay: '-35s', duration: '42s', depth: 'mid', dir: 'left' },
+    { code: "function sort(arr) {\n  if (arr.length <= 1) return arr;\n  const pivot = arr[0];\n  return [...left, pivot, ...right];\n}", top: '12%', delay: '-28s', duration: '33s', depth: 'near', dir: 'left' },
+    { code: "import { useState } from 'react';\n\nconst [count, setCount] = useState(0);", top: '42%', delay: '-40s', duration: '50s', depth: 'far', dir: 'left' },
+
+    // Pared Derecha
+    { code: "const pipeline = new Pipeline3D({\n  resolution: '4K',\n  engine: 'WebGL2'\n});", top: '8%', delay: '-15s', duration: '40s', depth: 'mid', dir: 'right' },
+    { code: "def analyze_data(df):\n  return df.groupby('date').sum()", top: '30%', delay: '-30s', duration: '32s', depth: 'far', dir: 'right' },
+    { code: "export const config = {\n  theme: 'dark',\n  accents: ['#ff6a1a']\n};", top: '65%', delay: '-10s', duration: '38s', depth: 'near', dir: 'right' },
+    { code: "<div className=\"flex flex-col\">\n  <header>App</header>\n  <main>{children}</main>\n</div>", top: '82%', delay: '-22s', duration: '34s', depth: 'mid', dir: 'right' },
+    { code: "interface User {\n  id: number;\n  name: string;\n  email: string;\n}", top: '18%', delay: '-5s', duration: '46s', depth: 'far', dir: 'right' },
+    { code: "git commit -m 'feat: Add 3D code corridor'\ngit push origin main", top: '48%', delay: '-45s', duration: '29s', depth: 'near', dir: 'right' },
+    { code: "class Camera {\n  constructor(fov, aspect) {\n    this.fov = fov;\n    this.aspect = aspect;\n  }\n}", top: '88%', delay: '-33s', duration: '41s', depth: 'far', dir: 'right' }
   ];
 
   return (
