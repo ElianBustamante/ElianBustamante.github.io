@@ -134,12 +134,17 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               src={photo.large.src}
               alt={photo.alt[lang] || photo.alt.es}
               onClick={() => {
-                setIsZoomed(!isZoomed);
-                setZoomLevel(2.5); // Salto inicial al 250%
+                const toggle = () => {
+                  setIsZoomed(!isZoomed);
+                  if (!isZoomed) setZoomLevel(2.5); // Salta al 250% al entrar
+                };
+                // Dispara el efecto especial cinematográfico al pinchar
+                if (document.startViewTransition) document.startViewTransition(toggle);
+                else toggle();
               }}
               style={{
-                ...(isZoomed ? { width: `${zoomLevel * 100}vw` } : {}),
-                transition: "all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)"
+                viewTransitionName: 'lightbox-image',
+                ...(isZoomed ? { width: `${zoomLevel * 100}vw` } : {})
               }}
               className={`cursor-pointer ${
                 isZoomed 
@@ -175,7 +180,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           {isZoomed && (
             <div className="fixed bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-[60] bg-black/40 px-5 py-2.5 rounded-full flex gap-4 items-center backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] animate-fade-in">
               <button 
-                onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.max(1, zoomLevel - 0.5)); }} 
+                onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.max(0.5, zoomLevel - 0.5)); }} 
                 className="text-white/60 hover:text-white transition-colors p-1"
                 aria-label="Alejar"
               >
@@ -184,7 +189,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               
               <input 
                 type="range" 
-                min="1" max="6" step="0.1" 
+                min="0.5" max="5" step="0.1" 
                 value={zoomLevel} 
                 onChange={(e) => setZoomLevel(parseFloat(e.target.value))} 
                 onClick={(e) => e.stopPropagation()}
@@ -192,7 +197,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               />
               
               <button 
-                onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.min(6, zoomLevel + 0.5)); }} 
+                onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.min(5, zoomLevel + 0.5)); }} 
                 className="text-white/60 hover:text-white transition-colors p-1"
                 aria-label="Acercar"
               >
