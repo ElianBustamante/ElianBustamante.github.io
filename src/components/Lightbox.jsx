@@ -73,14 +73,14 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     }
   }
 
-  const handlePointerDown = (e) => {
-    setTouchStart({ x: e.clientX, y: e.clientY })
+  const handleTouchStart = (e) => {
+    setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
   }
 
-  const handlePointerUp = (e) => {
+  const handleTouchEnd = (e) => {
     if (!touchStart) return
-    const dx = e.clientX - touchStart.x
-    const dy = e.clientY - touchStart.y
+    const dx = e.changedTouches[0].clientX - touchStart.x
+    const dy = e.changedTouches[0].clientY - touchStart.y
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
       if (dx > 0) goPrev()
       else goNext()
@@ -101,8 +101,8 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
       onClose={handleClose}
       onClick={handleDialogClick}
       onKeyDown={handleKeyDown}
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       aria-label={t('photography.lightboxLabel')}
       className="fixed inset-0 m-0 h-dvh w-dvw max-h-none max-w-none bg-black/95 p-4 backdrop:bg-black/95 transition-opacity duration-150 animate-fade-in"
     >
