@@ -1,4 +1,11 @@
 import { useTranslation } from 'react-i18next'
+import { IconBot, IconDatabase, IconTerminal } from './icons'
+
+const IconMap = {
+  bot: IconBot,
+  database: IconDatabase,
+  terminal: IconTerminal
+}
 
 export default function ProjectCard({ project }) {
   const { t } = useTranslation()
@@ -22,9 +29,20 @@ export default function ProjectCard({ project }) {
           )}
         </div>
       ) : (
-        <div className="relative pt-6">
+        <div className="relative aspect-[4/3] w-full flex items-center justify-center rounded-t-[calc(var(--radius-card)-1px)] bg-surface-2 border-b border-border/50 overflow-hidden">
+          {/* Fondo abstracto de resplandor (Spotlight) */}
+          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/60 via-surface to-surface"></div>
+          
+          {/* Ícono gigante y animado con brillo */}
+          <div className="relative z-10 text-accent/80 group-hover:text-accent group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-500 drop-shadow-[0_0_15px_rgba(255,106,26,0.4)]">
+            {project.icon ? (() => {
+              const Icon = IconMap[project.icon] || IconTerminal;
+              return <Icon size={72} strokeWidth={1.5} />
+            })() : <IconTerminal size={72} strokeWidth={1.5} />}
+          </div>
+
           {project.tags && project.tags.length > 0 && (
-            <span className="absolute top-4 right-4 rounded-full bg-surface-2 px-3 py-1 text-[0.7rem] font-medium tracking-wide border border-border">
+            <span className="absolute top-3 right-3 z-20 rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-[0.7rem] font-medium tracking-wide text-white border border-white/10 shadow-lg">
               {project.tags[0]}
             </span>
           )}
