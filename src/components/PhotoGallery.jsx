@@ -100,7 +100,16 @@ export default function PhotoGallery() {
     
     if (document.startViewTransition) {
       const imgEl = document.getElementById(`thumb-${index}`)
-      if (imgEl) imgEl.style.viewTransitionName = 'lightbox-image'
+      if (imgEl) {
+        imgEl.style.viewTransitionName = 'lightbox-image'
+        // Forzar visibilidad sólida instantánea del contenedor Reveal
+        const li = imgEl.closest('li')
+        if (li) {
+          li.style.transition = 'none'
+          li.style.opacity = '1'
+          li.style.transform = 'none'
+        }
+      }
       
       document.startViewTransition(() => {
         if (imgEl) imgEl.style.viewTransitionName = ''
@@ -116,7 +125,16 @@ export default function PhotoGallery() {
       const imgEl = document.getElementById(`thumb-${lightboxIndex}`)
       
       const transition = document.startViewTransition(() => {
-        if (imgEl) imgEl.style.viewTransitionName = 'lightbox-image'
+        if (imgEl) {
+          imgEl.style.viewTransitionName = 'lightbox-image'
+          // Forzar visibilidad sólida al aterrizar, incluso si la página no estaba visible
+          const li = imgEl.closest('li')
+          if (li) {
+            li.style.transition = 'none'
+            li.style.opacity = '1'
+            li.style.transform = 'none'
+          }
+        }
         setLightboxIndex(null)
         if (lastFocusRef.current) lastFocusRef.current.focus()
       })
