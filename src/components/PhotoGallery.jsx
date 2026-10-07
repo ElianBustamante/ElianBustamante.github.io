@@ -97,13 +97,36 @@ export default function PhotoGallery() {
 
   const openLightbox = (index, event) => {
     lastFocusRef.current = event.currentTarget
-    setLightboxIndex(index)
+    
+    if (document.startViewTransition) {
+      const imgEl = document.getElementById(`thumb-${index}`)
+      if (imgEl) imgEl.style.viewTransitionName = 'lightbox-image'
+      
+      document.startViewTransition(() => {
+        if (imgEl) imgEl.style.viewTransitionName = ''
+        setLightboxIndex(index)
+      })
+    } else {
+      setLightboxIndex(index)
+    }
   }
 
   const closeLightbox = () => {
-    setLightboxIndex(null)
-    if (lastFocusRef.current) {
-      lastFocusRef.current.focus()
+    if (document.startViewTransition) {
+      const imgEl = document.getElementById(`thumb-${lightboxIndex}`)
+      
+      const transition = document.startViewTransition(() => {
+        if (imgEl) imgEl.style.viewTransitionName = 'lightbox-image'
+        setLightboxIndex(null)
+        if (lastFocusRef.current) lastFocusRef.current.focus()
+      })
+
+      transition.finished.finally(() => {
+        if (imgEl) imgEl.style.viewTransitionName = ''
+      })
+    } else {
+      setLightboxIndex(null)
+      if (lastFocusRef.current) lastFocusRef.current.focus()
     }
   }
   
@@ -183,6 +206,7 @@ export default function PhotoGallery() {
                           
                           {/* Capa 10: Fotografía */}
                           <img
+                            id={`thumb-${index}`}
                             src={photo.thumb.src}
                             width={photo.thumb.width}
                             height={photo.thumb.height}
