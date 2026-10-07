@@ -163,6 +163,10 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               style={{
                 viewTransitionName: 'lightbox-image',
                 aspectRatio: `${photo.large.width} / ${photo.large.height}`,
+                backgroundImage: `url(${photo.thumb.src})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
                 ...(isZoomed ? { width: `${zoomLevel * 100}vw` } : {})
               }}
               className={`cursor-pointer ${

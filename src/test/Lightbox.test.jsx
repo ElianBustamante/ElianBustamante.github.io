@@ -6,9 +6,9 @@ import React from 'react'
 import i18n from '../i18n'
 
 const mockPhotos = [
-  { id: '1', large: { src: '/1.webp' }, alt: { es: 'F1', en: 'P1' }, exif: { camera: 'Cam' }, title: { es: 'T1' } },
-  { id: '2', large: { src: '/2.webp' }, alt: { es: 'F2', en: 'P2' }, exif: { camera: null, lens: null }, title: null },
-  { id: '3', large: { src: '/3.webp' }, alt: { es: 'F3', en: 'P3' }, exif: { iso: 100 }, title: null }
+  { id: '1', thumb: { src: '/t1.webp' }, large: { src: '/1.webp', width: 100, height: 100 }, alt: { es: 'F1', en: 'P1' }, exif: { camera: 'Cam' }, title: { es: 'T1' } },
+  { id: '2', thumb: { src: '/t2.webp' }, large: { src: '/2.webp', width: 100, height: 100 }, alt: { es: 'F2', en: 'P2' }, exif: { camera: null, lens: null }, title: null },
+  { id: '3', thumb: { src: '/t3.webp' }, large: { src: '/3.webp', width: 100, height: 100 }, alt: { es: 'F3', en: 'P3' }, exif: { iso: 100 }, title: null }
 ]
 
 describe('Lightbox', () => {
