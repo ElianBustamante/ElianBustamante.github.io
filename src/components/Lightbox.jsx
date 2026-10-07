@@ -173,9 +173,9 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             
             {!isZoomed && (
               <figcaption className="mt-6 md:mt-8 text-center px-4 w-full animate-fade-in">
-                {title && <h3 className="text-xl md:text-2xl font-light text-white tracking-widest">{title}</h3>}
+                {title && <h3 className="text-lg md:text-xl font-light text-accent tracking-widest">{title}</h3>}
                 {photo.description && (
-                  <p className="text-sm md:text-base text-white/70 mt-2 max-w-2xl mx-auto font-light leading-relaxed">
+                  <p className="text-xs md:text-sm text-white/70 mt-2 max-w-2xl mx-auto font-light leading-relaxed">
                     {photo.description[lang] || photo.description.es}
                   </p>
                 )}
