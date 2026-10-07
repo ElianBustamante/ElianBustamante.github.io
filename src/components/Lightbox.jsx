@@ -133,16 +133,17 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
                       <figure className="flex flex-col items-center justify-center">
               <TransformWrapper
                 onTransformed={(ref) => setIsZoomed(ref.state.scale > 1.05)}
-                doubleClick={{ mode: "toggle" }}
+                doubleClick={{ disabled: true }}
               >
                 {({ zoomIn, resetTransform }) => (
                   <TransformComponent>
                     <img
                       src={photo.large.src}
                       alt={photo.alt[lang] || photo.alt.es}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         if (isZoomed) resetTransform();
-                        else zoomIn();
+                        else zoomIn(1.5, 300);
                       }}
                       className="max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain cursor-grab active:cursor-grabbing"
                     />
