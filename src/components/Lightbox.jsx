@@ -11,14 +11,18 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   const [isZoomed, setIsZoomed] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(2.5) // Nivel exacto de zoom
   const [isLoading, setIsLoading] = useState(true)
-
-  // Reiniciar el spinner cuando cambiamos de foto
-  useEffect(() => {
-    setIsLoading(true)
-  }, [index])
+  const imgRef = useRef(null)
   
   const photo = photos[index]
   const total = photos.length
+
+  // Reiniciar el spinner, y apagarlo de inmediato si la foto ya estaba en caché
+  useEffect(() => {
+    setIsLoading(true)
+    if (imgRef.current?.complete) {
+      setIsLoading(false)
+    }
+  }, [index, photo.large.src])
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -144,6 +148,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             )}
 
             <img
+              ref={imgRef}
               src={photo.large.src}
               alt={photo.alt[lang] || photo.alt.es}
               onLoad={() => setIsLoading(false)}
@@ -162,30 +167,34 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               className={`cursor-pointer ${
                 isZoomed 
                   ? 'max-w-none max-h-none relative z-20 shadow-[0_0_100px_rgba(0,0,0,0.8)]' 
-                  : 'max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain'
+                  : 'max-h-[50dvh] md:max-h-[68dvh] max-w-full object-contain'
               } ${isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-700'}`}
             />
             
             {!isZoomed && (
-              <figcaption className="mt-4 text-center">
-                {title && <p className="text-accent font-semibold">{title}</p>}
+              <figcaption className="mt-6 md:mt-8 text-center px-4 w-full animate-fade-in">
+                {title && <h3 className="text-xl md:text-2xl font-light text-white tracking-widest">{title}</h3>}
                 {photo.description && (
-                  <p className="text-text/90 text-[15px] mt-2 mb-2 max-w-2xl mx-auto">
+                  <p className="text-sm md:text-base text-white/70 mt-2 max-w-2xl mx-auto font-light leading-relaxed">
                     {photo.description[lang] || photo.description.es}
                   </p>
                 )}
-                <p className="text-muted text-sm">{t('photography.counter', { current: index + 1, total })}</p>
-              
-                {hasExif && (
-                  <dl className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted">
-                    {e.camera && <div className="flex gap-1"><dt className="font-semibold">{t('photography.exif.camera')}:</dt><dd>{e.camera}</dd></div>}
-                    {e.lens && <div className="flex gap-1"><dt className="font-semibold">{t('photography.exif.lens')}:</dt><dd>{e.lens}</dd></div>}
-                    {e.focalLength && <div className="flex gap-1"><dt className="font-semibold">{t('photography.exif.focalLength')}:</dt><dd>{e.focalLength}</dd></div>}
-                    {e.aperture && <div className="flex gap-1"><dt className="font-semibold">{t('photography.exif.aperture')}:</dt><dd>{e.aperture}</dd></div>}
-                    {e.shutter && <div className="flex gap-1"><dt className="font-semibold">{t('photography.exif.shutter')}:</dt><dd>{e.shutter}</dd></div>}
-                    {e.iso && <div className="flex gap-1"><dt className="font-semibold">{t('photography.exif.iso')}:</dt><dd>{e.iso}</dd></div>}
-                  </dl>
-                )}
+                
+                <div className="mt-5 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] tracking-[0.2em] text-white/40 uppercase">
+                  <span>{t('photography.counter', { current: index + 1, total })}</span>
+                  
+                  {hasExif && <span className="hidden md:inline-block opacity-30">|</span>}
+                  
+                  {hasExif && (
+                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+                      {e.camera && <span>{e.camera}</span>}
+                      {e.focalLength && <span>{e.focalLength}</span>}
+                      {e.aperture && <span>{e.aperture}</span>}
+                      {e.shutter && <span>{e.shutter}</span>}
+                      {e.iso && <span>ISO {e.iso}</span>}
+                    </div>
+                  )}
+                </div>
               </figcaption>
             )}
           </figure>
