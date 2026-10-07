@@ -13,6 +13,9 @@ function App() {
     let isAnimating = false;
 
     const handleWheel = (e) => {
+      // 0. Si el usuario está usando la rueda dentro de un Lightbox abierto, ignorar salto de sección
+      if (e.target.closest('dialog')) return;
+
       // 1. En móviles, dejamos el scroll libre nativo para poder leer tarjetas largas
       if (window.innerWidth < 768) return;
 
