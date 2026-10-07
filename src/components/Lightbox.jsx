@@ -137,7 +137,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
                 className={`transition-transform duration-300 cursor-pointer ${
                   isZoomed 
                     ? 'scale-[1.7] md:scale-[2.5] relative z-20' 
-                    : 'max-h-[75dvh] max-w-full object-contain'
+                    : 'max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain'
                 }`}
               />
               <figcaption className="mt-4 text-center">
