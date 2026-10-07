@@ -135,13 +135,19 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
                 onTransformed={(ref) => setIsZoomed(ref.state.scale > 1.05)}
                 doubleClick={{ mode: "toggle" }}
               >
-                <TransformComponent>
-                  <img
-                    src={photo.large.src}
-                    alt={photo.alt[lang] || photo.alt.es}
-                    className="max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain cursor-grab active:cursor-grabbing"
-                  />
-                </TransformComponent>
+                {({ zoomIn, resetTransform }) => (
+                  <TransformComponent>
+                    <img
+                      src={photo.large.src}
+                      alt={photo.alt[lang] || photo.alt.es}
+                      onClick={() => {
+                        if (isZoomed) resetTransform();
+                        else zoomIn();
+                      }}
+                      className="max-h-[55dvh] md:max-h-[75dvh] max-w-full object-contain cursor-grab active:cursor-grabbing"
+                    />
+                  </TransformComponent>
+                )}
               </TransformWrapper>
               <figcaption className="mt-4 text-center">
                 {title && <p className="text-accent font-semibold">{title}</p>}
