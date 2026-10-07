@@ -98,6 +98,15 @@ export default function PhotoGallery() {
   const openLightbox = (index, event) => {
     lastFocusRef.current = event.currentTarget
     
+    // Freno de mano: detener cualquier deslizamiento suave o inercia instantáneamente
+    if (listRef.current) {
+      listRef.current.style.scrollBehavior = 'auto'
+      listRef.current.scrollLeft = listRef.current.scrollLeft
+      requestAnimationFrame(() => {
+        if (listRef.current) listRef.current.style.scrollBehavior = ''
+      })
+    }
+    
     if (document.startViewTransition) {
       const imgEl = document.getElementById(`thumb-${index}`)
       if (imgEl) {
