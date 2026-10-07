@@ -116,7 +116,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       aria-label={t('photography.lightboxLabel')}
-      className="fixed inset-0 m-0 h-dvh w-dvw max-h-none max-w-none bg-black/95 p-4 backdrop:bg-black/95 transition-opacity duration-150 animate-fade-in"
+      className="fixed inset-0 m-0 h-dvh w-dvw max-h-none max-w-none bg-black/95 p-4 backdrop:bg-black/95 transition-opacity duration-150 animate-fade-in overscroll-none"
     >
       <div className="flex h-full flex-col">
         <div className="flex justify-end mb-4 md:absolute md:top-4 md:right-4 md:z-10">
@@ -168,7 +168,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
                 isZoomed 
                   ? 'max-w-none max-h-none relative z-20 shadow-[0_0_100px_rgba(0,0,0,0.8)]' 
                   : 'max-h-[55dvh] md:max-h-[72dvh] max-w-full object-contain'
-              } ${isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-700'}`}
+              }`}
             />
             
             {!isZoomed && (
