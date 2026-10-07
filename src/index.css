@@ -92,7 +92,7 @@ button:not(:disabled) {
 
 @media (max-width: 768px) {
   html {
-    scroll-snap-type: y proximity;
+    scroll-snap-type: y mandatory;
   }
 }
 
