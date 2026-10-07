@@ -108,6 +108,11 @@ export default function PhotoGallery() {
     }
     
     if (document.startViewTransition) {
+      // Garbage Collector: Limpieza brutal de cualquier miniatura que se haya quedado con la etiqueta pegada
+      document.querySelectorAll('button[id^="thumb-"]').forEach(btn => {
+        btn.style.viewTransitionName = ''
+      })
+
       const imgEl = document.getElementById(`thumb-${index}`)
       if (imgEl) {
         imgEl.style.viewTransitionName = 'lightbox-image'
@@ -131,6 +136,11 @@ export default function PhotoGallery() {
 
   const closeLightbox = () => {
     if (document.startViewTransition) {
+      // Garbage Collector: Limpieza brutal de cualquier miniatura que se haya quedado con la etiqueta pegada
+      document.querySelectorAll('button[id^="thumb-"]').forEach(btn => {
+        btn.style.viewTransitionName = ''
+      })
+
       const imgEl = document.getElementById(`thumb-${lightboxIndex}`)
       
       const transition = document.startViewTransition(() => {

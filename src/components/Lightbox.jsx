@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useLayoutEffect } from 'react'
 import { IconClose, IconChevronLeft, IconChevronRight } from './icons'
 
 export default function Lightbox({ photos, index, onClose, onIndexChange }) {
@@ -24,7 +24,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     }
   }, [index, photo.large.src])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const dialog = dialogRef.current
     if (dialog && !dialog.open) {
       dialog.showModal()
