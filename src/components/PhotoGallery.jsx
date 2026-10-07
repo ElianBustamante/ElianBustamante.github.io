@@ -197,6 +197,7 @@ export default function PhotoGallery() {
                         style={{ height: pagesData.height, width: w }}
                       >
                         <button
+                          id={`thumb-${index}`}
                           type="button"
                           onClick={(e) => openLightbox(index, e)}
                           className="group relative block h-full w-full overflow-hidden rounded-card transition-all duration-200 hover:shadow-[0_0_24px_rgba(255,106,26,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
@@ -206,7 +207,6 @@ export default function PhotoGallery() {
                           
                           {/* Capa 10: Fotografía */}
                           <img
-                            id={`thumb-${index}`}
                             src={photo.thumb.src}
                             width={photo.thumb.width}
                             height={photo.thumb.height}
