@@ -98,14 +98,18 @@ button:not(:disabled) {
 
 
 
-/* Animación para código flotante */
-@keyframes float-code {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  50% { transform: translateY(-60vh) translateX(20px); }
-  90% { opacity: 1; }
-  100% { transform: translateY(-120vh) translateX(-20px); opacity: 0; }
+/* Animaciones GPU para el Corredor de Código 3D */
+@keyframes corridor-left {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100vw); }
 }
-.animate-float-code {
-  animation: float-code linear infinite;
+@keyframes corridor-right {
+  0% { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
+}
+.animate-corridor-left {
+  animation: corridor-left linear infinite;
+}
+.animate-corridor-right {
+  animation: corridor-right linear infinite;
 }
