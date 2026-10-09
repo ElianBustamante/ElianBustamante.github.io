@@ -41,6 +41,7 @@ describe('ProjectCard +N tooltip', () => {
 
     const tooltip = screen.getByRole('tooltip')
     expect(tooltip).toHaveTextContent('SQLite, pytest')
+    expect(screen.getByRole('heading', { level: 3 })).toHaveAttribute('title', 'Games Deal Tracker')
   })
 
   it('con <640px muestra discord.py, aiohttp, "+3" y el tooltip "curl-cffi, SQLite, pytest"', () => {

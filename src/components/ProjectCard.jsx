@@ -15,25 +15,6 @@ const IconMap = {
 export default function ProjectCard({ project, isActive }) {
   const { t } = useTranslation()
   const [activeTooltip, setActiveTooltip] = useState(null)
-  const [isTruncated, setIsTruncated] = useState(false)
-  const titleRef = useRef(null)
-
-  useEffect(() => {
-    const checkTruncation = () => {
-      if (titleRef.current) {
-        setIsTruncated(titleRef.current.scrollWidth > titleRef.current.clientWidth)
-      }
-    }
-    // Check initially and after a small delay to ensure fonts are loaded
-    checkTruncation()
-    const timeoutId = setTimeout(checkTruncation, 100)
-    
-    window.addEventListener('resize', checkTruncation)
-    return () => {
-      window.removeEventListener('resize', checkTruncation)
-      clearTimeout(timeoutId)
-    }
-  }, [project.id, t])
 
   const tags = project.tags || []
   const chips = tags.slice(1)
@@ -139,11 +120,6 @@ export default function ProjectCard({ project, isActive }) {
     }
   }
 
-  const toggleTooltip = (id, e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setActiveTooltip(prev => prev === id ? null : id)
-  }
 
   const portalContent = activeTooltip === 'tag' && ocultas.length > 0 ? createPortal(
     <div 
@@ -163,7 +139,7 @@ export default function ProjectCard({ project, isActive }) {
   ) : null
 
   return (
-    <article className={`relative group flex h-full max-md:h-[clamp(340px,52dvh,520px)] [@media(max-height:520px)]:h-auto flex-col rounded-card border bg-surface focus-within:border-accent transition-all duration-500 lg:hover:-translate-y-1.5 lg:hover:shadow-[0_12px_32px_rgba(255,106,26,0.12)] lg:hover:border-accent/60 ${
+    <article className={`relative group flex h-full max-md:min-h-[clamp(340px,52dvh,520px)] [@media(max-height:520px)]:h-auto flex-col rounded-card border bg-surface focus-within:border-accent transition-[transform,box-shadow,border-color] duration-500 lg:hover:-translate-y-1.5 lg:hover:shadow-[0_12px_32px_rgba(255,106,26,0.12)] lg:hover:border-accent/60 ${
       isActive 
         ? 'border-border max-lg:border-accent/60 max-lg:shadow-[0_12px_32px_rgba(255,106,26,0.12)]' 
         : 'border-border'
@@ -209,26 +185,13 @@ export default function ProjectCard({ project, isActive }) {
       )}
 
       <div className="flex flex-1 flex-col p-4 sm:p-5 justify-start">
-        <div 
-          className={`relative max-w-full self-start rounded-md ${isTruncated ? 'group/title' : ''}`}
-          onClick={(e) => {
-            if (isTruncated) toggleTooltip('title', e)
-          }}
-          onMouseLeave={() => setActiveTooltip(null)}
-        >
+        <div className="relative max-w-full self-start">
           <h3 
-            ref={titleRef}
-            className={`font-bold text-lg sm:text-xl mb-0.5 transition-colors duration-300 line-clamp-3 md:line-clamp-2 [@media(max-height:520px)]:line-clamp-1 cursor-default ${
-              activeTooltip === 'title' ? 'text-accent-hover' : 'text-accent group-hover:text-accent-hover'
-            }`}
+            title={t(`projects.items.${project.id}.name`)}
+            className="font-bold text-lg sm:text-xl mb-0.5 transition-colors duration-300 line-clamp-3 md:line-clamp-2 [@media(max-height:520px)]:line-clamp-1 cursor-default text-accent group-hover:text-accent-hover"
           >
             {t(`projects.items.${project.id}.name`)}
           </h3>
-          {isTruncated && (
-            <div className={`absolute bottom-full left-0 mb-2 w-max max-w-[250px] rounded-lg bg-black/95 backdrop-blur-xl border border-white/10 px-3 py-2 text-[0.75rem] leading-relaxed text-white transition-opacity duration-200 pointer-events-none shadow-2xl z-50 whitespace-normal ${activeTooltip === 'title' ? 'opacity-100' : 'opacity-0 group-hover/title:opacity-100'}`}>
-              {t(`projects.items.${project.id}.name`)}
-            </div>
-          )}
         </div>
         <div className="flex justify-between items-center mb-2 sm:mb-3">
           <p className="text-accent/60 font-bold text-[0.75rem] tracking-wider uppercase">
