@@ -147,7 +147,7 @@ export default function ProjectCard({ project, isActive }) {
       {portalContent}
 
       {project.image ? (
-        <div className="relative w-full max-md:flex-1 [@media(max-width:767px)_and_(max-height:700px)]:min-h-16 max-md:min-h-24 md:h-[20dvh] lg:h-[22dvh] 2xl:h-[24dvh] md:min-h-[150px] lg:max-h-[280px] shrink-0 overflow-hidden rounded-t-[calc(var(--radius-card)-1px)] border-b border-border/50 [@media(max-height:520px)]:hidden">
+        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[20dvh] lg:h-[22dvh] 2xl:h-[24dvh] md:min-h-[150px] lg:max-h-[280px] overflow-hidden rounded-t-[calc(var(--radius-card)-1px)] border-b border-border/50 [@media(max-height:520px)]:hidden">
           <div className="absolute inset-0 bg-surface-2 animate-pulse z-0" />
           <img
             src={project.image}
@@ -164,16 +164,16 @@ export default function ProjectCard({ project, isActive }) {
           )}
         </div>
       ) : (
-        <div className="relative w-full max-md:flex-1 [@media(max-width:767px)_and_(max-height:700px)]:min-h-16 max-md:min-h-24 md:h-[20dvh] lg:h-[22dvh] 2xl:h-[24dvh] md:min-h-[150px] lg:max-h-[280px] shrink-0 flex items-center justify-center rounded-t-[calc(var(--radius-card)-1px)] bg-surface-2 border-b border-border/50 overflow-hidden [@media(max-height:520px)]:hidden">
+        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[20dvh] lg:h-[22dvh] 2xl:h-[24dvh] md:min-h-[150px] lg:max-h-[280px] flex items-center justify-center rounded-t-[calc(var(--radius-card)-1px)] bg-surface-2 border-b border-border/50 overflow-hidden [@media(max-height:520px)]:hidden">
           {/* Fondo abstracto de resplandor (Spotlight) */}
           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/60 via-surface to-surface"></div>
           
           {/* Ícono gigante y animado con brillo */}
-          <div className={`relative z-10 text-accent/80 transition-all duration-500 drop-shadow-[0_0_15px_rgba(255,106,26,0.4)] lg:group-hover:text-accent lg:group-hover:scale-110 lg:group-hover:-translate-y-1 ${isActive ? 'max-lg:text-accent max-lg:scale-110 max-lg:-translate-y-1' : ''}`}>
+          <div className={`relative z-10 h-[56%] aspect-square flex items-center justify-center text-accent/80 transition-all duration-500 drop-shadow-[0_0_15px_rgba(255,106,26,0.4)] lg:group-hover:text-accent lg:group-hover:scale-110 lg:group-hover:-translate-y-1 ${isActive ? 'max-lg:text-accent max-lg:scale-110 max-lg:-translate-y-1' : ''}`}>
             {project.icon ? (() => {
               const Icon = IconMap[project.icon] || IconTerminal;
-              return <Icon size="100%" strokeWidth={1.5} className="w-14 h-14 sm:w-20 sm:h-20 max-w-[40vw]" />
-            })() : <IconTerminal size="100%" strokeWidth={1.5} className="w-14 h-14 sm:w-20 sm:h-20 max-w-[40vw]" />}
+              return <Icon size="100%" strokeWidth={1.5} className="w-full h-full" />
+            })() : <IconTerminal size="100%" strokeWidth={1.5} className="w-full h-full" />}
           </div>
 
           {project.tags && project.tags.length > 0 && (
@@ -188,7 +188,7 @@ export default function ProjectCard({ project, isActive }) {
         <div className="relative max-w-full self-start">
           <h3 
             title={t(`projects.items.${project.id}.name`)}
-            className="font-bold text-lg sm:text-xl mb-0.5 transition-colors duration-300 line-clamp-3 md:line-clamp-2 [@media(max-height:520px)]:line-clamp-1 cursor-default text-accent group-hover:text-accent-hover"
+            className="font-bold text-lg sm:text-xl mb-0.5 transition-colors duration-300 line-clamp-2 [@media(max-height:520px)]:line-clamp-1 cursor-default text-accent group-hover:text-accent-hover"
           >
             {t(`projects.items.${project.id}.name`)}
           </h3>
