@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { IconBot, IconDatabase, IconTerminal, IconGithub, IconDiscordAlt, IconGamepad } from './icons'
+import useMediaQuery from '../hooks/useMediaQuery'
 
 const IconMap = {
   bot: IconBot,
@@ -34,70 +35,129 @@ export default function ProjectCard({ project, isActive }) {
     }
   }, [project.id, t])
 
+  const tags = project.tags || []
+  const chips = tags.slice(1)
+  const visibleCount = useMediaQuery('(min-width: 640px)') ? 3 : 2
+  const visibles = chips.slice(0, visibleCount)
+  const ocultas = chips.slice(visibleCount)
+
   const [tagPos, setTagPos] = useState({ top: 0, left: 0, showAbove: true })
+  const tagButtonRef = useRef(null)
+  const isHoveredRef = useRef(false)
+  const touchHandledRef = useRef(false)
+
+  const updateTooltipPosition = (element) => {
+    if (!element) return
+    const rect = element.getBoundingClientRect()
+    let showAbove = true
+    let top = rect.top - 8
+    if (top < 100) {
+      showAbove = false
+      top = rect.bottom + 8
+    }
+    setTagPos({ top, left: rect.left + rect.width / 2, showAbove })
+  }
 
   useEffect(() => {
     if (activeTooltip === 'tag') {
-      const closeTooltip = () => setActiveTooltip(null)
+      const closeTooltip = () => {
+        isHoveredRef.current = false
+        setActiveTooltip(null)
+      }
       const handleEscape = (e) => {
         if (e.key === 'Escape') closeTooltip()
       }
+      const handleClickOutside = (e) => {
+        if (tagButtonRef.current && !tagButtonRef.current.contains(e.target)) {
+          closeTooltip()
+        }
+      }
       
       document.addEventListener('keydown', handleEscape)
-      document.addEventListener('click', closeTooltip)
+      document.addEventListener('pointerdown', handleClickOutside)
+      document.addEventListener('click', handleClickOutside)
       document.addEventListener('scroll', closeTooltip, { passive: true, capture: true })
       window.addEventListener('resize', closeTooltip, { passive: true })
       
       return () => {
         document.removeEventListener('keydown', handleEscape)
-        document.removeEventListener('click', closeTooltip)
+        document.removeEventListener('pointerdown', handleClickOutside)
+        document.removeEventListener('click', handleClickOutside)
         document.removeEventListener('scroll', closeTooltip, { capture: true })
         window.removeEventListener('resize', closeTooltip)
       }
     }
   }, [activeTooltip])
 
-  const toggleTooltip = (id, e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (id === 'tag') {
-      const rect = e.currentTarget.getBoundingClientRect()
-      let showAbove = true
-      let top = rect.top - 8
-      if (top < 100) {
-         showAbove = false
-         top = rect.bottom + 8
-      }
-      setTagPos({ top, left: rect.left + rect.width / 2, showAbove })
-    }
-    setActiveTooltip(prev => prev === id ? null : id)
-  }
-
-  const handleTagEnter = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    let showAbove = true
-    let top = rect.top - 8
-    if (top < 100) {
-       showAbove = false
-       top = rect.bottom + 8
-    }
-    setTagPos({ top, left: rect.left + rect.width / 2, showAbove })
+  const handleMouseEnter = (e) => {
+    if (e.nativeEvent.pointerType && e.nativeEvent.pointerType !== 'mouse') return
+    isHoveredRef.current = true
+    updateTooltipPosition(e.currentTarget)
     setActiveTooltip('tag')
   }
 
-  const portalContent = activeTooltip === 'tag' ? createPortal(
+  const handleMouseLeave = () => {
+    isHoveredRef.current = false
+    setActiveTooltip((prev) => (prev === 'tag' ? null : prev))
+  }
+
+  const handleFocus = (e) => {
+    isHoveredRef.current = false
+    updateTooltipPosition(e.currentTarget)
+    setActiveTooltip('tag')
+  }
+
+  const handleBlur = () => {
+    isHoveredRef.current = false
+    setActiveTooltip((prev) => (prev === 'tag' ? null : prev))
+  }
+
+  const handleTouchStart = (e) => {
+    isHoveredRef.current = false
+    touchHandledRef.current = true
+    if (activeTooltip === 'tag') {
+      setActiveTooltip(null)
+    } else {
+      updateTooltipPosition(e.currentTarget)
+      setActiveTooltip('tag')
+    }
+  }
+
+  const handleClick = (e) => {
+    if (touchHandledRef.current) {
+      touchHandledRef.current = false
+      return
+    }
+    if (isHoveredRef.current) {
+      return
+    }
+    if (activeTooltip === 'tag') {
+      setActiveTooltip(null)
+    } else {
+      updateTooltipPosition(e.currentTarget)
+      setActiveTooltip('tag')
+    }
+  }
+
+  const toggleTooltip = (id, e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setActiveTooltip(prev => prev === id ? null : id)
+  }
+
+  const portalContent = activeTooltip === 'tag' && ocultas.length > 0 ? createPortal(
     <div 
       id={`tooltip-tags-${project.id}`} 
       role="tooltip" 
-      className={`fixed z-[70] w-max max-w-[200px] rounded-lg bg-black/95 backdrop-blur-xl border border-white/10 px-3 py-2 text-[12px] font-medium text-white shadow-2xl pointer-events-none animate-fade-in`}
+      className="fixed z-[70] w-max max-w-[200px] rounded-lg bg-black/95 backdrop-blur-xl border border-white/10 px-3 py-2 text-[12px] font-medium text-white shadow-2xl pointer-events-none animate-fade-in"
       style={{
          top: tagPos.showAbove ? 'auto' : tagPos.top,
-         bottom: tagPos.showAbove ? (window.innerHeight - tagPos.top) : 'auto',
+         bottom: tagPos.showAbove ? (typeof window !== 'undefined' ? window.innerHeight - tagPos.top : 0) : 'auto',
          left: `clamp(108px, ${tagPos.left}px, 100vw - 108px)`,
          transform: 'translateX(-50%)'
       }}
     >
-      {project.tags.slice(3).join(', ')}
+      {ocultas.join(', ')}
     </div>,
     document.body
   ) : null
@@ -184,62 +244,38 @@ export default function ProjectCard({ project, isActive }) {
           {t(`projects.items.${project.id}.description`)}
         </p>
         
-        {project.tags && project.tags.length > 1 && (
+        {chips.length > 0 && (
           <div className="flex flex-nowrap sm:flex-wrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 [@media(max-height:520px)]:hidden">
-            {project.tags.slice(1, 4).map((tag, i) => (
+            {visibles.map((tag, i) => (
               <span
                 key={i}
-                className={`rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] text-muted border border-border whitespace-nowrap transition-colors group-hover:border-accent/20 ${i >= 2 ? 'hidden sm:block' : 'block'}`}
+                className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] text-muted border border-border whitespace-nowrap transition-colors group-hover:border-accent/20"
               >
                 {tag}
               </span>
             ))}
-            {project.tags.length > 3 && (
-              <div className="sm:hidden relative group/tag rounded-md shrink-0">
+            {ocultas.length > 0 && (
+              <div className="relative group/tag rounded-md shrink-0">
                 <button 
+                  ref={tagButtonRef}
                   type="button"
                   className="relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
-                  onClick={(e) => toggleTooltip('tag', e)}
-                  onFocus={handleTagEnter}
-                  onBlur={() => setActiveTooltip(null)}
-                  onMouseLeave={() => setActiveTooltip(null)}
+                  onClick={handleClick}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  onTouchStart={handleTouchStart}
                   aria-expanded={activeTooltip === 'tag'}
                   aria-describedby={`tooltip-tags-${project.id}`}
-                  aria-label={t('projects.moreTechs', { count: project.tags.length - 3 })}
+                  aria-label={t('projects.moreTechs', { count: ocultas.length, list: ocultas.join(', ') })}
                 >
-                  <span className={`block rounded-md px-1.5 py-0.5 text-[0.75rem] font-medium border transition-colors ${
+                  <span className={`block rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] font-medium border transition-colors ${
                     activeTooltip === 'tag'
                       ? 'border-accent/50 text-accent bg-accent/10'
-                      : 'bg-surface-3 text-text border-border'
+                      : 'bg-surface-3 text-text border-border group-hover/tag:border-accent/50 group-hover/tag:text-accent group-hover/tag:bg-accent/10'
                   }`}>
-                    +{project.tags.length - 3}
-                  </span>
-                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[44px] h-[44px] min-w-full min-h-full opacity-0 pointer-events-auto"></span>
-                </button>
-              </div>
-            )}
-            {project.tags.length > 4 && (
-              <div className="hidden sm:block relative group/tag rounded-md shrink-0">
-                <button 
-                  type="button"
-                  className="relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
-                  onClick={(e) => toggleTooltip('tag', e)}
-                  onMouseEnter={handleTagEnter}
-                  onFocus={handleTagEnter}
-                  onBlur={() => setActiveTooltip(null)}
-                  onMouseLeave={() => setActiveTooltip(null)}
-                  aria-expanded={activeTooltip === 'tag'}
-                  aria-describedby={`tooltip-tags-${project.id}`}
-                  aria-label={t('projects.moreTechs', { count: project.tags.length - 4 })}
-                >
-                  <span 
-                    className={`block rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] font-medium border transition-colors ${
-                      activeTooltip === 'tag'
-                        ? 'border-accent/50 text-accent bg-accent/10'
-                        : 'bg-surface-3 text-text border-border group-hover/tag:border-accent/50 group-hover/tag:text-accent group-hover/tag:bg-accent/10'
-                    }`}
-                  >
-                    +{project.tags.length - 4}
+                    +{ocultas.length}
                   </span>
                   {/* Área táctil de 44x44 */}
                   <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[44px] h-[44px] min-w-full min-h-full opacity-0 pointer-events-auto"></span>

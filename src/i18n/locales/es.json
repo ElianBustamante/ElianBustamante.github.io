@@ -32,6 +32,7 @@
     "next": "Proyecto siguiente",
     "viewCode": "Ver repositorio",
     "viewDemo": "Ver demo",
+    "moreTechs": "{{count}} tecnologías más: {{list}}",
     "items": {
       "gamesDealTracker": {
         "name": "Games Deal Tracker",

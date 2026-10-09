@@ -32,6 +32,7 @@
     "next": "Next project",
     "viewCode": "View repository",
     "viewDemo": "View demo",
+    "moreTechs": "{{count}} more technologies: {{list}}",
     "items": {
       "gamesDealTracker": {
         "name": "Games Deal Tracker",
