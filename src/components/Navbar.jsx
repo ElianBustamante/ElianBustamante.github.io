@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import LanguageToggle from './LanguageToggle'
 import { IconMenu, IconClose } from './icons'
 import NavRail from './NavRail'
@@ -16,6 +16,8 @@ export default function Navbar() {
   const { t } = useTranslation()
   const [activeId, setActiveId] = useState('inicio')
   const [menuOpen, setMenuOpen] = useState(false)
+  const menuButtonRef = useRef(null)
+  const mobileMenuRef = useRef(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,24 +39,40 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setMenuOpen(false)
+      if (e.key === 'Escape' && menuOpen) {
+        setMenuOpen(false)
+        menuButtonRef.current?.focus()
+      }
     }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
-
-  const closeMenu = () => {
-    if (document.startViewTransition) {
-      try {
-        const transition = document.startViewTransition(() => setMenuOpen(false))
-        transition.ready.catch(() => {})
-      } catch {
+    const handlePointerDown = (e) => {
+      if (
+        menuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(e.target) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(e.target)
+      ) {
         setMenuOpen(false)
       }
-    } else {
-      setMenuOpen(false)
     }
-  }
+
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('pointerdown', handlePointerDown)
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
+    if (menuOpen && mobileMenuRef.current) {
+      const firstLink = mobileMenuRef.current.querySelector('a')
+      firstLink?.focus()
+    }
+  }, [menuOpen])
+
+  const closeMenu = () => setMenuOpen(false)
+  const toggleMenu = () => setMenuOpen((prev) => !prev)
 
   return (
     <>
@@ -118,19 +136,9 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <button
+            ref={menuButtonRef}
             className="lg:hidden flex items-center justify-center min-h-[44px] min-w-[44px] border border-border rounded-full bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            onClick={() => {
-              if (document.startViewTransition) {
-                try {
-                  const transition = document.startViewTransition(() => setMenuOpen(!menuOpen))
-                  transition.ready.catch(() => {})
-                } catch {
-                  setMenuOpen(!menuOpen)
-                }
-              } else {
-                setMenuOpen(!menuOpen)
-              }
-            }}
+            onClick={toggleMenu}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? t('nav.menuClose') : t('nav.menuOpen')}
@@ -144,6 +152,7 @@ export default function Navbar() {
         <>
         <div 
           id="mobile-menu" 
+          ref={mobileMenuRef}
           className="lg:hidden fixed top-[4.5rem] left-2 right-2 min-[400px]:left-4 min-[400px]:right-4 md:left-6 md:right-6 bg-surface-2 border border-border rounded-[22px] p-2 flex flex-col gap-1 pointer-events-auto max-h-[calc(100svh-5rem)] overflow-y-auto [scrollbar-width:none] z-[100] shadow-2xl"
         >
           {links.map((link, index) => {

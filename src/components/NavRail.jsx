@@ -30,12 +30,34 @@ export default function NavRail({ activeId }) {
       }
     }
     document.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('pointerdown', handleClickOutside)
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('pointerdown', handleClickOutside)
     }
   }, [menuOpen])
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return
+    const mql = window.matchMedia('(max-height: 520px) and (orientation: landscape)')
+    const handleChange = (e) => {
+      if (!e.matches) {
+        setMenuOpen(false)
+      }
+    }
+    if (mql.addEventListener) {
+      mql.addEventListener('change', handleChange)
+    } else if (mql.addListener) {
+      mql.addListener(handleChange)
+    }
+    return () => {
+      if (mql.removeEventListener) {
+        mql.removeEventListener('change', handleChange)
+      } else if (mql.removeListener) {
+        mql.removeListener(handleChange)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (menuOpen && menuRef.current) {
@@ -44,31 +66,8 @@ export default function NavRail({ activeId }) {
     }
   }, [menuOpen])
 
-  const closeMenu = () => {
-    if (document.startViewTransition) {
-      try {
-        const transition = document.startViewTransition(() => setMenuOpen(false))
-        transition.ready.catch(() => {})
-      } catch {
-        setMenuOpen(false)
-      }
-    } else {
-      setMenuOpen(false)
-    }
-  }
-
-  const toggleMenu = () => {
-    if (document.startViewTransition) {
-      try {
-        const transition = document.startViewTransition(() => setMenuOpen(!menuOpen))
-        transition.ready.catch(() => {})
-      } catch {
-        setMenuOpen(!menuOpen)
-      }
-    } else {
-      setMenuOpen(!menuOpen)
-    }
-  }
+  const closeMenu = () => setMenuOpen(false)
+  const toggleMenu = () => setMenuOpen((prev) => !prev)
 
   return (
     <>

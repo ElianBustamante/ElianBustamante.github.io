@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import NavRail from '../components/NavRail'
@@ -79,5 +79,49 @@ describe('NavRail', () => {
     
     // Al cambiar a inglés, el botón debe decir "Switch language to Spanish"
     expect(screen.getByRole('button', { name: /switch language to spanish/i })).toBeInTheDocument()
+  })
+
+  it('cierra el menú al hacer pointerdown fuera', async () => {
+    const user = userEvent.setup()
+    render(<NavRail activeId="inicio" />)
+
+    const menuButton = screen.getByRole('button', { name: /menú/i })
+    await user.click(menuButton)
+    expect(menuButton).toHaveAttribute('aria-expanded', 'true')
+
+    fireEvent.pointerDown(document.body)
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('cierra el menú cuando la media query del riel deja de cumplirse', async () => {
+    let changeHandler = null
+    const mqlMock = {
+      matches: true,
+      addEventListener: vi.fn((event, handler) => {
+        if (event === 'change') changeHandler = handler
+      }),
+      removeEventListener: vi.fn(),
+    }
+    window.matchMedia = vi.fn().mockImplementation((query) => {
+      if (query === '(max-height: 520px) and (orientation: landscape)') {
+        return mqlMock
+      }
+      return { matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }
+    })
+
+    const user = userEvent.setup()
+    render(<NavRail activeId="inicio" />)
+
+    const menuButton = screen.getByRole('button', { name: /menú/i })
+    await user.click(menuButton)
+    expect(menuButton).toHaveAttribute('aria-expanded', 'true')
+
+    // Media query leaves
+    act(() => {
+      if (changeHandler) {
+        changeHandler({ matches: false })
+      }
+    })
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
 })
