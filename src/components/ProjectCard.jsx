@@ -139,7 +139,7 @@ export default function ProjectCard({ project, isActive }) {
   ) : null
 
   return (
-    <article className={`relative group flex h-full max-md:min-h-[clamp(340px,52dvh,520px)] [@media(max-height:520px)]:h-auto flex-col rounded-card border bg-surface focus-within:border-accent transition-[transform,box-shadow,border-color] duration-500 lg:hover:-translate-y-1.5 lg:hover:shadow-[0_12px_32px_rgba(255,106,26,0.12)] lg:hover:border-accent/60 ${
+    <article className={`relative group flex h-full max-md:min-h-[clamp(340px,52dvh,520px)] [@media(max-height:520px)]:h-auto [@media(max-height:520px)]:min-h-0 flex-col rounded-card border bg-surface focus-within:border-accent transition-[transform,box-shadow,border-color] duration-500 lg:hover:-translate-y-1.5 lg:hover:shadow-[0_12px_32px_rgba(255,106,26,0.12)] lg:hover:border-accent/60 ${
       isActive 
         ? 'border-border max-lg:border-accent/60 max-lg:shadow-[0_12px_32px_rgba(255,106,26,0.12)]' 
         : 'border-border'
