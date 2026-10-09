@@ -161,21 +161,19 @@ function App() {
     if (!mainEl) return
 
     const handleFocusIn = (e) => {
-      const sections = Array.from(document.querySelectorAll('section[id]'))
-      const closestIdx = findClosestSectionIndex(sections)
-      const currentSection = sections[closestIdx]
-
-      const targetSection = getSectionOnFocus({
-        focusedElement: e.target,
-        currentSection,
-        windowHeight: window.innerHeight
-      })
-
-      if (targetSection) {
+      const focusedElement = e.target
+      requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          scrollToElement(targetSection, { behavior: 'auto' })
+          const targetSection = getSectionOnFocus({
+            focusedElement,
+            windowHeight: window.innerHeight
+          })
+
+          if (targetSection) {
+            scrollToElement(targetSection, { behavior: 'auto' })
+          }
         })
-      }
+      })
     }
 
     mainEl.addEventListener('focusin', handleFocusIn)

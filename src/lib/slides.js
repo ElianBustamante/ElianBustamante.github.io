@@ -144,20 +144,21 @@ export function findClosestSectionIndex(sections) {
 
 /**
  * Decisión pura: a qué sección alinear la ventana cuando un elemento recibe foco con teclado.
- * Devuelve la sección objetivo si se debe alinear, o null si no.
+ * Devuelve la sección objetivo si se debe alinear (|rect.top| > 2), o null si ya está alineada
+ * o si la sección es más alta que la pantalla y el elemento ya está visible.
  */
-export function getSectionOnFocus({ focusedElement, currentSection, windowHeight }) {
+export function getSectionOnFocus({ focusedElement, windowHeight }) {
   if (!focusedElement) return null;
 
   const focusedSection = focusedElement.closest?.('section[id]') || focusedElement.closest?.('section');
   if (!focusedSection) return null;
 
-  if (focusedSection === currentSection) {
+  const secRect = typeof focusedSection.getBoundingClientRect === 'function' ? focusedSection.getBoundingClientRect() : { top: 0, height: 0 };
+  if (Math.abs(secRect.top) <= 2) {
     return null;
   }
 
   const wHeight = windowHeight ?? (typeof window !== 'undefined' ? window.innerHeight : 800);
-  const secRect = typeof focusedSection.getBoundingClientRect === 'function' ? focusedSection.getBoundingClientRect() : { height: 0 };
 
   if (secRect.height > wHeight + 8) {
     const elRect = typeof focusedElement.getBoundingClientRect === 'function' ? focusedElement.getBoundingClientRect() : { top: 0, bottom: 0 };

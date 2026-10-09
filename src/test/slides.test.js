@@ -8,36 +8,72 @@ import {
 } from '../lib/slides'
 
 describe('slides logic', () => {
-  it('foco en un elemento de otra sección -> devuelve esa sección', () => {
-    const sec1 = document.createElement('section')
-    sec1.id = 'inicio'
-    const sec2 = document.createElement('section')
-    sec2.id = 'proyectos'
+  it('foco en una sección con top=0 -> null', () => {
+    const sec = document.createElement('section')
+    sec.id = 'inicio'
+    sec.getBoundingClientRect = () => ({ top: 0, height: 800, bottom: 800 })
     const btn = document.createElement('button')
-    sec2.appendChild(btn)
+    btn.getBoundingClientRect = () => ({ top: 100, bottom: 140 })
+    sec.appendChild(btn)
 
     const result = getSectionOnFocus({
       focusedElement: btn,
-      currentSection: sec1,
-      windowHeight: 800
-    })
-
-    expect(result).toBe(sec2)
-  })
-
-  it('foco en la sección actual -> no alinea', () => {
-    const sec1 = document.createElement('section')
-    sec1.id = 'inicio'
-    const btn = document.createElement('button')
-    sec1.appendChild(btn)
-
-    const result = getSectionOnFocus({
-      focusedElement: btn,
-      currentSection: sec1,
       windowHeight: 800
     })
 
     expect(result).toBeNull()
+  })
+
+  it('foco en una sección con top=-300 y altura igual a la pantalla -> esa sección', () => {
+    const sec = document.createElement('section')
+    sec.id = 'proyectos'
+    sec.getBoundingClientRect = () => ({ top: -300, height: 800, bottom: 500 })
+    const btn = document.createElement('button')
+    btn.getBoundingClientRect = () => ({ top: 100, bottom: 140 })
+    sec.appendChild(btn)
+
+    const result = getSectionOnFocus({
+      focusedElement: btn,
+      windowHeight: 800
+    })
+
+    expect(result).toBe(sec)
+  })
+
+  it('sección más alta que la pantalla con el elemento visible -> null', () => {
+    const sec = document.createElement('section')
+    sec.id = 'sobre-mi'
+    // Altura 1200 > 800 + 8, top = -200
+    sec.getBoundingClientRect = () => ({ top: -200, height: 1200, bottom: 1000 })
+    const btn = document.createElement('button')
+    // Elemento visible en pantalla (top >= 0 y bottom <= 800)
+    btn.getBoundingClientRect = () => ({ top: 200, bottom: 240 })
+    sec.appendChild(btn)
+
+    const result = getSectionOnFocus({
+      focusedElement: btn,
+      windowHeight: 800
+    })
+
+    expect(result).toBeNull()
+  })
+
+  it('sección más alta con el elemento fuera de pantalla -> esa sección', () => {
+    const sec = document.createElement('section')
+    sec.id = 'sobre-mi'
+    // Altura 1200 > 800 + 8, top = -50
+    sec.getBoundingClientRect = () => ({ top: -50, height: 1200, bottom: 1150 })
+    const btn = document.createElement('button')
+    // Elemento fuera de pantalla (bottom 900 > 800)
+    btn.getBoundingClientRect = () => ({ top: 850, bottom: 900 })
+    sec.appendChild(btn)
+
+    const result = getSectionOnFocus({
+      focusedElement: btn,
+      windowHeight: 800
+    })
+
+    expect(result).toBe(sec)
   })
 
   it('Espacio sobre un button no se intercepta', () => {
