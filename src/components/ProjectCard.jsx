@@ -208,7 +208,7 @@ export default function ProjectCard({ project, isActive }) {
         </p>
         
         {chips.length > 0 && (
-          <div className="flex flex-nowrap sm:flex-wrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 [@media(max-height:520px)]:hidden">
+          <div className="flex flex-nowrap sm:flex-wrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 [@media(max-height:520px)]:hidden py-1 -my-1">
             {visibles.map((tag, i) => (
               <span
                 key={i}
@@ -249,7 +249,7 @@ export default function ProjectCard({ project, isActive }) {
         )}
 
         {(project.repoUrl || project.demoUrl) && (
-          <div className="flex flex-wrap sm:flex-nowrap [@media(max-height:520px)]:flex-wrap items-center gap-2 sm:gap-3 [@media(max-height:520px)]:gap-2 mt-auto pt-3 sm:pt-4 border-t border-border/50 overflow-hidden [@media(max-height:520px)]:overflow-visible w-full">
+          <div className="flex flex-wrap sm:flex-nowrap [@media(max-height:520px)]:flex-wrap items-center gap-2 sm:gap-3 [@media(max-height:520px)]:gap-2 mt-auto pt-3 sm:pt-4 pb-1.5 -mb-1.5 border-t border-border/50 overflow-hidden [@media(max-height:520px)]:overflow-visible w-full">
             {project.repoUrl && (
               <a
                 href={project.repoUrl}
