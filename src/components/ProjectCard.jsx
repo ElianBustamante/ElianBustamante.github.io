@@ -222,7 +222,7 @@ export default function ProjectCard({ project, isActive }) {
                 <button 
                   ref={tagButtonRef}
                   type="button"
-                  className="relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
+                  className="relative cursor-pointer focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px] rounded-md"
                   onClick={handleClick}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
@@ -255,7 +255,7 @@ export default function ProjectCard({ project, isActive }) {
                 href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent [@media(max-height:520px)]:min-h-[36px]"
+                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px] [@media(max-height:520px)]:min-h-[36px]"
               >
                 <IconGithub className="w-3.5 h-3.5 sm:w-3.5 sm:h-3.5" />
                 <span className="truncate max-w-[100px] sm:max-w-none">{t('projects.viewCode')}</span>
@@ -266,7 +266,7 @@ export default function ProjectCard({ project, isActive }) {
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent truncate [@media(max-height:520px)]:min-h-[36px]"
+                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px] truncate [@media(max-height:520px)]:min-h-[36px]"
               >
                 <span className="truncate">{project.demoLabel || t('projects.viewDemo')}</span>
               </a>
