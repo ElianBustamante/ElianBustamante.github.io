@@ -124,4 +124,29 @@ describe('ProjectCard +N tooltip', () => {
     fireEvent(window, new Event('resize'))
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
   })
+
+  it('resaltado de tarjeta: usa has-[:focus-visible] y no focus-within; tras clic con mouse en "+N", la tarjeta no tiene clases de foco persistente con mouse', () => {
+    mockMatchMedia(true)
+    const { container } = render(<ProjectCard project={project} />)
+    const article = container.querySelector('article')
+    const btn = screen.getByRole('button', { name: /\+2|tecnologías más/i })
+
+    // 1. La tarjeta tiene clases de foco condicional por teclado (:focus-visible), no focus-within
+    expect(article.className).toContain('has-[:focus-visible]:border-accent')
+    expect(article.className).not.toContain('focus-within:border-accent')
+    expect(article.className).not.toContain('focus-within:')
+
+    // 2. Tras clic con mouse en "+N", la tarjeta no adquiere ninguna clase o atributo de resaltado persistente
+    fireEvent.click(btn)
+    expect(article.className).not.toContain('focus-within:border-accent')
+    expect(article.classList.contains('border-accent')).toBe(false)
+    expect(article.className).toContain('has-[:focus-visible]:border-accent')
+
+    // 3. Con foco en un elemento interactivo (teclado), el botón está enfocado dentro de la tarjeta
+    btn.focus()
+    expect(document.activeElement).toBe(btn)
+    expect(article.contains(btn)).toBe(true)
+    expect(article.className).toContain('has-[:focus-visible]:border-accent')
+  })
 })
+
