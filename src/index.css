@@ -4,6 +4,7 @@
   --color-bg: #0a0a0a;
   --color-surface: #141312;
   --color-surface-2: #1c1a18;
+  --color-surface-3: #24211e;
   --color-border: #2e2924;
   --color-text: #f5f3f0;
   --color-muted: #a8a29a;
@@ -12,11 +13,10 @@
   --color-on-accent: #0a0a0a;
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --radius-card: 1rem;
-  --radius-nav: 14px;
 }
 
 html, body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 html {
   scroll-behavior: smooth;
@@ -24,6 +24,8 @@ html {
 }
 
 :root {
+  color-scheme: dark;
+  --header-h: 5.5rem;
   --rail-w: 0px;
 }
 @media (max-height: 520px) and (orientation: landscape) {
@@ -75,7 +77,6 @@ button:not(:disabled) {
   .animate-fade-in { animation: none; }
 }
 
-
 @keyframes menu-in {
   from { opacity: 0; transform: translateY(-10px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -100,14 +101,12 @@ button:not(:disabled) {
   .animate-nav-in { opacity: 1; animation: none; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
   html, body {
     overflow: hidden;
     height: 100dvh;
   }
 }
-
-
 
 /* Animaciones GPU para el Corredor de Código 3D */
 @keyframes corridor-left {
@@ -158,10 +157,11 @@ html[data-vt='open']::view-transition-old(lightbox-image) {
   animation: none;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.animate-fade-in {
-  animation: fade-in 0.15s ease-out forwards;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
