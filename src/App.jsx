@@ -4,111 +4,185 @@ import Section from './components/Section'
 import Footer from './components/Footer'
 import PhotoGallery from './components/PhotoGallery'
 import ProjectsCarousel from './components/ProjectsCarousel'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import AnimatedBackground from './components/AnimatedBackground'
 import { scrollToElement } from './lib/scroll'
+import {
+  shouldInterceptKey,
+  getKeyDirection,
+  shouldInterceptWheel,
+  findClosestSectionIndex,
+  getSectionOnFocus
+} from './lib/slides'
 
 function App() {
-  // Controlador Profesional de Diapositivas
+  const mainRef = useRef(null)
+
+  // Enlace profundo y ScrollSpy
   useEffect(() => {
-    let isAnimating = false;
+    const hash = window.location.hash ? window.location.hash.slice(1) : ''
+    let initialElement = null
+    if (hash) {
+      const el = document.getElementById(hash)
+      if (el && el.tagName === 'SECTION') {
+        initialElement = el
+        el.scrollIntoView({ behavior: 'auto', block: 'start' })
+      }
+    }
+
+    let observer = null
+    const startScrollSpy = () => {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.target.id) {
+            window.history.replaceState(null, '', `#${entry.target.id}`)
+          }
+        })
+      }, {
+        rootMargin: '-50% 0px -50% 0px'
+      })
+
+      // Observa solo section[id] (no header)
+      const sections = document.querySelectorAll('section[id]')
+      sections.forEach(sec => observer.observe(sec))
+    }
+
+    // Inicia ScrollSpy después de que la posición inicial por hash se haya aplicado
+    const spyTimer = setTimeout(startScrollSpy, initialElement ? 80 : 0)
+
+    return () => {
+      clearTimeout(spyTimer)
+      if (observer) observer.disconnect()
+    }
+  }, [])
+
+  // Controlador de Diapositivas
+  useEffect(() => {
+    let isTransitioning = false
+    let scrollEnded = true
+    let wheelQuiet = true
+    let wheelTimeout = null
+    let fallbackTimeout = null
+
+    const checkUnlock = () => {
+      if (scrollEnded && wheelQuiet) {
+        isTransitioning = false
+      }
+    }
+
+    const onScrollEnd = () => {
+      clearTimeout(fallbackTimeout)
+      scrollEnded = true
+      checkUnlock()
+    }
 
     const performScroll = (direction) => {
-      if (isAnimating) return;
+      if (isTransitioning) return
 
-      const sections = Array.from(document.querySelectorAll('section, footer'));
-      if (!sections.length) return;
+      const sections = Array.from(document.querySelectorAll('section, footer'))
+      if (!sections.length) return
 
-      // Buscar qué sección está dominando la pantalla
-      let closestIndex = 0;
-      let minDistance = Infinity;
-      sections.forEach((sec, index) => {
-        const rect = sec.getBoundingClientRect();
-        const distance = Math.abs(rect.top);
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      let nextIndex = closestIndex;
+      const closestIndex = findClosestSectionIndex(sections)
+      let nextIndex = closestIndex
 
       if (direction > 0 && closestIndex < sections.length - 1) {
-        nextIndex++;
+        nextIndex++
       } else if (direction < 0 && closestIndex > 0) {
-        nextIndex--;
+        nextIndex--
       }
 
       if (nextIndex !== closestIndex) {
-        isAnimating = true;
-        scrollToElement(sections[nextIndex]);
-        
-        // Tiempo de bloqueo reducido para mayor agilidad sin sacrificar la protección anti-rebote
-        setTimeout(() => {
-          isAnimating = false;
-        }, 450);
+        isTransitioning = true
+        scrollEnded = false
+        wheelQuiet = false
+
+        if ('onscrollend' in window) {
+          window.addEventListener('scrollend', onScrollEnd, { once: true })
+        }
+        clearTimeout(fallbackTimeout)
+        fallbackTimeout = setTimeout(onScrollEnd, 800)
+
+        scrollToElement(sections[nextIndex])
       }
-    };
+    }
 
     const handleWheel = (e) => {
-      // 0. Si el usuario está usando la rueda dentro de un Lightbox abierto, ignorar salto de sección
-      if (e.target.closest('[role="dialog"]') || e.target.closest('dialog')) return;
+      if (window.innerWidth < 768) return
 
-      // 1. En móviles, dejamos el scroll libre nativo para poder leer tarjetas largas
-      if (window.innerWidth < 768) return;
+      const sections = Array.from(document.querySelectorAll('section, footer'))
+      const closestIndex = findClosestSectionIndex(sections)
+      const currentSection = sections[closestIndex]
 
-      // 2. Ignorar scroll horizontal (para que el carrusel de proyectos funcione con trackpad)
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-      
-      // 3. Bloqueamos el scroll tosco del navegador
-      e.preventDefault();
-      
-      // Con apenas un toque de la rueda (delta > 5), disparamos el salto
-      if (e.deltaY > 5) performScroll(1);
-      else if (e.deltaY < -5) performScroll(-1);
-    };
+      if (!shouldInterceptWheel(e, { currentSection, windowHeight: window.innerHeight })) {
+        return
+      }
+
+      e.preventDefault()
+
+      wheelQuiet = false
+      clearTimeout(wheelTimeout)
+      wheelTimeout = setTimeout(() => {
+        wheelQuiet = true
+        checkUnlock()
+      }, 150)
+
+      if (isTransitioning) return
+
+      const direction = e.deltaY > 0 ? 1 : -1
+      performScroll(direction)
+    }
 
     const handleKeyDown = (e) => {
-      if (e.target.closest('[role="dialog"]') || e.target.closest('dialog')) return;
-      if (window.innerWidth < 768) return;
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (window.innerWidth < 768) return
+      if (!shouldInterceptKey(e)) return
 
-      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-        // Permitimos que la barra espaciadora funcione igual
-        e.preventDefault();
-        performScroll(1);
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        e.preventDefault();
-        performScroll(-1);
+      const direction = getKeyDirection(e)
+      if (direction !== 0) {
+        e.preventDefault()
+        performScroll(direction)
       }
-    };
+    }
 
-    document.addEventListener('wheel', handleWheel, { passive: false });
-    document.addEventListener('keydown', handleKeyDown, { passive: false });
+    document.addEventListener('wheel', handleWheel, { passive: false })
+    document.addEventListener('keydown', handleKeyDown, { passive: false })
+
     return () => {
-      document.removeEventListener('wheel', handleWheel);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
+      document.removeEventListener('wheel', handleWheel)
+      document.removeEventListener('keydown', handleKeyDown)
+      clearTimeout(wheelTimeout)
+      clearTimeout(fallbackTimeout)
+      window.removeEventListener('scrollend', onScrollEnd)
+    }
+  }, [])
 
-  // ScrollSpy para actualizar la URL automáticamente al deslizar
+  // Foco con teclado: alinear con el inicio de la sección en focusin
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.target.id) {
-          // Reemplaza la URL sin añadir basura al historial de retroceso
-          window.history.replaceState(null, '', `#${entry.target.id}`);
-        }
-      });
-    }, {
-      rootMargin: '-50% 0px -50% 0px' // Se activa exactamente cuando la sección cruza la mitad de la pantalla, sin importar su altura
-    });
+    const mainEl = mainRef.current
+    if (!mainEl) return
 
-    const sections = document.querySelectorAll('section, header');
-    sections.forEach(sec => observer.observe(sec));
+    const handleFocusIn = (e) => {
+      const sections = Array.from(document.querySelectorAll('section[id]'))
+      const closestIdx = findClosestSectionIndex(sections)
+      const currentSection = sections[closestIdx]
 
-    return () => observer.disconnect();
-  }, []);
+      const targetSection = getSectionOnFocus({
+        focusedElement: e.target,
+        currentSection,
+        windowHeight: window.innerHeight
+      })
+
+      if (targetSection) {
+        requestAnimationFrame(() => {
+          scrollToElement(targetSection, { behavior: 'auto' })
+        })
+      }
+    }
+
+    mainEl.addEventListener('focusin', handleFocusIn)
+    return () => {
+      mainEl.removeEventListener('focusin', handleFocusIn)
+    }
+  }, [])
 
   return (
     <div className="w-full relative overflow-x-hidden min-h-screen max-md:min-h-0 max-md:h-[100dvh] max-md:overflow-y-auto max-md:snap-y max-md:snap-mandatory [@media(max-height:600px)]:snap-none scroll-smooth">
@@ -117,7 +191,7 @@ function App() {
       {/* Contenido protegido por encima del fondo */}
       <div className="relative z-10">
         <Navbar />
-        <main className="pl-[var(--rail-w)]">
+        <main ref={mainRef} className="pl-[var(--rail-w)]">
           <Hero />
           <ProjectsCarousel />
           <PhotoGallery />
