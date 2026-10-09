@@ -51,7 +51,8 @@ export default function ProjectsCarousel() {
     if (!listRef.current) return
     const children = listRef.current.children
     if (newIndex >= 0 && newIndex < children.length) {
-      children[newIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+      const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+      children[newIndex].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest', inline: 'center' })
     }
   }
 

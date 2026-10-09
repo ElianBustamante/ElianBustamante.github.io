@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { scrollToElement } from '../lib/scroll'
 
 const bgModules = import.meta.glob('../assets/hero-bg.webp', { eager: true, query: '?url', import: 'default' })
 const bgUrl = bgModules['../assets/hero-bg.webp']
@@ -70,12 +71,13 @@ export default function Hero() {
 
       {/* Flecha Abajo en Hero */}
       <button 
+        type="button"
         onClick={(e) => {
-          const next = e.currentTarget.closest('section').nextElementSibling;
-          if (next) next.scrollIntoView({ behavior: 'smooth' });
+          const next = e.currentTarget.closest('section')?.nextElementSibling;
+          scrollToElement(next);
         }} 
         aria-label={t('nav.nextSection')} 
-        className="absolute flex items-center justify-center min-h-[44px] min-w-[44px] bottom-4 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 animate-bounce"
+        className="absolute flex items-center justify-center min-h-[44px] min-w-[44px] bottom-4 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
       </button>

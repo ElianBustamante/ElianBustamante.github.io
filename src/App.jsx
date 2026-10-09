@@ -6,6 +6,7 @@ import PhotoGallery from './components/PhotoGallery'
 import ProjectsCarousel from './components/ProjectsCarousel'
 import { useEffect } from 'react'
 import AnimatedBackground from './components/AnimatedBackground'
+import { scrollToElement } from './lib/scroll'
 
 function App() {
   // Controlador Profesional de Diapositivas
@@ -40,7 +41,7 @@ function App() {
 
       if (nextIndex !== closestIndex) {
         isAnimating = true;
-        sections[nextIndex].scrollIntoView({ behavior: 'smooth' });
+        scrollToElement(sections[nextIndex]);
         
         // Tiempo de bloqueo reducido para mayor agilidad sin sacrificar la protección anti-rebote
         setTimeout(() => {
