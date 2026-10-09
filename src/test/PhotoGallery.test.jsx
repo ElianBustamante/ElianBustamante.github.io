@@ -1,4 +1,4 @@
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import PhotoGallery from '../components/PhotoGallery'
@@ -19,6 +19,20 @@ vi.mock('../data/photos.json', () => ({
 
 describe('PhotoGallery', () => {
   beforeEach(async () => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: vi.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(), // deprecated
+        removeListener: vi.fn(), // deprecated
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
     await i18n.changeLanguage('es')
   })
   afterEach(() => {
@@ -37,7 +51,7 @@ describe('PhotoGallery', () => {
     const images = screen.getAllByRole('button').filter(b => b.querySelector('img'))
     expect(images).toHaveLength(3)
     const firstLi = images[0].parentElement
-    expect(firstLi.style.height).toBe('375px') // from W=1200 -> h=375
+    expect(firstLi.style.height).toBe('453.12px') // from W=1200, H=768 -> h=768*0.59
   })
 
   it('renders alt in Spanish and changes to English', async () => {
@@ -62,13 +76,17 @@ describe('PhotoGallery', () => {
 
   it('shows buttons and counter when there are multiple pages', async () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 400 }) // h = 266, w1=399 > 400 => separate pages
-    const scrollToMock = vi.fn()
-    Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: scrollToMock })
+    Object.defineProperty(HTMLElement.prototype, 'scrollWidth', { configurable: true, value: 1000 })
+    const scrollByMock = vi.fn()
+    Object.defineProperty(HTMLElement.prototype, 'scrollBy', { configurable: true, value: scrollByMock })
     Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
     
     render(<PhotoGallery />)
     
-    expect(screen.getByText('Página 1 de 3')).toBeInTheDocument()
+    // Simulate checkScroll by calling fireEvent.scroll on the ul
+    const list = screen.getByRole('list')
+    fireEvent.scroll(list)
+    
     const nextBtn = screen.getByRole('button', { name: 'Más fotos' })
     const prevBtn = screen.getByRole('button', { name: 'Fotos anteriores' })
     
@@ -78,7 +96,7 @@ describe('PhotoGallery', () => {
     const user = userEvent.setup()
     await user.click(nextBtn)
     
-    expect(scrollToMock).toHaveBeenCalledWith({ left: 400, behavior: 'smooth' })
+    expect(scrollByMock).toHaveBeenCalledWith({ left: 400 * 0.8, behavior: 'smooth' })
   })
 
   it('opens dialog with counter on click', async () => {

@@ -14,7 +14,9 @@
     "menuOpen": "Open menu",
     "menuClose": "Close menu",
     "switchToEn": "Switch language to English",
-    "switchToEs": "Switch language to Spanish"
+    "switchToEs": "Switch language to Spanish",
+    "prevSection": "Previous section",
+    "nextSection": "Next section"
   },
   "hero": {
     "titleLine1": "Capturing landscapes.",
@@ -32,14 +34,14 @@
     "viewDemo": "View demo",
     "items": {
       "gamesDealTracker": {
-        "name": "TODO(elian): Games Deal Tracker",
+        "name": "Games Deal Tracker",
         "category": "Discord bot",
-        "description": "Discord bot that tracks video game deals. It is deployed on PebbleHost. Next step: Epic Games Store support."
+        "description": "Tracks Steam and Epic Games Store deals: discounts, all-time lows and weekly free games."
       },
       "priceAlertBot": {
-        "name": "TODO(elian): Price Alert Bot",
-        "category": "Telegram bot",
-        "description": "Personal-use Telegram bot that sends price alerts from Chilean stores such as Falabella, Ripley, Paris, MercadoLibre and PCFactory. It uses SerpAPI and store URL tracking."
+        "name": "Price Alert Bot",
+        "category": "WhatsApp bot",
+        "description": "WhatsApp price alerts from Chilean and US stores, using SerpAPI and store URL tracking."
       },
       "pipeline3d": {
         "name": "TODO(elian): 3D processing pipeline",
@@ -50,11 +52,13 @@
   },
   "photography": {
     "title": "Photography",
-    "intro": "A selection of photographs of the colors of autumn and winter in Araucanía, between Currarehue and the Mamuil Malal Pass. Plus a few silky long-exposure waterfalls and, to close, a total lunar eclipse.",
+    "intro": "A selection of photographs of autumn and winter in Araucanía, plus waterfalls and a total lunar eclipse.",
     "viewDetails": "View details", "lightboxLabel": "Photo viewer",
     "close": "Close",
     "prev": "Previous photo",
     "next": "Next photo",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
     "counter": "Photo {{current}} of {{total}}",
     "exif": {
       "camera": "Camera",

@@ -16,7 +16,7 @@
       "en": "Landscape photograph 1"
     },
     "title": {
-      "es": null,
+      "es": "Salto Petrohué",
       "en": null
     },
     "exif": {
@@ -45,7 +45,11 @@
       "en": "Landscape photograph 2"
     },
     "title": {
-      "es": null,
+      "es": "Camino a las Termas Geometricas",
+      "en": null
+    },
+    "description": {
+      "es": "Camino a las Termas Geometricas",
       "en": null
     },
     "exif": {
@@ -132,7 +136,11 @@
       "en": "Landscape photograph 5"
     },
     "title": {
-      "es": null,
+      "es": "Colmillos del Diablo",
+      "en": null
+    },
+    "description": {
+      "es": "Colmillos del Diablo",
       "en": null
     },
     "exif": {

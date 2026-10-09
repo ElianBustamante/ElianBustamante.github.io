@@ -18,9 +18,9 @@ describe('ProjectsCarousel', () => {
 
   test('renderiza las 3 tarjetas con sus nombres en español', () => {
     render(<ProjectsCarousel />)
-    expect(screen.getByText('TODO(elian): Games Deal Tracker')).toBeInTheDocument()
-    expect(screen.getByText('TODO(elian): Price Alert Bot')).toBeInTheDocument()
-    expect(screen.getByText('TODO(elian): Pipeline de procesamiento 3D')).toBeInTheDocument()
+    expect(screen.getByText(/Games Deal Tracker/i)).toBeInTheDocument()
+    expect(screen.getByText(/Price Alert Bot/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/Pipeline/i)[0]).toBeInTheDocument()
   })
 
   test('al cambiar a inglés, los nombres y descripciones cambian', () => {
@@ -28,9 +28,6 @@ describe('ProjectsCarousel', () => {
     act(() => {
       i18n.changeLanguage('en')
     })
-    expect(screen.getByText('TODO(elian): Games Deal Tracker')).toBeInTheDocument() // Assuming name is same in en
-    // Wait, wait, let's mock translations or check if en translation exists for names.
-    // If we just check something else, or if en translation doesn't change names, we can check category or description.
     expect(screen.getByText(i18n.t('projects.items.pipeline3d.name'))).toBeInTheDocument()
   })
 
@@ -51,20 +48,20 @@ describe('ProjectsCarousel', () => {
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
     Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
     
+    const mockChild = { scrollIntoView: vi.fn() }
+    
     // Also mock firstElementChild clientWidth for scroll amount
-    Object.defineProperty(list, 'firstElementChild', {
+    Object.defineProperty(list, 'children', {
       configurable: true,
-      value: { clientWidth: 300 }
+      value: [mockChild, mockChild, mockChild]
     })
     
-    list.scrollBy = vi.fn()
     fireEvent.scroll(list) // Update state to show buttons
     
-    const nextBtn = screen.getByLabelText('Proyecto siguiente')
+    const nextBtn = screen.getAllByRole('button', { name: /Siguiente/i })[0]
     fireEvent.click(nextBtn)
     
-    expect(list.scrollBy).toHaveBeenCalledWith(expect.objectContaining({
-      left: 316, // 300 + 16 gap
+    expect(mockChild.scrollIntoView).toHaveBeenCalledWith(expect.objectContaining({
       behavior: 'smooth'
     }))
   })

@@ -1,44 +1,55 @@
 import { useTranslation } from 'react-i18next'
-import { useRef, useEffect, useState, useLayoutEffect } from 'react'
+import { useRef, useEffect, useLayoutEffect, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { IconClose, IconChevronLeft, IconChevronRight } from './icons'
+
+const MIN_ZOOM = 1
+const MAX_ZOOM = 4
+const DEFAULT_ZOOM = 2.5
+const DRAG_THRESHOLD = 4
+
+const clampZoom = (n) => (n <= 1.05 ? MIN_ZOOM : Math.min(MAX_ZOOM, n))
 
 export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   const { t, i18n } = useTranslation()
   const dialogRef = useRef(null)
-  
-  // To handle touch
-  const [touchStart, setTouchStart] = useState(null)
-  const [isZoomed, setIsZoomed] = useState(false)
-  const [zoomLevel, setZoomLevel] = useState(2.5) // Nivel exacto de zoom
-  const [isLoading, setIsLoading] = useState(true)
+  const scrollContainerRef = useRef(null)
   const imgRef = useRef(null)
-  
+
+  // Una sola fuente de verdad para el zoom
+  const [zoomLevel, setZoomLevel] = useState(MIN_ZOOM)
+  const isZoomed = zoomLevel > MIN_ZOOM
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const dragRef = useRef({ active: false, started: false, x: 0, y: 0, left: 0, top: 0 })
+  const suppressClickRef = useRef(false)
+  const centerRef = useRef({ x: 0.5, y: 0.5 })
+  const touchStartRef = useRef(null)
+  const pinchRef = useRef(null)
+
   const photo = photos[index]
   const total = photos.length
 
-  // Reiniciar el spinner, y apagarlo de inmediato si la foto ya estaba en caché
   useEffect(() => {
-    setIsLoading(true)
-    if (imgRef.current?.complete) {
-      setIsLoading(false)
-    }
+    setIsLoading(!(imgRef.current && imgRef.current.complete))
   }, [index, photo.large.src])
 
-  useLayoutEffect(() => {
-    const dialog = dialogRef.current
-    if (dialog && !dialog.open) {
-      dialog.showModal()
-    }
-  }, [])
-  
   useEffect(() => {
-    // Lock scroll
     document.documentElement.classList.add('overflow-hidden')
+    dialogRef.current?.focus()
     return () => {
       document.documentElement.classList.remove('overflow-hidden')
     }
   }, [])
-  
+
+  // Si el foco se pierde (por ejemplo, al desmontarse el slider), devuélvelo al visor
+  useEffect(() => {
+    if (!isZoomed && document.activeElement === document.body) {
+      dialogRef.current?.focus()
+    }
+  }, [isZoomed])
+
   // Preload
   useEffect(() => {
     const prev = (index - 1 + total) % total
@@ -49,55 +60,148 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     img2.src = photos[next].large.src
   }, [index, photos, total])
 
-  const goNext = () => {
-    setIsZoomed(false)
-    const nextIdx = (index + 1) % total
-    if (document.startViewTransition) {
-      document.startViewTransition(() => onIndexChange(nextIdx))
+  // El zoom mantiene el centro de la vista
+  useLayoutEffect(() => {
+    const el = scrollContainerRef.current
+    if (!el) return
+    if (zoomLevel > MIN_ZOOM) {
+      el.scrollLeft = centerRef.current.x * el.scrollWidth - el.clientWidth / 2
+      el.scrollTop = centerRef.current.y * el.scrollHeight - el.clientHeight / 2
+    } else {
+      centerRef.current = { x: 0.5, y: 0.5 }
+    }
+  }, [zoomLevel])
+
+  const applyZoom = (n) => setZoomLevel(clampZoom(n))
+  const toggleZoom = () => setZoomLevel((z) => (z > MIN_ZOOM ? MIN_ZOOM : DEFAULT_ZOOM))
+
+  const changePhoto = (nextIdx) => {
+    setZoomLevel(MIN_ZOOM)
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (document.startViewTransition && !reduce) {
+      document.startViewTransition(() => {
+        flushSync(() => onIndexChange(nextIdx))
+      })
     } else {
       onIndexChange(nextIdx)
     }
   }
-
-  const goPrev = () => {
-    setIsZoomed(false)
-    const prevIdx = (index - 1 + total) % total
-    if (document.startViewTransition) {
-      document.startViewTransition(() => onIndexChange(prevIdx))
-    } else {
-      onIndexChange(prevIdx)
-    }
-  }
+  const goNext = () => changePhoto((index + 1) % total)
+  const goPrev = () => changePhoto((index - 1 + total) % total)
 
   const handleKeyDown = (e) => {
-    if (e.key === 'ArrowRight') goNext()
-    if (e.key === 'ArrowLeft') goPrev()
-  }
-
-  const handleClose = () => {
-    onClose()
-  }
-  
-  const handleDialogClick = (e) => {
-    if (e.target === dialogRef.current) {
-      onClose()
+    const onInput = e.target?.tagName === 'INPUT'
+    if (e.key === 'ArrowRight' && !isZoomed && !onInput) goNext()
+    else if (e.key === 'ArrowLeft' && !isZoomed && !onInput) goPrev()
+    else if (e.key === 'Escape') {
+      e.preventDefault()
+      if (isZoomed) {
+        setZoomLevel(MIN_ZOOM)
+        dialogRef.current?.focus()
+      } else {
+        onClose()
+      }
     }
   }
 
+  const handleDialogClick = (e) => {
+    if (e.target === dialogRef.current) onClose()
+  }
+
+  // ---- Táctil: deslizar entre fotos (sin zoom) y pellizcar ----
+  const pinchDistance = (touches) =>
+    Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY)
+
   const handleTouchStart = (e) => {
-    if (isZoomed) return; // Candado: bloquea el swipe si hay zoom
-    setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+    if (e.touches.length === 2) {
+      pinchRef.current = { dist: pinchDistance(e.touches), zoom: zoomLevel }
+      touchStartRef.current = null
+      return
+    }
+    if (isZoomed || e.touches.length !== 1) return
+    touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+  }
+
+  const handleTouchMove = (e) => {
+    if (e.touches.length === 2 && pinchRef.current) {
+      const ratio = pinchDistance(e.touches) / pinchRef.current.dist
+      applyZoom(pinchRef.current.zoom * ratio)
+    }
   }
 
   const handleTouchEnd = (e) => {
-    if (isZoomed || !touchStart) return; // Candado: aborta si hay zoom
-    const dx = e.changedTouches[0].clientX - touchStart.x
-    const dy = e.changedTouches[0].clientY - touchStart.y
+    if (pinchRef.current) {
+      if (e.touches.length < 2) pinchRef.current = null
+      touchStartRef.current = null
+      return
+    }
+    const start = touchStartRef.current
+    touchStartRef.current = null
+    if (isZoomed || !start) return
+    const dx = e.changedTouches[0].clientX - start.x
+    const dy = e.changedTouches[0].clientY - start.y
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
       if (dx > 0) goPrev()
       else goNext()
     }
-    setTouchStart(null)
+  }
+
+  // ---- Mouse: arrastrar para moverse con la foto ampliada ----
+  const endDrag = (e) => {
+    const d = dragRef.current
+    if (d.started && e?.currentTarget?.hasPointerCapture?.(e.pointerId)) {
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId)
+      } catch {
+        /* noop */
+      }
+    }
+    dragRef.current = { ...d, active: false, started: false }
+    setIsDragging(false)
+  }
+
+  const handlePointerDown = (e) => {
+    suppressClickRef.current = false
+    if (!isZoomed || e.pointerType !== 'mouse' || e.button !== 0) return
+    if (e.target.closest('[data-zoom-control], button, input')) return
+    const el = e.currentTarget
+    dragRef.current = {
+      active: true,
+      started: false,
+      x: e.clientX,
+      y: e.clientY,
+      left: el.scrollLeft,
+      top: el.scrollTop,
+    }
+  }
+
+  const handlePointerMove = (e) => {
+    const d = dragRef.current
+    if (!d.active || e.pointerType !== 'mouse') return
+    if ((e.buttons & 1) === 0) {
+      endDrag(e)
+      return
+    }
+    const dx = e.clientX - d.x
+    const dy = e.clientY - d.y
+    if (!d.started) {
+      if (Math.abs(dx) <= DRAG_THRESHOLD && Math.abs(dy) <= DRAG_THRESHOLD) return
+      d.started = true
+      suppressClickRef.current = true
+      setIsDragging(true)
+      e.currentTarget.setPointerCapture?.(e.pointerId)
+    }
+    e.currentTarget.scrollLeft = d.left - dx
+    e.currentTarget.scrollTop = d.top - dy
+  }
+
+  const handleScroll = (e) => {
+    if (!isZoomed) return
+    const el = e.currentTarget
+    centerRef.current = {
+      x: (el.scrollLeft + el.clientWidth / 2) / el.scrollWidth,
+      y: (el.scrollTop + el.clientHeight / 2) / el.scrollHeight,
+    }
   }
 
   // EXIF checks
@@ -105,42 +209,89 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   const hasExif = Object.values(e).some((val) => val !== null)
 
   const lang = i18n.language
-  const title = photo.title ? (photo.title[lang] || photo.title.es) : null
+  const title = photo.title ? photo.title[lang] || photo.title.es : null
 
   return (
-    <dialog
+    <div
       ref={dialogRef}
-      onClose={handleClose}
+      role="dialog"
+      aria-modal="true"
       onClick={handleDialogClick}
       onKeyDown={handleKeyDown}
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       aria-label={t('photography.lightboxLabel')}
-      className="fixed inset-0 m-0 h-dvh w-dvw max-h-none max-w-none bg-black/95 p-4 backdrop:bg-black/95 transition-opacity duration-150 animate-fade-in overscroll-none"
+      className="fixed inset-0 z-[100] m-0 h-dvh w-dvw max-h-none max-w-none bg-black/95 p-4 transition-opacity duration-150 overscroll-none animate-fade-in"
+      style={{ outline: 'none', colorScheme: 'dark' }}
+      tabIndex={-1}
     >
-      <div className="flex h-full flex-col">
-        <div className="flex justify-end mb-4 md:absolute md:top-4 md:right-4 md:z-10">
+      <div className="flex h-full flex-col" style={{ outline: 'none' }}>
+        <div className="flex justify-end mb-4 gap-2 z-[70] md:absolute md:top-4 md:right-4 [@media(max-height:520px)]:absolute [@media(max-height:520px)]:top-4 [@media(max-height:520px)]:right-4 [@media(max-height:520px)]:mb-0">
           <button
             type="button"
-            onClick={onClose}
+            onClick={toggleZoom}
+            aria-pressed={isZoomed}
+            aria-label={isZoomed ? t('photography.zoomOut') : t('photography.zoomIn')}
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+              {!isZoomed && <path d="M11 8v6" />}
+              <path d="M8 11h6" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (document.activeElement) document.activeElement.blur()
+              onClose()
+            }}
             aria-label={t('photography.close')}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors"
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <IconClose />
           </button>
         </div>
 
-        <div className={`flex flex-1 relative ${isZoomed ? 'overflow-auto items-start justify-start' : 'items-center justify-center'}`}>
+        <div
+          ref={scrollContainerRef}
+          className={`flex flex-1 relative min-h-0 ${
+            isZoomed
+              ? 'overflow-auto overscroll-contain items-start justify-start [&::-webkit-scrollbar]:hidden'
+              : 'items-center justify-center'
+          }`}
+          style={{
+            touchAction: isZoomed ? 'pan-x pan-y' : 'none',
+            ...(isZoomed ? { scrollbarWidth: 'none' } : {}),
+          }}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onLostPointerCapture={endDrag}
+          onScroll={handleScroll}
+          onDragStart={(ev) => ev.preventDefault()}
+        >
           <button
             type="button"
+            data-zoom-control
             onClick={goPrev}
-            className={`hidden md:flex left-4 z-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors ${isZoomed ? 'top-1/2 -translate-y-1/2 fixed' : 'absolute'}`}
+            aria-label={t('photography.prev')}
+            className={`hidden md:flex [@media(max-height:520px)]:flex left-4 z-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors ${
+              isZoomed ? 'top-1/2 -translate-y-1/2 fixed' : 'absolute top-1/2 -translate-y-1/2'
+            }`}
           >
             <IconChevronLeft />
           </button>
-          
-          <figure className={`flex flex-col m-auto relative ${isZoomed ? 'min-w-max' : 'items-center justify-center'}`}>
-            
+
+          <figure
+            className={`flex flex-col relative ${
+              isZoomed ? 'min-w-max pt-2 md:pt-6 w-fit h-fit' : 'm-auto w-full h-full items-center py-2 md:py-6'
+            }`}
+          >
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
                 <div className="w-12 h-12 border-4 border-white/10 border-t-accent rounded-full animate-spin shadow-[0_0_15px_rgba(255,106,26,0.3)]"></div>
@@ -150,48 +301,60 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             <img
               ref={imgRef}
               src={photo.large.src}
+              width={photo.large.width}
+              height={photo.large.height}
               alt={photo.alt[lang] || photo.alt.es}
+              draggable={false}
+              onDragStart={(ev) => ev.preventDefault()}
               onLoad={() => setIsLoading(false)}
               onClick={() => {
-                const toggle = () => {
-                  setIsZoomed(!isZoomed);
-                  if (!isZoomed) setZoomLevel(2.5);
-                };
-                if (document.startViewTransition) document.startViewTransition(toggle);
-                else toggle();
+                if (suppressClickRef.current) {
+                  suppressClickRef.current = false
+                  return
+                }
+                toggleZoom()
               }}
               style={{
                 viewTransitionName: 'lightbox-image',
                 aspectRatio: `${photo.large.width} / ${photo.large.height}`,
+                minWidth: '1px',
+                minHeight: '1px',
                 backgroundImage: `url(${photo.thumb.src})`,
-                backgroundSize: 'contain',
+                backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                ...(isZoomed ? { width: `${zoomLevel * 100}vw` } : {})
+                WebkitUserDrag: 'none',
+                ...(isZoomed ? { width: `${zoomLevel * 100}vw`, height: 'auto' } : {}),
               }}
-              className={`cursor-pointer ${
-                isZoomed 
-                  ? 'max-w-none max-h-none relative z-20 shadow-[0_0_100px_rgba(0,0,0,0.8)]' 
-                  : 'max-h-[55dvh] md:max-h-[72dvh] max-w-full object-contain'
+              className={`${
+                isZoomed ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-zoom-in'
+              } select-none ${
+                isZoomed
+                  ? 'max-w-none max-h-none shadow-[0_0_100px_rgba(0,0,0,0.8)]'
+                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] [@media(max-height:520px)]:max-h-[calc(100dvh-4rem)] max-w-full w-auto h-auto'
               }`}
             />
-            
             {!isZoomed && (
-              <figcaption className="mt-4 md:mt-5 text-center px-4 w-full animate-fade-in">
-                {title && <p className="text-sm md:text-[15px] font-semibold text-accent">{title}</p>}
-                {photo.description && (
-                  <p className="text-[12px] md:text-[13px] text-white/80 mt-1 max-w-2xl mx-auto leading-relaxed">
-                    {photo.description[lang] || photo.description.es}
+              <figcaption className="shrink-0 mt-3 md:mt-5 [@media(max-height:520px)]:mt-1 text-center px-4 w-full animate-fade-in z-20 flex flex-col [@media(max-height:520px)]:flex-row [@media(max-height:520px)]:items-center [@media(max-height:520px)]:justify-center [@media(max-height:520px)]:gap-3">
+                {title && (
+                  <p className="text-sm md:text-[15px] [@media(max-height:520px)]:text-[12px] font-semibold text-accent drop-shadow-md">
+                    {title}
                   </p>
                 )}
-                
-                <div className="mt-3 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] tracking-[0.2em] text-white/40 uppercase">
+
+                {title && (
+                  <span className="hidden [@media(max-height:520px)]:inline-block opacity-30 text-white/50 text-[12px]">—</span>
+                )}
+
+                <div className="mt-2 md:mt-3 [@media(max-height:520px)]:mt-0 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] [@media(max-height:520px)]:text-[12px] tracking-[0.2em] text-white/50 uppercase drop-shadow-md">
                   <span>{t('photography.counter', { current: index + 1, total })}</span>
-                  
-                  {hasExif && <span className="hidden md:inline-block opacity-30">|</span>}
-                  
+
                   {hasExif && (
-                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+                    <span className="hidden md:inline-block [@media(max-height:520px)]:hidden opacity-30">|</span>
+                  )}
+
+                  {hasExif && (
+                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 [@media(max-height:520px)]:hidden">
                       {e.camera && <span>{e.camera}</span>}
                       {e.focalLength && <span>{e.focalLength}</span>}
                       {e.aperture && <span>{e.aperture}</span>}
@@ -205,44 +368,61 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           </figure>
 
           {isZoomed && (
-            <div className="fixed bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-[60] bg-black/40 px-5 py-2.5 rounded-full flex gap-4 items-center backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] animate-fade-in">
-              <button 
-                onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.max(0.5, zoomLevel - 0.5)); }} 
+            <div
+              data-zoom-control
+              onPointerDown={(ev) => ev.stopPropagation()}
+              onClick={(ev) => ev.stopPropagation()}
+              className="fixed bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-[60] bg-black/40 px-5 py-2.5 rounded-full flex gap-4 items-center backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] animate-fade-in"
+            >
+              <button
+                type="button"
+                onClick={() => applyZoom(zoomLevel - 0.5)}
                 className="text-white/60 hover:text-white transition-colors p-1"
-                aria-label="Alejar"
+                aria-label={t('photography.zoomOut')}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                  <path d="M5 12h14" />
+                </svg>
               </button>
-              
-              <input 
-                type="range" 
-                min="0.5" max="5" step="0.1" 
-                value={zoomLevel} 
-                onChange={(e) => setZoomLevel(parseFloat(e.target.value))} 
-                onClick={(e) => e.stopPropagation()}
+
+              <input
+                type="range"
+                min={MIN_ZOOM}
+                max={MAX_ZOOM}
+                step="0.1"
+                value={zoomLevel}
+                onChange={(ev) => applyZoom(parseFloat(ev.target.value))}
+                aria-label={t('photography.zoomIn')}
                 className="w-24 md:w-32 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(255,255,255,0.8)]"
               />
-              
-              <button 
-                onClick={(e) => { e.stopPropagation(); setZoomLevel(Math.min(5, zoomLevel + 0.5)); }} 
+
+              <button
+                type="button"
+                onClick={() => applyZoom(zoomLevel + 0.5)}
                 className="text-white/60 hover:text-white transition-colors p-1"
-                aria-label="Acercar"
+                aria-label={t('photography.zoomIn')}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
               </button>
             </div>
           )}
-          
+
           <button
             type="button"
+            data-zoom-control
             onClick={goNext}
-            className={`hidden md:flex right-4 z-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors ${isZoomed ? 'top-1/2 -translate-y-1/2 fixed' : 'absolute'}`}
+            aria-label={t('photography.next')}
+            className={`hidden md:flex [@media(max-height:520px)]:flex right-4 z-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors ${
+              isZoomed ? 'top-1/2 -translate-y-1/2 fixed' : 'absolute top-1/2 -translate-y-1/2'
+            }`}
           >
             <IconChevronRight />
           </button>
         </div>
 
-        <div className="flex md:hidden justify-between mt-4">
+        <div className="flex md:hidden [@media(max-height:520px)]:hidden justify-between mt-4">
           <button
             type="button"
             onClick={goPrev}
@@ -261,8 +441,6 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           </button>
         </div>
       </div>
-    </dialog>
+    </div>
   )
 }
-
-

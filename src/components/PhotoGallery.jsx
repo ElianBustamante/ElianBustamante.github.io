@@ -1,56 +1,75 @@
 import { useTranslation } from 'react-i18next'
 import { useRef, useState, useEffect, useCallback } from 'react'
+import { flushSync } from 'react-dom'
 import Section from './Section'
-import Reveal from './Reveal'
 import { IconChevronLeft, IconChevronRight } from './icons'
 import Lightbox from './Lightbox'
 import photosData from '../data/photos.json'
-import { paginatePhotos } from '../lib/paginatePhotos'
 
 export default function PhotoGallery() {
   const { t, i18n } = useTranslation()
   const containerRef = useRef(null)
   const listRef = useRef(null)
   
-  const [pagesData, setPagesData] = useState({ pages: [], height: 375, width: 0 })
-  const [currentPage, setCurrentPage] = useState(0)
+  const [galleryHeight, setGalleryHeight] = useState(400)
   
-  const visiblePhotoRef = useRef(0)
-  const isResizingRef = useRef(false)
-
+  // Arrow state based on exact scroll position, not active photo index
+  const [isAtStart, setIsAtStart] = useState(true)
+  const [isAtEnd, setIsAtEnd] = useState(false)
+  const [showButtons, setShowButtons] = useState(false)
+  
   const [lightboxIndex, setLightboxIndex] = useState(null)
   const lastFocusRef = useRef(null)
+  const isTransitioningRef = useRef(false)
+
+  const checkScroll = useCallback(() => {
+    if (!listRef.current) return
+    const { scrollLeft, scrollWidth, clientWidth } = listRef.current
+    setShowButtons(scrollWidth > clientWidth)
+    setIsAtStart(scrollLeft <= 5)
+    setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 5)
+  }, [])
 
   const recalculate = useCallback(() => {
     if (!containerRef.current) return
     const W = containerRef.current.clientWidth
     if (W === 0) return
     
-    let h = 375
-    if (W >= 1024) h = 375
-    else if (W >= 640) h = 280
-    else h = Math.min(Math.floor(W / 1.5), 360)
+    const H = window.innerHeight
 
-    const aspects = photosData.map(p => p.thumb.width / p.thumb.height)
-    const newPages = paginatePhotos(aspects, h, W, 12)
+    // Calculamos el ratio de la pantalla (Ancho / Alto) para hacer el carrusel hiper-responsivo
+    const ratio = W / H;
     
-    setPagesData({ pages: newPages, height: h, width: W })
+    // Altura base puramente fluida
+    let h = H * 0.50; 
+    
+    if (window.matchMedia('(max-height: 520px)').matches) {
+      h = Math.max(150, Math.min(340, H - 132));
+    } else {
+      if (ratio > 2) {
+        // Pantallas extremadamente chatas / súper horizontales (ej. celulares apaisados)
+        h = H * 0.60;
+      } else if (ratio > 1.2) {
+        // Pantallas normales horizontales (ej. Laptops, Monitores)
+        h = H * 0.59; 
+      } else if (ratio < 0.6) {
+        // Pantallas súper verticales (ej. Celulares muy altos y estrechos)
+        // Como hay mucho espacio vertical, dejamos que las fotos crezcan más para llenarlo
+        h = H * 0.55;
+      } else {
+        // Pantallas cuadradas o ligeramente verticales
+        h = H * 0.50;
+      }
 
-    let newPageIdx = newPages.findIndex(p => p.includes(visiblePhotoRef.current))
-    if (newPageIdx === -1) newPageIdx = 0
-    
-    setCurrentPage(newPageIdx)
-    
-    if (listRef.current) {
-      isResizingRef.current = true
-      listRef.current.style.scrollBehavior = 'auto'
-      listRef.current.scrollLeft = newPageIdx * W
-      requestAnimationFrame(() => {
-        if (listRef.current) listRef.current.style.scrollBehavior = ''
-        setTimeout(() => { isResizingRef.current = false }, 50)
-      })
+      // Eliminamos los topes rígidos (Math.min de 400px o 800px) y dejamos que escale de forma fluida infinita.
+      // Solo dejamos un tope mínimo por seguridad absoluta para no romper el CSS interno en pantallas minúsculas.
+      h = Math.max(h, H * 0.25); // Nunca será menor al 25% del alto
     }
-  }, [])
+
+
+    setGalleryHeight(h)
+    checkScroll()
+  }, [checkScroll])
 
   useEffect(() => {
     if (!photosData || photosData.length === 0) return
@@ -58,114 +77,166 @@ export default function PhotoGallery() {
     const currentContainer = containerRef.current
     const observer = new ResizeObserver(recalculate)
     if (currentContainer) observer.observe(currentContainer)
+    window.addEventListener('resize', recalculate)
+    window.addEventListener('orientationchange', recalculate)
     return () => {
       observer.disconnect()
+      window.removeEventListener('resize', recalculate)
+      window.removeEventListener('orientationchange', recalculate)
     }
   }, [recalculate])
-
-  const handleScroll = useCallback(() => {
-    if (!listRef.current || !containerRef.current || isResizingRef.current) return
-    const W = containerRef.current.clientWidth
-    const newPage = Math.round(listRef.current.scrollLeft / W)
-    if (newPage !== currentPage && pagesData.pages[newPage]) {
-      setCurrentPage(newPage)
-      visiblePhotoRef.current = pagesData.pages[newPage][0]
-    }
-  }, [currentPage, pagesData.pages])
 
   useEffect(() => {
     const list = listRef.current
     if (list) {
-      list.addEventListener('scroll', handleScroll, { passive: true })
-      return () => list.removeEventListener('scroll', handleScroll)
+      list.addEventListener('scroll', checkScroll, { passive: true })
+      return () => list.removeEventListener('scroll', checkScroll)
     }
-  }, [handleScroll])
+  }, [checkScroll])
 
-  const scrollPrev = () => {
+  const scrollByAmount = (direction) => {
     if (listRef.current && containerRef.current) {
       const W = containerRef.current.clientWidth
-      listRef.current.scrollTo({ left: (currentPage - 1) * W, behavior: 'smooth' })
+      listRef.current.scrollBy({ left: W * 0.8 * direction, behavior: 'smooth' })
     }
   }
 
-  const scrollNext = () => {
-    if (listRef.current && containerRef.current) {
-      const W = containerRef.current.clientWidth
-      listRef.current.scrollTo({ left: (currentPage + 1) * W, behavior: 'smooth' })
-    }
-  }
-
-  const openLightbox = (index, event) => {
+  const openLightbox = async (index, event) => {
+    if (isTransitioningRef.current) return
     lastFocusRef.current = event.currentTarget
     
-    // Freno de mano: detener cualquier deslizamiento suave o inercia instantáneamente
     if (listRef.current) {
       listRef.current.style.scrollBehavior = 'auto'
-      listRef.current.scrollLeft = listRef.current.scrollLeft
+      // Ensure visual update
       requestAnimationFrame(() => {
         if (listRef.current) listRef.current.style.scrollBehavior = ''
       })
     }
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!document.startViewTransition || reduce) {
+      setLightboxIndex(index)
+      return
+    }
+
+    isTransitioningRef.current = true
+    if (containerRef.current) containerRef.current.style.pointerEvents = 'none'
+
+    // Apuntamos EXACTAMENTE a la etiqueta <img> para un morphing puro y limpio
+    const imgEl = event.currentTarget.querySelector('img')
+
+    try {
+      const largeSrc = photosData[index].large.src
+      const pre = new Image()
+      pre.src = largeSrc
+      await pre.decode().catch(() => {})
+    } catch {}
+
+    // Limpiamos nombres de transiciones anteriores por seguridad
+    document.querySelectorAll('button[id^="thumb-"] img').forEach(img => {
+      img.style.removeProperty('view-transition-name')
+    })
+
+    if (imgEl) {
+      imgEl.style.viewTransitionName = 'lightbox-image'
+    }
     
-    if (document.startViewTransition) {
-      // Garbage Collector: Limpieza brutal de cualquier miniatura que se haya quedado con la etiqueta pegada
-      document.querySelectorAll('button[id^="thumb-"]').forEach(btn => {
-        btn.style.viewTransitionName = ''
+    const root = document.documentElement
+    root.setAttribute('data-vt', 'open')
+
+    try {
+      const transition = document.startViewTransition(() => {
+        if (imgEl) {
+          imgEl.style.removeProperty('view-transition-name')
+        }
+        flushSync(() => setLightboxIndex(index))
       })
 
-      const imgEl = document.getElementById(`thumb-${index}`)
-      if (imgEl) {
-        imgEl.style.viewTransitionName = 'lightbox-image'
-        // Forzar visibilidad sólida instantánea del contenedor Reveal
-        const li = imgEl.closest('li')
-        if (li) {
-          li.style.transition = 'none'
-          li.style.opacity = '1'
-          li.style.transform = 'none'
+      transition.ready.catch((e) => console.warn('VT omitida open:', e?.name, e?.message))
+
+      transition.finished.catch(() => {}).finally(() => {
+        if (imgEl) {
+          imgEl.style.removeProperty('view-transition-name')
         }
-      }
-      
-      document.startViewTransition(() => {
-        if (imgEl) imgEl.style.viewTransitionName = ''
-        setLightboxIndex(index)
+        delete root.dataset.vt
+        if (containerRef.current) containerRef.current.style.pointerEvents = ''
+        isTransitioningRef.current = false
       })
-    } else {
+    } catch (e) {
+      console.error(e)
       setLightboxIndex(index)
+      if (imgEl) {
+        imgEl.style.removeProperty('view-transition-name')
+      }
+      root.removeAttribute('data-vt')
+      if (containerRef.current) containerRef.current.style.pointerEvents = ''
+      isTransitioningRef.current = false
     }
   }
 
   const closeLightbox = () => {
-    if (document.startViewTransition) {
-      // Garbage Collector: Limpieza brutal de cualquier miniatura que se haya quedado con la etiqueta pegada
-      document.querySelectorAll('button[id^="thumb-"]').forEach(btn => {
-        btn.style.viewTransitionName = ''
-      })
+    if (isTransitioningRef.current) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!document.startViewTransition || reduce) {
+      setLightboxIndex(null)
+      return
+    }
 
-      const imgEl = document.getElementById(`thumb-${lightboxIndex}`)
-      
+    isTransitioningRef.current = true
+    if (containerRef.current) containerRef.current.style.pointerEvents = 'none'
+
+    document.querySelectorAll('button[id^="thumb-"] img').forEach(img => {
+      img.style.removeProperty('view-transition-name')
+    })
+
+    const imgEl = document.querySelector(`#thumb-${lightboxIndex} img`)
+
+    try {
       const transition = document.startViewTransition(() => {
+        const lightboxImg = document.querySelector('.fixed.z-50 img')
+        if (lightboxImg) lightboxImg.style.removeProperty('view-transition-name')
+
         if (imgEl) {
           imgEl.style.viewTransitionName = 'lightbox-image'
-          // Forzar visibilidad sólida al aterrizar, incluso si la página no estaba visible
-          const li = imgEl.closest('li')
-          if (li) {
-            li.style.transition = 'none'
-            li.style.opacity = '1'
-            li.style.transform = 'none'
-          }
         }
-        setLightboxIndex(null)
-        if (lastFocusRef.current) lastFocusRef.current.focus()
+        
+        flushSync(() => setLightboxIndex(null))
       })
 
-      transition.finished.finally(() => {
-        if (imgEl) imgEl.style.viewTransitionName = ''
+      transition.ready.catch((e) => console.warn('VT omitida close:', e?.name, e?.message))
+
+      transition.finished.catch(() => {}).finally(() => {
+        if (imgEl) {
+          imgEl.style.removeProperty('view-transition-name')
+        }
+        if (containerRef.current) containerRef.current.style.pointerEvents = ''
+        isTransitioningRef.current = false
       })
-    } else {
+    } catch (e) {
+      console.error(e)
       setLightboxIndex(null)
-      if (lastFocusRef.current) lastFocusRef.current.focus()
+      if (imgEl) {
+        imgEl.style.removeProperty('view-transition-name')
+      }
+      if (containerRef.current) containerRef.current.style.pointerEvents = ''
+      isTransitioningRef.current = false
     }
   }
+
+  // Sincronizar el scroll del carrusel oculto con el índice del lightbox
+  // Así cuando cerramos, la animación vuela a la foto correcta en pantalla
+  useEffect(() => {
+    if (lightboxIndex !== null && listRef.current) {
+      const imgEl = document.getElementById(`thumb-${lightboxIndex}`)
+      if (imgEl) {
+        const li = imgEl.closest('li')
+        if (li) {
+          // Centramos la foto en el carrusel de fondo sin animación
+          li.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' })
+        }
+      }
+    }
+  }, [lightboxIndex])
   
   if (!photosData || photosData.length === 0) {
     return (
@@ -175,28 +246,25 @@ export default function PhotoGallery() {
     )
   }
 
-  const totalPages = pagesData.pages.length
-  const showArrows = totalPages > 1
-
-  const actions = showArrows ? (
-    <div className="flex items-center gap-2">
+  const actions = showButtons ? (
+    <div className="flex items-center gap-2 relative z-10">
       <button
         type="button"
-        onClick={scrollPrev}
-        disabled={currentPage === 0}
+        onClick={() => scrollByAmount(-1)}
+        disabled={isAtStart}
         aria-label={t('photography.scrollPrev')}
-        className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-border disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors"
+        className="flex min-h-[36px] min-w-[36px] md:min-h-[44px] md:min-w-[44px] items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none"
       >
-        <IconChevronLeft />
+        <IconChevronLeft className="pointer-events-none" />
       </button>
       <button
         type="button"
-        onClick={scrollNext}
-        disabled={currentPage === totalPages - 1}
+        onClick={() => scrollByAmount(1)}
+        disabled={isAtEnd}
         aria-label={t('photography.scrollNext')}
-        className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-border disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors"
+        className="flex min-h-[36px] min-w-[36px] md:min-h-[44px] md:min-w-[44px] items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none"
       >
-        <IconChevronRight />
+        <IconChevronRight className="pointer-events-none" />
       </button>
     </div>
   ) : null
@@ -204,75 +272,53 @@ export default function PhotoGallery() {
   return (
     <>
       <Section id="fotografia" titleKey="photography.title" actions={actions}>
-        <p className="text-muted mb-4">{t('photography.intro')}</p>
+        <p className="text-muted text-sm md:text-base mb-4 [@media(max-height:500px)]:mb-2 [@media(max-height:500px)_and_(orientation:landscape)]:text-[12px] [@media(max-height:500px)_and_(orientation:landscape)]:leading-snug">{t('photography.intro')}</p>
         <div ref={containerRef} className="w-full">
           <ul
             role="list"
             ref={listRef}
-            className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden [scrollbar-width:none] py-4 -my-4"
+            className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden [scrollbar-width:none] py-4 -my-4 px-4 -mx-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 gap-3"
           >
-            {pagesData.pages.map((pageIndices, pageIndex) => (
-              <li key={pageIndex} className="w-full shrink-0 snap-start">
-                <ul
-                  role="list"
-                  className="flex w-full items-center"
-                  style={{
-                    height: pagesData.height,
-                    gap: 12,
-                    justifyContent: 'flex-start'
-                  }}
+            {photosData.map((photo, i) => {
+              const aspect = photo.thumb.width / photo.thumb.height
+              const w = Math.floor(galleryHeight * aspect)
+              
+              return (
+                <li
+                  key={photo.id}
+                  className="shrink-0 snap-center"
+                  style={{ height: galleryHeight, width: w }}
                 >
-                  {pageIndices.map((index, i) => {
-                    const photo = photosData[index]
-                    const aspect = photo.thumb.width / photo.thumb.height
-                    const w = Math.floor(pagesData.height * aspect)
-                    return (
-                      <Reveal
-                        as="li"
-                        key={photo.id}
-                        delay={150 + i * 120}
-                        style={{ height: pagesData.height, width: w }}
-                      >
-                        <button
-                          id={`thumb-${index}`}
-                          type="button"
-                          onClick={(e) => openLightbox(index, e)}
-                          className="group relative block h-full w-full overflow-hidden rounded-card transition-all duration-200 hover:shadow-[0_0_24px_rgba(255,106,26,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                        >
-                          {/* Capa 0: Esqueleto de fondo */}
-                          <div className="absolute inset-0 z-0 bg-surface-2/60 animate-pulse"></div>
-                          
-                          {/* Capa 10: Fotografía */}
-                          <img
-                            src={photo.thumb.src}
-                            width={photo.thumb.width}
-                            height={photo.thumb.height}
-                            alt={photo.alt[i18n.language] || photo.alt.es}
-                            loading={pageIndex === 0 ? 'eager' : 'lazy'}
-                            decoding="async"
-                            className="relative z-10 block h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:transform-none"
-                            style={{ aspectRatio: `${photo.thumb.width} / ${photo.thumb.height}` }}
-                          />
-                          
-                          {/* Capa 20: Overlay "Ver Detalles" (Intocable) */}
-                          <div className="absolute inset-0 z-20 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-                            <span className="text-white font-semibold text-sm px-4 py-2 bg-black/60 rounded-full backdrop-blur-sm">
-                              {t('photography.viewDetails')}
-                            </span>
-                          </div>
-                        </button>
-                      </Reveal>
-                    )
-                  })}
-                </ul>
-              </li>
-            ))}
+                  <button
+                    id={`thumb-${i}`}
+                    type="button"
+                    onClick={(e) => openLightbox(i, e)}
+                    className="group relative block h-full w-full overflow-hidden rounded-card transition-all duration-200 hover:shadow-[0_0_24px_rgba(255,106,26,0.18)] outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none"
+                  >
+                    <div className="absolute inset-0 z-0 bg-surface-2/60 animate-pulse"></div>
+                    
+                    <img
+                      src={photo.thumb.src}
+                      width={photo.thumb.width}
+                      height={photo.thumb.height}
+                      alt={photo.alt[i18n.language] || photo.alt.es}
+                      loading={i < 4 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      draggable="false"
+                      className="relative z-10 block h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:transform-none select-none"
+                      style={{ aspectRatio: `${photo.thumb.width} / ${photo.thumb.height}` }}
+                    />
+                    
+                    <div className="absolute inset-0 z-20 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                      <span className="text-white font-semibold text-sm px-4 py-2 bg-black/60 rounded-full backdrop-blur-sm">
+                        {t('photography.viewDetails')}
+                      </span>
+                    </div>
+                  </button>
+                </li>
+              )
+            })}
           </ul>
-          {showArrows && (
-            <p aria-live="polite" className="text-muted text-[0.875rem] mt-4 text-center">
-              {t('photography.pageCounter', { current: currentPage + 1, total: totalPages })}
-            </p>
-          )}
         </div>
       </Section>
       

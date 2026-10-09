@@ -14,7 +14,9 @@
     "menuOpen": "Abrir menú",
     "menuClose": "Cerrar menú",
     "switchToEn": "Cambiar idioma a inglés",
-    "switchToEs": "Cambiar idioma a español"
+    "switchToEs": "Cambiar idioma a español",
+    "prevSection": "Sección anterior",
+    "nextSection": "Siguiente sección"
   },
   "hero": {
     "titleLine1": "Capturando paisajes.",
@@ -32,14 +34,14 @@
     "viewDemo": "Ver demo",
     "items": {
       "gamesDealTracker": {
-        "name": "TODO(elian): Games Deal Tracker",
+        "name": "Games Deal Tracker",
         "category": "Bot de Discord",
-        "description": "Bot de Discord que rastrea ofertas de videojuegos. Está desplegado en PebbleHost. Próximo paso: soporte para Epic Games Store."
+        "description": "Rastrea ofertas de Steam y Epic Games Store: descuentos, mínimos históricos y juegos gratis semanales."
       },
       "priceAlertBot": {
-        "name": "TODO(elian): Price Alert Bot",
-        "category": "Bot de Telegram",
-        "description": "Bot de Telegram de uso personal que envía alertas de precios de tiendas chilenas como Falabella, Ripley, Paris, MercadoLibre y PCFactory. Usa SerpAPI y seguimiento de URLs de tiendas."
+        "name": "Price Alert Bot",
+        "category": "Bot de WhatsApp",
+        "description": "Alertas de precios por WhatsApp de tiendas chilenas y de USA, con SerpAPI y seguimiento de URLs."
       },
       "pipeline3d": {
         "name": "TODO(elian): Pipeline de procesamiento 3D",
@@ -50,11 +52,13 @@
   },
   "photography": {
     "title": "Fotografía",
-    "intro": "Una selección de fotografías de los colores del otoño y el invierno en la Araucanía, entre Currarehue y el Paso Mamuil Malal. Además, algunos saltos de agua con efecto seda y, para cerrar, un eclipse lunar total.",
+    "intro": "Una selección de fotografías del otoño y el invierno en la Araucanía, más saltos de agua y un eclipse lunar total.",
     "viewDetails": "Ver detalles", "lightboxLabel": "Visor de fotografías",
     "close": "Cerrar",
     "prev": "Foto anterior",
     "next": "Foto siguiente",
+    "zoomIn": "Ampliar",
+    "zoomOut": "Reducir",
     "counter": "Foto {{current}} de {{total}}",
     "exif": {
       "camera": "Cámara",

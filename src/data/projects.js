@@ -1,23 +1,27 @@
 export const projectsData = [
   {
     id: 'gamesDealTracker',
-    image: null, // TODO(elian): Add WebP image to src/assets/projects/ and import it here
-    tags: ['TODO(elian): Tech 1', 'TODO(elian): Tech 2'], // TODO(elian): Add actual techs used
-    repoUrl: null, // TODO(elian): Add repo URL or keep null if private
-    demoUrl: null, // TODO(elian): Add demo URL or keep null
+    image: null, 
+    icon: 'discord', // <--- Ícono de Discord
+    tags: ['Python 3.11+', 'discord.py', 'aiohttp', 'curl-cffi', 'SQLite', 'pytest'], 
+    repoUrl: 'https://github.com/ElianBustamante/games-deal-tracker', 
+    demoUrl: 'https://discord.com/oauth2/authorize?client_id=1501675277846052934', 
+    demoLabel: 'Invitar Bot' 
   },
   {
     id: 'priceAlertBot',
-    image: null, // TODO(elian): Add image
-    tags: ['TODO(elian): Tech'], // TODO(elian): Add tags
-    repoUrl: null, // TODO(elian): Add repo URL
-    demoUrl: null, // TODO(elian): Add demo URL
+    image: null, 
+    icon: 'bot', // <--- Muestra un ícono de robot gigante
+    tags: ['Python 3.11+', 'CallMeBot API', 'SerpAPI', 'GitHub Actions', 'pytest'], 
+    repoUrl: 'https://github.com/ElianBustamante/price-alert-bot', 
+    demoUrl: null, 
   },
   {
     id: 'pipeline3d',
-    image: null, // TODO(elian): Add image
-    tags: ['TODO(elian): Tech'], // TODO(elian): Add tags
-    repoUrl: null, // TODO(elian): Add repo URL
-    demoUrl: null, // TODO(elian): Add demo URL
+    image: null, 
+    icon: 'database', // <--- Muestra un ícono de base de datos/pipeline gigante
+    tags: ['Python', 'WebGL', 'FONDECYT'], 
+    repoUrl: "dfkdfkdk", 
+    demoUrl: null, 
   }
 ]
