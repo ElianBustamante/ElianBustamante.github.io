@@ -125,4 +125,16 @@ describe('NavRail', () => {
     })
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
+
+  it('SHORT_SCREEN_QUERY contiene ambas condiciones apaisadas (<=520px y <=1023px con <=620px)', () => {
+    expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-height: 520px)')
+    expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-width: 1023px) and (max-height: 620px)')
+  })
+
+  it('el riel incluye la clase short:flex y hidden', () => {
+    const { container } = render(<NavRail activeId="inicio" />)
+    const nav = container.querySelector('nav')
+    expect(nav.className).toContain('short:flex')
+    expect(nav.className).toContain('hidden')
+  })
 })

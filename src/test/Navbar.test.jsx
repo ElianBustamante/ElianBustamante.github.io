@@ -49,4 +49,10 @@ describe('Navbar', () => {
     fireEvent.pointerDown(document.body)
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
+
+  it('la cabecera superior incluye la clase short:hidden', () => {
+    const { container } = render(<Navbar />)
+    const header = container.querySelector('header')
+    expect(header.className).toContain('short:hidden')
+  })
 })
