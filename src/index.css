@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant short (@media (orientation: landscape) and (max-height: 520px), (orientation: landscape) and (max-width: 1023px) and (max-height: 620px));
+
 @theme {
   --color-bg: #0a0a0a;
   --color-surface: #141312;
@@ -28,7 +30,7 @@ html {
   --header-h: 5.5rem;
   --rail-w: 0px;
 }
-@media (max-height: 520px) and (orientation: landscape) {
+@media (orientation: landscape) and (max-height: 520px), (orientation: landscape) and (max-width: 1023px) and (max-height: 620px) {
   :root {
     --header-h: 0px;
     --rail-w: 4.5rem;

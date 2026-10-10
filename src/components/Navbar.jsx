@@ -86,7 +86,7 @@ export default function Navbar() {
         />
       )}
       
-      <header className="fixed top-0 right-0 z-50 w-full pointer-events-none animate-nav-in transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] [@media(max-height:520px)_and_(orientation:landscape)]:hidden">
+      <header className="fixed top-0 right-0 z-50 w-full pointer-events-none animate-nav-in transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] short:hidden">
         <div className="pt-4 pb-4 px-2 min-[400px]:px-4 md:px-6 lg:px-8 max-w-[1200px] mx-auto pointer-events-auto flex gap-2">
           
           {/* Main Navigation */}

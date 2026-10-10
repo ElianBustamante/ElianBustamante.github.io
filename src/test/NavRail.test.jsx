@@ -4,6 +4,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import NavRail from '../components/NavRail'
 import React from 'react'
 import i18n from '../i18n'
+import { SHORT_SCREEN_QUERY } from '../lib/media'
 
 describe('NavRail', () => {
   beforeEach(() => {
@@ -103,7 +104,7 @@ describe('NavRail', () => {
       removeEventListener: vi.fn(),
     }
     window.matchMedia = vi.fn().mockImplementation((query) => {
-      if (query === '(max-height: 520px) and (orientation: landscape)') {
+      if (query === SHORT_SCREEN_QUERY) {
         return mqlMock
       }
       return { matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }

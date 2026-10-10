@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import LanguageToggle from './LanguageToggle'
 import { IconMenu, IconClose } from './icons'
 import { scrollToElement } from '../lib/scroll'
+import { SHORT_SCREEN_QUERY } from '../lib/media'
 
 const links = [
   { href: '#inicio', key: 'nav.home' },
@@ -40,7 +41,7 @@ export default function NavRail({ activeId }) {
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return
-    const mql = window.matchMedia('(max-height: 520px) and (orientation: landscape)')
+    const mql = window.matchMedia(SHORT_SCREEN_QUERY)
     const handleChange = (e) => {
       if (!e.matches) {
         setMenuOpen(false)
@@ -93,7 +94,7 @@ export default function NavRail({ activeId }) {
     <>
       <nav 
         aria-label={t('nav.aria')}
-        className="hidden [@media(max-height:520px)_and_(orientation:landscape)]:flex fixed left-[max(0.5rem,env(safe-area-inset-left))] top-2 bottom-2 w-[56px] z-[60] flex-col justify-between items-center py-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px]"
+        className="hidden short:flex fixed left-[max(0.5rem,env(safe-area-inset-left))] top-2 bottom-2 w-[56px] z-[60] flex-col justify-between items-center py-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px]"
       >
         <a 
           href="#inicio" 
@@ -149,7 +150,7 @@ export default function NavRail({ activeId }) {
         <div 
           id="rail-menu"
           ref={menuRef}
-          className="hidden [@media(max-height:520px)_and_(orientation:landscape)]:flex fixed top-2 left-[calc(max(0.5rem,env(safe-area-inset-left))+56px+0.5rem)] w-[240px] max-h-[calc(100dvh-1rem)] overflow-y-auto [scrollbar-width:none] z-[100] flex-col gap-1 p-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] shadow-2xl"
+          className="hidden short:flex fixed top-2 left-[calc(max(0.5rem,env(safe-area-inset-left))+56px+0.5rem)] w-[240px] max-h-[calc(100dvh-1rem)] overflow-y-auto [scrollbar-width:none] z-[100] flex-col gap-1 p-2 bg-surface/80 backdrop-blur-md border border-border rounded-[22px] shadow-2xl"
         >
           {links.map((link, index) => {
             const isActive = activeId === link.href.substring(1)

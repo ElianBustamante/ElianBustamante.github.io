@@ -5,6 +5,7 @@ import Section from './Section'
 import { IconChevronLeft, IconChevronRight } from './icons'
 import Lightbox from './Lightbox'
 import photosData from '../data/photos.json'
+import { SHORT_SCREEN_QUERY } from '../lib/media'
 
 export default function PhotoGallery() {
   const { t, i18n } = useTranslation()
@@ -43,7 +44,7 @@ export default function PhotoGallery() {
     // Altura base puramente fluida
     let h = H * 0.50; 
     
-    if (window.matchMedia('(max-height: 520px) and (orientation: landscape)').matches || window.matchMedia('(max-height: 520px)').matches) {
+    if (window.matchMedia(SHORT_SCREEN_QUERY).matches) {
       h = Math.max(150, Math.min(340, H - 124));
     } else {
       if (ratio > 2) {

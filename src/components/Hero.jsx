@@ -10,7 +10,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="snap-start relative z-0 min-h-[100svh] flex flex-col justify-center pt-32 pb-20 [@media(max-height:520px)]:pt-24 [@media(max-height:520px)]:pb-8 [@media(max-height:520px)_and_(orientation:landscape)]:pt-3"
+      className="snap-start relative z-0 min-h-[100svh] flex flex-col justify-center pt-32 pb-20 [@media(max-height:520px)]:pt-24 [@media(max-height:520px)]:pb-8 short:pt-3"
     >
       {bgUrl && (
         <div 
@@ -77,7 +77,7 @@ export default function Hero() {
           scrollToElement(next);
         }} 
         aria-label={t('nav.nextSection')} 
-        className="absolute flex items-center justify-center min-h-[44px] min-w-[44px] bottom-4 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce [@media(max-height:520px)_and_(orientation:landscape)]:hidden"
+        className="absolute flex items-center justify-center min-h-[44px] min-w-[44px] bottom-4 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce short:hidden"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
       </button>
