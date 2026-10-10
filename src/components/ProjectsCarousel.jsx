@@ -100,7 +100,7 @@ export default function ProjectsCarousel() {
           </Reveal>
         ))}
       </ul>
-      <div className="mt-4 text-center md:hidden short:block short:m-2" aria-live="polite">
+      <div className="mt-4 text-center md:hidden short:block short:m-2 [@media(max-height:330px)]:hidden" aria-live="polite">
         <span className="text-muted text-[0.875rem] font-medium">
           {activeIndex + 1} / {projectsData.length}
         </span>
