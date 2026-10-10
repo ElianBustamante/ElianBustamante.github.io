@@ -87,7 +87,7 @@ export default function ProjectsCarousel() {
       <ul
         role="list"
         ref={listRef}
-        className="flex snap-x snap-mandatory gap-x-4 sm:gap-6 overflow-x-auto overflow-y-hidden scroll-smooth py-6 px-4 -mx-4 -my-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 [scrollbar-width:none]"
+        className="flex snap-x snap-mandatory gap-x-4 sm:gap-6 overflow-x-auto overflow-y-hidden scroll-smooth py-6 px-4 -mx-4 -my-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 [scrollbar-width:none] [@media(max-height:520px)_and_(orientation:landscape)]:py-0 [@media(max-height:520px)_and_(orientation:landscape)]:my-0 [@media(max-height:520px)_and_(orientation:landscape)]:mb-3"
       >
         {projectsData.map((project, index) => (
           <Reveal
@@ -100,7 +100,7 @@ export default function ProjectsCarousel() {
           </Reveal>
         ))}
       </ul>
-      <div className="mt-4 text-center md:hidden" aria-live="polite">
+      <div className="mt-4 text-center md:hidden [@media(max-height:520px)_and_(orientation:landscape)]:block [@media(max-height:520px)_and_(orientation:landscape)]:m-2" aria-live="polite">
         <span className="text-muted text-[0.875rem] font-medium">
           {activeIndex + 1} / {projectsData.length}
         </span>
