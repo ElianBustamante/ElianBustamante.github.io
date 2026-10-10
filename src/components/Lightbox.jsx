@@ -274,6 +274,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           onLostPointerCapture={endDrag}
           onScroll={handleScroll}
           onDragStart={(ev) => ev.preventDefault()}
+          onContextMenu={(e) => e.preventDefault()}
         >
           <button
             type="button"
@@ -306,6 +307,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               alt={photo.alt[lang] || photo.alt.es}
               draggable={false}
               onDragStart={(ev) => ev.preventDefault()}
+              onContextMenu={(e) => e.preventDefault()}
               onLoad={() => setIsLoading(false)}
               onClick={() => {
                 if (suppressClickRef.current) {
@@ -328,7 +330,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               }}
               className={`${
                 isZoomed ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-zoom-in'
-              } select-none ${
+              } select-none [-webkit-touch-callout:none] ${
                 isZoomed
                   ? 'max-w-none max-h-none shadow-[0_0_100px_rgba(0,0,0,0.8)]'
                   : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] [@media(max-height:520px)]:max-h-[calc(100dvh-4rem)] max-w-full w-auto h-auto'

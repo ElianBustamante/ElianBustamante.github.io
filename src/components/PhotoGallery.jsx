@@ -304,8 +304,9 @@ export default function PhotoGallery() {
                       alt={photo.alt[i18n.language] || photo.alt.es}
                       loading={i < 4 ? 'eager' : 'lazy'}
                       decoding="async"
-                      draggable="false"
-                      className="relative z-10 block h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:transform-none select-none"
+                      draggable={false}
+                      onContextMenu={(e) => e.preventDefault()}
+                      className="relative z-10 block h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:transform-none select-none [-webkit-touch-callout:none]"
                       style={{ aspectRatio: `${photo.thumb.width} / ${photo.thumb.height}` }}
                     />
                     
