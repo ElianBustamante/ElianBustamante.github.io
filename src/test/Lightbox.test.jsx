@@ -1,4 +1,4 @@
-import { render, screen, cleanup, fireEvent } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent, createEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import Lightbox from '../components/Lightbox'
@@ -58,5 +58,14 @@ describe('Lightbox', () => {
     
     unmount()
     expect(document.documentElement.classList.contains('overflow-hidden')).toBe(false)
+  })
+
+  it('una foto tiene draggable="false" y un fireEvent.contextMenu sobre ella devuelve defaultPrevented', () => {
+    render(<Lightbox photos={mockPhotos} index={0} onClose={() => {}} onIndexChange={() => {}} />)
+    const img = screen.getByAltText('F1')
+    expect(img).toHaveAttribute('draggable', 'false')
+    const event = createEvent.contextMenu(img)
+    fireEvent(img, event)
+    expect(event.defaultPrevented).toBe(true)
   })
 })

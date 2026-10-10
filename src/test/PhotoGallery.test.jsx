@@ -1,4 +1,4 @@
-import { render, screen, cleanup, fireEvent } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent, createEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import PhotoGallery from '../components/PhotoGallery'
@@ -130,5 +130,16 @@ describe('PhotoGallery', () => {
     mockPhotos.length = 0
     render(<PhotoGallery />)
     expect(screen.queryByRole('list')).not.toBeInTheDocument()
+  })
+
+  it('una foto tiene draggable="false" y un fireEvent.contextMenu sobre ella devuelve defaultPrevented', () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
+    Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
+    render(<PhotoGallery />)
+    const img = screen.getByAltText('Foto uno')
+    expect(img).toHaveAttribute('draggable', 'false')
+    const event = createEvent.contextMenu(img)
+    fireEvent(img, event)
+    expect(event.defaultPrevented).toBe(true)
   })
 })
