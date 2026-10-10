@@ -94,7 +94,7 @@ export default function ProjectsCarousel() {
             as="li"
             key={project.id}
             delay={index * 80}
-            className="w-[85%] sm:w-[65%] shrink-0 snap-start md:w-[48%] lg:w-[calc((100%-3rem)/3)] [@media(max-height:520px)]:w-[58%]"
+            className="w-[85%] sm:w-[65%] shrink-0 snap-start md:w-[48%] lg:w-[calc((100%-3rem)/3)] [@media(max-height:520px)]:w-[58%] short:w-[58%]"
           >
             <ProjectCard project={project} isActive={index === activeIndex} />
           </Reveal>

@@ -139,7 +139,7 @@ export default function ProjectCard({ project, isActive }) {
   ) : null
 
   return (
-    <article className={`relative group flex h-full max-md:min-h-[clamp(340px,52dvh,520px)] [@media(max-height:520px)]:h-auto [@media(max-height:520px)]:min-h-0 flex-col rounded-card border bg-surface has-[:focus-visible]:border-accent has-[:focus-visible]:shadow-[0_12px_32px_rgba(255,106,26,0.12)] transition-[transform,box-shadow,border-color] duration-500 lg:hover:-translate-y-1.5 lg:hover:shadow-[0_12px_32px_rgba(255,106,26,0.12)] lg:hover:border-accent/60 ${
+    <article className={`relative group flex h-full max-md:min-h-[clamp(340px,52dvh,520px)] [@media(max-height:520px)]:h-auto short:h-auto [@media(max-height:520px)]:min-h-0 short:min-h-0 flex-col rounded-card border bg-surface has-[:focus-visible]:border-accent has-[:focus-visible]:shadow-[0_12px_32px_rgba(255,106,26,0.12)] transition-[transform,box-shadow,border-color] duration-500 lg:hover:-translate-y-1.5 lg:hover:shadow-[0_12px_32px_rgba(255,106,26,0.12)] lg:hover:border-accent/60 ${
       isActive 
         ? 'border-border max-lg:border-accent/60 max-lg:shadow-[0_12px_32px_rgba(255,106,26,0.12)]' 
         : 'border-border'
@@ -147,7 +147,7 @@ export default function ProjectCard({ project, isActive }) {
       {portalContent}
 
       {project.image ? (
-        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[clamp(80px,13dvh,200px)] overflow-hidden rounded-t-[calc(var(--radius-card)-1px)] border-b border-border/50 [@media(max-height:520px)]:hidden">
+        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[clamp(80px,13dvh,200px)] overflow-hidden rounded-t-[calc(var(--radius-card)-1px)] border-b border-border/50 [@media(max-height:520px)]:hidden short:hidden">
           <div className="absolute inset-0 bg-surface-2 animate-pulse z-0" />
           <img
             src={project.image}
@@ -164,7 +164,7 @@ export default function ProjectCard({ project, isActive }) {
           )}
         </div>
       ) : (
-        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[clamp(80px,13dvh,200px)] flex items-center justify-center rounded-t-[calc(var(--radius-card)-1px)] bg-surface-2 border-b border-border/50 overflow-hidden [@media(max-height:520px)]:hidden">
+        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[clamp(80px,13dvh,200px)] flex items-center justify-center rounded-t-[calc(var(--radius-card)-1px)] bg-surface-2 border-b border-border/50 overflow-hidden [@media(max-height:520px)]:hidden short:hidden">
           {/* Fondo abstracto de resplandor (Spotlight) */}
           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/60 via-surface to-surface"></div>
           
@@ -188,7 +188,7 @@ export default function ProjectCard({ project, isActive }) {
         <div className="relative max-w-full self-start">
           <h3 
             title={t(`projects.items.${project.id}.name`)}
-            className="font-bold text-lg sm:text-xl mb-0.5 transition-colors duration-300 line-clamp-2 [@media(max-height:520px)]:line-clamp-1 cursor-default text-accent group-hover:text-accent-hover"
+            className="font-bold text-lg sm:text-xl mb-0.5 transition-colors duration-300 line-clamp-2 [@media(max-height:520px)]:line-clamp-1 short:line-clamp-1 cursor-default text-accent group-hover:text-accent-hover"
           >
             {t(`projects.items.${project.id}.name`)}
           </h3>
@@ -198,17 +198,17 @@ export default function ProjectCard({ project, isActive }) {
             {t(`projects.items.${project.id}.category`)}
           </p>
           {project.tags && project.tags.length > 0 && (
-            <span className="hidden [@media(max-height:520px)]:block rounded-full bg-surface-2/80 backdrop-blur-md px-1.5 py-0.5 text-[0.75rem] font-medium tracking-wide text-text border border-border shadow-sm max-w-[50%] truncate ml-2">
+            <span className="hidden [@media(max-height:520px)]:block short:block rounded-full bg-surface-2/80 backdrop-blur-md px-1.5 py-0.5 text-[0.75rem] font-medium tracking-wide text-text border border-border shadow-sm max-w-[50%] truncate ml-2">
               {project.tags[0]}
             </span>
           )}
         </div>
-        <p className="text-muted leading-relaxed mb-3 sm:mb-4 flex-1 text-[0.875rem] line-clamp-4 md:line-clamp-none [@media(max-width:767px)_and_(max-height:700px)]:line-clamp-3 [@media(max-height:520px)]:line-clamp-2">
+        <p className="text-muted leading-relaxed mb-3 sm:mb-4 flex-1 text-[0.875rem] line-clamp-4 md:line-clamp-none [@media(max-width:767px)_and_(max-height:700px)]:line-clamp-3 [@media(max-height:520px)]:line-clamp-2 short:line-clamp-2">
           {t(`projects.items.${project.id}.description`)}
         </p>
         
         {chips.length > 0 && (
-          <div className="flex flex-nowrap sm:flex-wrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 [@media(max-height:520px)]:hidden py-1 -my-1">
+          <div className="flex flex-nowrap sm:flex-wrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 [@media(max-height:520px)]:hidden short:hidden py-1 -my-1">
             {visibles.map((tag, i) => (
               <span
                 key={i}
@@ -249,13 +249,13 @@ export default function ProjectCard({ project, isActive }) {
         )}
 
         {(project.repoUrl || project.demoUrl) && (
-          <div className="flex flex-wrap sm:flex-nowrap [@media(max-height:520px)]:flex-wrap items-center gap-2 sm:gap-3 [@media(max-height:520px)]:gap-2 mt-auto pt-3 sm:pt-4 pb-1.5 -mb-1.5 border-t border-border/50 overflow-hidden [@media(max-height:520px)]:overflow-visible w-full">
+          <div className="flex flex-wrap sm:flex-nowrap [@media(max-height:520px)]:flex-wrap short:flex-wrap items-center gap-2 sm:gap-3 [@media(max-height:520px)]:gap-2 short:gap-2 mt-auto pt-3 sm:pt-4 pb-1.5 -mb-1.5 border-t border-border/50 overflow-hidden [@media(max-height:520px)]:overflow-visible short:overflow-visible w-full">
             {project.repoUrl && (
               <a
                 href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! [@media(max-height:520px)]:min-h-[36px]"
+                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! [@media(max-height:520px)]:min-h-[36px] short:min-h-[36px]"
               >
                 <IconGithub className="w-3.5 h-3.5 sm:w-3.5 sm:h-3.5" />
                 <span className="truncate max-w-[100px] sm:max-w-none">{t('projects.viewCode')}</span>
@@ -266,7 +266,7 @@ export default function ProjectCard({ project, isActive }) {
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! truncate [@media(max-height:520px)]:min-h-[36px]"
+                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! truncate [@media(max-height:520px)]:min-h-[36px] short:min-h-[36px]"
               >
                 <span className="truncate">{project.demoLabel || t('projects.viewDemo')}</span>
               </a>
