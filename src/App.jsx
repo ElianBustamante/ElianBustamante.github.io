@@ -12,11 +12,14 @@ import {
   getKeyDirection,
   shouldInterceptWheel,
   findClosestSectionIndex,
-  getSectionOnFocus
+  getSectionOnFocus,
+  shouldRealignOnResize
 } from './lib/slides'
 
 function App() {
   const mainRef = useRef(null)
+  const currentSectionRef = useRef(null)
+  const resizingRef = useRef(false)
 
   // Enlace profundo y ScrollSpy
   useEffect(() => {
@@ -179,6 +182,63 @@ function App() {
     mainEl.addEventListener('focusin', handleFocusIn)
     return () => {
       mainEl.removeEventListener('focusin', handleFocusIn)
+    }
+  }, [])
+
+  // Realinear la diapositiva actual cuando cambia el zoom o el tamaño de la ventana
+  useEffect(() => {
+    let prevWidth = typeof window !== 'undefined' ? window.innerWidth : 0
+    let prevDpr = typeof window !== 'undefined' ? window.devicePixelRatio : 1
+    let resizeTimer = null
+    let rafId = null
+
+    const updateCurrentSection = () => {
+      if (resizingRef.current) return
+      const sections = Array.from(document.querySelectorAll('section, footer'))
+      if (!sections.length) return
+      const idx = findClosestSectionIndex(sections)
+      currentSectionRef.current = sections[idx] || null
+    }
+
+    const handleScroll = () => {
+      if (rafId) return
+      rafId = requestAnimationFrame(() => {
+        rafId = null
+        updateCurrentSection()
+      })
+    }
+
+    const handleResize = () => {
+      resizingRef.current = true
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        const width = window.innerWidth
+        const dpr = window.devicePixelRatio
+        if (
+          shouldRealignOnResize({ prevWidth, width, prevDpr, dpr }) &&
+          currentSectionRef.current
+        ) {
+          scrollToElement(currentSectionRef.current, { behavior: 'auto' })
+        }
+        prevWidth = width
+        prevDpr = dpr
+        resizingRef.current = false
+      }, 150)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleResize)
+
+    // Actualiza también una vez al montar, después de aplicar el enlace profundo
+    updateCurrentSection()
+    const mountTimer = setTimeout(updateCurrentSection, 100)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(mountTimer)
+      clearTimeout(resizeTimer)
+      if (rafId) cancelAnimationFrame(rafId)
     }
   }, [])
 

@@ -4,7 +4,8 @@ import {
   getKeyDirection,
   shouldInterceptWheel,
   canAdvanceSlide,
-  getSectionOnFocus
+  getSectionOnFocus,
+  shouldRealignOnResize
 } from '../lib/slides'
 
 describe('slides logic', () => {
@@ -186,5 +187,23 @@ describe('slides logic', () => {
     }
 
     expect(shouldInterceptWheel(event, { isReducedMotion: true })).toBe(false)
+  })
+
+  describe('shouldRealignOnResize', () => {
+    it('mismo ancho y dpr -> false', () => {
+      expect(shouldRealignOnResize({ prevWidth: 1024, width: 1024, prevDpr: 1, dpr: 1 })).toBe(false)
+    })
+
+    it('ancho distinto con width>=768 -> true', () => {
+      expect(shouldRealignOnResize({ prevWidth: 1024, width: 1200, prevDpr: 1, dpr: 1 })).toBe(true)
+    })
+
+    it('dpr distinto con width>=768 -> true', () => {
+      expect(shouldRealignOnResize({ prevWidth: 1024, width: 1024, prevDpr: 1, dpr: 1.25 })).toBe(true)
+    })
+
+    it('width < 768 -> false aunque cambie el ancho', () => {
+      expect(shouldRealignOnResize({ prevWidth: 375, width: 414, prevDpr: 1, dpr: 1 })).toBe(false)
+    })
   })
 })
