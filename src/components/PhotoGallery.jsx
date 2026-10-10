@@ -45,7 +45,7 @@ export default function PhotoGallery() {
     let h = H * 0.50; 
     
     if (window.matchMedia(SHORT_SCREEN_QUERY).matches) {
-      h = Math.max(150, Math.min(340, H - 124));
+      h = Math.max(150, Math.min(340, window.innerHeight - 100));
     } else {
       if (ratio > 2) {
         // Pantallas extremadamente chatas / súper horizontales (ej. celulares apaisados)
