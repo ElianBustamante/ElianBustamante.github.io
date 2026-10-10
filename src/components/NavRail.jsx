@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useRef } from 'react'
 import LanguageToggle from './LanguageToggle'
 import { IconMenu, IconClose } from './icons'
+import { scrollToElement } from '../lib/scroll'
 
 const links = [
   { href: '#inicio', key: 'nav.home' },
@@ -69,6 +70,25 @@ export default function NavRail({ activeId }) {
   const closeMenu = () => setMenuOpen(false)
   const toggleMenu = () => setMenuOpen((prev) => !prev)
 
+  const isFirst = !activeId || activeId === 'inicio'
+  const isLast = activeId === 'contacto'
+
+  const handlePrev = () => {
+    const sections = Array.from(document.querySelectorAll('section[id]'))
+    if (!sections.length) return
+    const currentIdx = Math.max(0, sections.findIndex((s) => s.id === activeId))
+    const targetIdx = Math.max(0, currentIdx - 1)
+    scrollToElement(sections[targetIdx])
+  }
+
+  const handleNext = () => {
+    const sections = Array.from(document.querySelectorAll('section[id]'))
+    if (!sections.length) return
+    const currentIdx = Math.max(0, sections.findIndex((s) => s.id === activeId))
+    const targetIdx = Math.min(sections.length - 1, currentIdx + 1)
+    scrollToElement(sections[targetIdx])
+  }
+
   return (
     <>
       <nav 
@@ -84,6 +104,19 @@ export default function NavRail({ activeId }) {
           EB
         </a>
 
+        {!isFirst ? (
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label={t('nav.prevSection')}
+            className="flex items-center justify-center w-11 h-11 min-h-[44px] min-w-[44px] p-2 text-muted hover:text-accent transition-colors motion-safe:animate-bounce focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6"/></svg>
+          </button>
+        ) : (
+          <div className="w-11 h-11" aria-hidden="true" />
+        )}
+
         <button
           ref={buttonRef}
           className="flex items-center justify-center min-h-[44px] min-w-[44px] border border-border rounded-full bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
@@ -94,6 +127,19 @@ export default function NavRail({ activeId }) {
         >
           {menuOpen ? <IconClose /> : <IconMenu />}
         </button>
+
+        {!isLast ? (
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label={t('nav.nextSection')}
+            className="flex items-center justify-center w-11 h-11 min-h-[44px] min-w-[44px] p-2 text-muted hover:text-accent transition-colors motion-safe:animate-bounce focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        ) : (
+          <div className="w-11 h-11" aria-hidden="true" />
+        )}
 
         <LanguageToggle compact={true} />
       </nav>
