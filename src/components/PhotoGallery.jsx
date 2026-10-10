@@ -193,7 +193,7 @@ export default function PhotoGallery() {
 
     try {
       const transition = document.startViewTransition(() => {
-        const lightboxImg = document.querySelector('.fixed.z-50 img')
+        const lightboxImg = document.querySelector('[role="dialog"] img')
         if (lightboxImg) lightboxImg.style.removeProperty('view-transition-name')
 
         if (imgEl) {
