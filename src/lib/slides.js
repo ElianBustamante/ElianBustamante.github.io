@@ -173,8 +173,15 @@ export function getSectionOnFocus({ focusedElement, windowHeight }) {
 
 /**
  * Determina si se debe realinear la diapositiva actual tras un evento resize/zoom.
- * Devuelve true solo si width >= 768 y (width !== prevWidth o dpr !== prevDpr).
+ * prev y cur son de la forma { width, height, dpr }.
  */
-export function shouldRealignOnResize({ prevWidth, width, prevDpr, dpr } = {}) {
-  return Boolean(width >= 768 && (width !== prevWidth || dpr !== prevDpr));
+export function shouldRealignOnResize({ prev, cur } = {}) {
+  if (!prev || !cur) return false;
+  const desktop = cur.width >= 768;
+  if ((prev.width >= 768) !== desktop) return true;
+  if (cur.width !== prev.width || cur.dpr !== prev.dpr) return true;
+  if (desktop) {
+    return cur.height !== prev.height;
+  }
+  return Math.abs(cur.height - prev.height) >= 96;
 }

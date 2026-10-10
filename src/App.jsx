@@ -187,8 +187,11 @@ function App() {
 
   // Realinear la diapositiva actual cuando cambia el zoom o el tamaño de la ventana
   useEffect(() => {
-    let prevWidth = typeof window !== 'undefined' ? window.innerWidth : 0
-    let prevDpr = typeof window !== 'undefined' ? window.devicePixelRatio : 1
+    let prev = {
+      width: typeof window !== 'undefined' ? window.innerWidth : 0,
+      height: typeof window !== 'undefined' ? window.innerHeight : 0,
+      dpr: typeof window !== 'undefined' ? window.devicePixelRatio : 1
+    }
     let resizeTimer = null
     let rafId = null
 
@@ -212,21 +215,23 @@ function App() {
       resizingRef.current = true
       clearTimeout(resizeTimer)
       resizeTimer = setTimeout(() => {
-        const width = window.innerWidth
-        const dpr = window.devicePixelRatio
+        const cur = {
+          width: window.innerWidth,
+          height: window.innerHeight,
+          dpr: window.devicePixelRatio
+        }
         if (
-          shouldRealignOnResize({ prevWidth, width, prevDpr, dpr }) &&
+          shouldRealignOnResize({ prev, cur }) &&
           currentSectionRef.current
         ) {
           scrollToElement(currentSectionRef.current, { behavior: 'auto' })
         }
-        prevWidth = width
-        prevDpr = dpr
+        prev = cur
         resizingRef.current = false
       }, 150)
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    document.addEventListener('scroll', handleScroll, { capture: true, passive: true })
     window.addEventListener('resize', handleResize)
 
     // Actualiza también una vez al montar, después de aplicar el enlace profundo
@@ -234,7 +239,7 @@ function App() {
     const mountTimer = setTimeout(updateCurrentSection, 100)
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      document.removeEventListener('scroll', handleScroll, { capture: true })
       window.removeEventListener('resize', handleResize)
       clearTimeout(mountTimer)
       clearTimeout(resizeTimer)

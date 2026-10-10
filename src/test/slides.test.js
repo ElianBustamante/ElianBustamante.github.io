@@ -190,20 +190,58 @@ describe('slides logic', () => {
   })
 
   describe('shouldRealignOnResize', () => {
-    it('mismo ancho y dpr -> false', () => {
-      expect(shouldRealignOnResize({ prevWidth: 1024, width: 1024, prevDpr: 1, dpr: 1 })).toBe(false)
+    it('mismo ancho, alto y dpr -> false', () => {
+      const prev = { width: 1024, height: 768, dpr: 1 }
+      const cur = { width: 1024, height: 768, dpr: 1 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(false)
     })
 
-    it('ancho distinto con width>=768 -> true', () => {
-      expect(shouldRealignOnResize({ prevWidth: 1024, width: 1200, prevDpr: 1, dpr: 1 })).toBe(true)
+    it('escritorio, solo cambia el alto en 1px -> true', () => {
+      const prev = { width: 1024, height: 768, dpr: 1 }
+      const cur = { width: 1024, height: 769, dpr: 1 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('dpr distinto con width>=768 -> true', () => {
-      expect(shouldRealignOnResize({ prevWidth: 1024, width: 1024, prevDpr: 1, dpr: 1.25 })).toBe(true)
+    it('escritorio, cambia el ancho -> true', () => {
+      const prev = { width: 1024, height: 768, dpr: 1 }
+      const cur = { width: 1200, height: 768, dpr: 1 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('width < 768 -> false aunque cambie el ancho', () => {
-      expect(shouldRealignOnResize({ prevWidth: 375, width: 414, prevDpr: 1, dpr: 1 })).toBe(false)
+    it('escritorio, cambia dpr -> true', () => {
+      const prev = { width: 1024, height: 768, dpr: 1 }
+      const cur = { width: 1024, height: 768, dpr: 1.25 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(true)
+    })
+
+    it('móvil (<768), alto cambia 56px -> false', () => {
+      const prev = { width: 375, height: 611, dpr: 2 }
+      const cur = { width: 375, height: 667, dpr: 2 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(false)
+    })
+
+    it('móvil, alto cambia 107px -> true', () => {
+      const prev = { width: 375, height: 611, dpr: 2 }
+      const cur = { width: 375, height: 718, dpr: 2 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(true)
+    })
+
+    it('móvil, cambia el ancho -> true', () => {
+      const prev = { width: 375, height: 667, dpr: 2 }
+      const cur = { width: 390, height: 667, dpr: 2 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(true)
+    })
+
+    it('cruza de 800 a 700 de ancho -> true', () => {
+      const prev = { width: 800, height: 600, dpr: 1 }
+      const cur = { width: 700, height: 600, dpr: 1 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(true)
+    })
+
+    it('cruza de 700 a 800 -> true', () => {
+      const prev = { width: 700, height: 600, dpr: 1 }
+      const cur = { width: 800, height: 600, dpr: 1 }
+      expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
   })
 })
