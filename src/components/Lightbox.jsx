@@ -222,7 +222,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       aria-label={t('photography.lightboxLabel')}
-      className="fixed inset-0 z-[100] m-0 h-dvh w-dvw max-h-none max-w-none bg-black/95 p-4 transition-opacity duration-150 overscroll-none animate-fade-in"
+      className="fixed inset-0 z-[100] m-0 h-dvh w-dvw max-h-none max-w-none bg-black/95 p-4 short:py-2 transition-opacity duration-150 overscroll-none animate-fade-in"
       style={{ outline: 'none', colorScheme: 'dark' }}
       tabIndex={-1}
     >
@@ -335,7 +335,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               } select-none [-webkit-touch-callout:none] ${
                 isZoomed
                   ? 'max-w-none max-h-none shadow-[0_0_100px_rgba(0,0,0,0.8)]'
-                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] [@media(max-height:520px)]:max-h-[calc(100dvh-4rem)] max-w-full w-auto h-auto'
+                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] [@media(max-height:520px)]:max-h-[calc(100dvh-4rem)] short:max-h-[calc(100dvh-4.5rem)] max-w-full w-auto h-auto'
               }`}
             />
             {!isZoomed && (
