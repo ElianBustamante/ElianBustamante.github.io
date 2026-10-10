@@ -15,7 +15,7 @@ export default function Section({ id, titleKey, children, actions }) {
   }
 
   return (
-    <section id={id} className="snap-start [@media(min-height:601px)]:snap-always min-h-[100dvh] flex flex-col justify-center [@media(max-height:600px)]:justify-start relative pt-[6.5rem] [@media(max-height:520px)]:pt-16 [@media(max-height:520px)_and_(orientation:landscape)]:pt-3 pb-8 [@media(max-height:520px)]:pb-2 [@media(max-height:520px)_and_(orientation:landscape)]:pb-2">
+    <section id={id} className="snap-start [@media(min-height:601px)]:snap-always min-h-[100dvh] flex flex-col justify-center [@media(max-height:600px)]:justify-start relative pt-[6.5rem] [@media(max-height:520px)]:pt-16 [@media(max-height:520px)_and_(orientation:landscape)]:pt-3 pb-8 [@media(max-height:520px)]:pb-2 [@media(max-height:520px)_and_(orientation:landscape)]:pb-3">
       <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 relative z-10 -mt-3 [@media(max-height:520px)_and_(orientation:landscape)]:mt-0">
         <Reveal delay={0} className="flex flex-wrap items-center justify-between gap-6 mb-2 mt-0 relative z-20 w-full">
           <h2 className="uppercase font-extrabold text-accent text-2xl">{t(titleKey)}</h2>
