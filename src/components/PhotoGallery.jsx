@@ -297,6 +297,7 @@ export default function PhotoGallery() {
                   >
                     <div className="absolute inset-0 z-0 bg-surface-2/60 animate-pulse"></div>
                     
+                    {/* Disuasión contra descarga fácil (no es seguridad real) */}
                     <img
                       src={photo.thumb.src}
                       width={photo.thumb.width}

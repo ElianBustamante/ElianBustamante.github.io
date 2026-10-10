@@ -256,6 +256,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           </button>
         </div>
 
+        {/* Contenedor que recibe toques/clics: disuasión contra descarga fácil (no es seguridad real) */}
         <div
           ref={scrollContainerRef}
           className={`flex flex-1 relative min-h-0 ${
@@ -299,6 +300,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               </div>
             )}
 
+            {/* Disuasión contra descarga fácil (no es seguridad real) */}
             <img
               ref={imgRef}
               src={photo.large.src}
