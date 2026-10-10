@@ -147,7 +147,7 @@ export default function ProjectCard({ project, isActive }) {
       {portalContent}
 
       {project.image ? (
-        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[20dvh] lg:h-[22dvh] 2xl:h-[24dvh] md:min-h-[150px] lg:max-h-[280px] overflow-hidden rounded-t-[calc(var(--radius-card)-1px)] border-b border-border/50 [@media(max-height:520px)]:hidden">
+        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[clamp(96px,16dvh,200px)] overflow-hidden rounded-t-[calc(var(--radius-card)-1px)] border-b border-border/50 [@media(max-height:520px)]:hidden">
           <div className="absolute inset-0 bg-surface-2 animate-pulse z-0" />
           <img
             src={project.image}
@@ -164,7 +164,7 @@ export default function ProjectCard({ project, isActive }) {
           )}
         </div>
       ) : (
-        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[20dvh] lg:h-[22dvh] 2xl:h-[24dvh] md:min-h-[150px] lg:max-h-[280px] flex items-center justify-center rounded-t-[calc(var(--radius-card)-1px)] bg-surface-2 border-b border-border/50 overflow-hidden [@media(max-height:520px)]:hidden">
+        <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[clamp(96px,16dvh,200px)] flex items-center justify-center rounded-t-[calc(var(--radius-card)-1px)] bg-surface-2 border-b border-border/50 overflow-hidden [@media(max-height:520px)]:hidden">
           {/* Fondo abstracto de resplandor (Spotlight) */}
           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/60 via-surface to-surface"></div>
           
