@@ -149,14 +149,14 @@ describe('ProjectCard +N tooltip', () => {
     expect(article.className).toContain('has-[:focus-visible]:border-accent')
   })
 
-  it('incluye clases short prioritarias con modificador ! en article y descripción', () => {
+  it('incluye clases compact prioritarias con modificador ! en article y descripción', () => {
     const { container } = render(<ProjectCard project={project} />)
     const article = container.querySelector('article')
-    expect(article.className).toContain('short:h-auto!')
-    expect(article.className).toContain('short:min-h-0!')
+    expect(article.className).toContain('compact:h-auto!')
+    expect(article.className).toContain('compact:min-h-0!')
 
     const desc = container.querySelector('p.text-muted')
-    expect(desc.className).toContain('short:line-clamp-2!')
+    expect(desc.className).toContain('compact:line-clamp-2!')
   })
 })
 

@@ -6,6 +6,12 @@
   }
 }
 
+@custom-variant compact {
+  @media (orientation: landscape) and (max-height: 520px) {
+    @slot;
+  }
+}
+
 @theme {
   --color-bg: #0a0a0a;
   --color-surface: #141312;
