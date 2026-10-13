@@ -132,20 +132,13 @@ describe('ProjectsCarousel', () => {
     expect(list.className).toContain('[-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
   })
 
-  test('centrado vertical en short: bloque tarjeta+contador ocupa espacio restante (flex-1 min-h-0) y contenedor hijo tiene short:my-auto', () => {
+  test('en short: Section no tiene fill y el contador de página incluye short:text-xs', () => {
     const { container } = render(<ProjectsCarousel />)
     const section = container.querySelector('section#proyectos')
-    expect(section.className).toContain('short:h-[100dvh]')
+    expect(section.className).not.toContain('short:h-[100dvh]')
+    expect(section.className).toContain('short:justify-center!')
 
-    const list = screen.getByRole('list')
-    const innerWrapper = list.parentElement
-    expect(innerWrapper.className).toContain('short:my-auto')
-    expect(list.className).not.toContain('short:my-auto')
-
-    const outerWrapper = innerWrapper.parentElement
-    expect(outerWrapper.className).toContain('short:flex-1')
-    expect(outerWrapper.className).toContain('short:min-h-0')
-    expect(outerWrapper.className).toContain('short:flex')
-    expect(outerWrapper.className).toContain('short:flex-col')
+    const counterSpan = screen.getByText(/1 \/ /)
+    expect(counterSpan.className).toContain('short:text-xs')
   })
 })
