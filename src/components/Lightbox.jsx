@@ -350,7 +350,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
                   <span className="hidden short:inline-block opacity-30 text-white/50 text-[12px]">—</span>
                 )}
 
-                <div className="mt-2 short:mt-0 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] [@media(min-height:800px)]:text-xs short:text-[12px] tracking-[0.2em] text-white/50 uppercase drop-shadow-md">
+                <div className="mt-2 short:mt-0 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] [@media(min-height:800px)]:text-xs short:text-[11px] tracking-[0.2em] text-white/50 uppercase drop-shadow-md">
                   <span>{t('photography.counter', { current: index + 1, total })}</span>
 
                   {hasExif && (

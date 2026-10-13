@@ -115,6 +115,6 @@ describe('Lightbox', () => {
 
     const dataLine = container.querySelector('figcaption div.flex')
     expect(dataLine.className).toContain('[@media(min-height:800px)]:text-xs')
-    expect(dataLine.className).toContain('short:text-[12px]')
+    expect(dataLine.className).toContain('short:text-[11px]')
   })
 })
