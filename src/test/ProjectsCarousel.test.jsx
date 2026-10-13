@@ -127,7 +127,22 @@ describe('ProjectsCarousel', () => {
     expect(list.className).toContain('short:py-6')
     expect(list.className).toContain('short:-mt-6')
     expect(list.className).toContain('short:-mb-3')
+    expect(list.className).toContain('short:my-auto')
     expect(list.className).toContain('[mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
     expect(list.className).toContain('[-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
+  })
+
+  test('centrado vertical en short: bloque tarjeta+contador ocupa espacio restante (flex-1 min-h-0) y ul tiene my-auto', () => {
+    const { container } = render(<ProjectsCarousel />)
+    const section = container.querySelector('section#proyectos')
+    expect(section.className).toContain('short:h-[100dvh]')
+
+    const list = screen.getByRole('list')
+    const wrapper = list.parentElement
+    expect(wrapper.className).toContain('short:flex-1')
+    expect(wrapper.className).toContain('short:min-h-0')
+    expect(wrapper.className).toContain('short:flex')
+    expect(wrapper.className).toContain('short:flex-col')
+    expect(list.className).toContain('short:my-auto')
   })
 })
