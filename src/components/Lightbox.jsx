@@ -291,7 +291,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
 
           <figure
             className={`flex flex-col relative short:py-1! short:justify-center! ${
-              isZoomed ? 'min-w-max pt-2 md:pt-6 w-fit h-fit' : 'm-auto w-full h-full items-center justify-center py-2 md:py-6'
+              isZoomed ? 'min-w-max pt-2 md:pt-6 w-fit h-fit' : 'm-auto w-full h-full items-center justify-center py-2 md:pt-11 md:pb-2'
             }`}
           >
             {isLoading && (

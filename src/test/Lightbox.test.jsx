@@ -75,6 +75,10 @@ describe('Lightbox', () => {
     expect(figure.className).toContain('short:py-1!')
     expect(figure.className).toContain('short:justify-center!')
     expect(figure.className).toContain('justify-center')
+    expect(figure.className).toContain('py-2')
+    expect(figure.className).toContain('md:pt-11')
+    expect(figure.className).toContain('md:pb-2')
+    expect(figure.className).not.toContain('md:py-6')
 
     const img = screen.getByAltText('F1')
     expect(img.className).toContain('short:max-h-[calc(100dvh-3.5rem)]!')
