@@ -180,4 +180,13 @@ describe('PhotoGallery', () => {
     fireEvent(img, event)
     expect(event.defaultPrevented).toBe(true)
   })
+
+  it('el ul incluye las clases de difuminado mask-image', () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
+    Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
+    render(<PhotoGallery />)
+    const list = screen.getByRole('list')
+    expect(list.className).toContain('[mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
+    expect(list.className).toContain('[-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
+  })
 })

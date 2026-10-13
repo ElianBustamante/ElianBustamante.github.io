@@ -96,5 +96,7 @@ describe('ProjectsCarousel', () => {
     expect(list.className).toContain('short:py-6')
     expect(list.className).toContain('short:-mt-6')
     expect(list.className).toContain('short:-mb-3')
+    expect(list.className).toContain('[mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
+    expect(list.className).toContain('[-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
   })
 })

@@ -278,7 +278,7 @@ export default function PhotoGallery() {
           <ul
             role="list"
             ref={listRef}
-            className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden [scrollbar-width:none] py-4 -my-4 px-4 -mx-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 gap-3"
+            className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden [scrollbar-width:none] py-4 -my-4 px-4 -mx-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 gap-3 [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]"
           >
             {photosData.map((photo, i) => {
               const aspect = photo.thumb.width / photo.thumb.height
