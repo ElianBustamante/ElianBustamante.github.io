@@ -203,7 +203,7 @@ export default function ProjectCard({ project, isActive }) {
             </span>
           )}
         </div>
-        <p className="text-muted leading-relaxed mb-3 sm:mb-4 flex-1 text-[0.875rem] line-clamp-4 md:line-clamp-none [@media(max-width:767px)_and_(max-height:700px)]:line-clamp-3 compact:line-clamp-2!">
+        <p className="text-muted leading-relaxed mb-3 sm:mb-4 flex-1 text-[0.875rem] line-clamp-4 md:line-clamp-none [@media(max-width:767px)_and_(max-height:700px)]:line-clamp-3 compact:line-clamp-2! compact:flex-none">
           {t(`projects.items.${project.id}.description`)}
         </p>
         

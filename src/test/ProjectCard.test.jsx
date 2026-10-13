@@ -157,6 +157,7 @@ describe('ProjectCard +N tooltip', () => {
 
     const desc = container.querySelector('p.text-muted')
     expect(desc.className).toContain('compact:line-clamp-2!')
+    expect(desc.className).toContain('compact:flex-none')
   })
 
   it('el contenedor del cuerpo incluye [@media(max-height:360px)]:p-3.5!', () => {
