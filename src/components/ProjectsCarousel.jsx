@@ -90,7 +90,7 @@ export default function ProjectsCarousel() {
       <ul
         role="list"
         ref={listRef}
-        className="flex snap-x snap-mandatory gap-x-4 sm:gap-6 overflow-x-auto overflow-y-hidden scroll-smooth py-6 px-4 -mx-4 -my-4 scroll-px-4 [scrollbar-width:none] short:py-6 short:-mt-6 short:-mb-6 [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]"
+        className="flex snap-x snap-mandatory gap-x-4 sm:gap-6 overflow-x-auto overflow-y-hidden scroll-smooth py-6 px-4 -mx-4 -my-4 scroll-px-4 [scrollbar-width:none] short:py-6 short:-mt-6 short:-mb-3 [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]"
       >
         {projectsData.map((project, index) => (
           <Reveal

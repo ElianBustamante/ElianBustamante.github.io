@@ -121,13 +121,13 @@ describe('ProjectsCarousel', () => {
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
-  test('el ul incluye las clases short:py-6, short:-mt-6 y short:-mb-6 para que el grupo termine en el borde inferior', () => {
+  test('el ul incluye las clases short:py-6, short:-mt-6 y short:-mb-3', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     expect(list.className).toContain('short:py-6')
     expect(list.className).toContain('short:-mt-6')
-    expect(list.className).toContain('short:-mb-6')
-    expect(list.className).not.toContain('short:-mb-3')
+    expect(list.className).toContain('short:-mb-3')
+    expect(list.className).not.toContain('short:-mb-6')
     expect(list.className).not.toContain('short:my-auto')
     expect(list.className).toContain('scroll-px-4')
     expect(list.className).not.toContain('md:scroll-px-6')
