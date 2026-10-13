@@ -45,7 +45,7 @@ export default function PhotoGallery() {
     let h = H * 0.50; 
     
     if (window.matchMedia(SHORT_SCREEN_QUERY).matches) {
-      h = Math.max(150, Math.min(340, window.innerHeight - 100));
+      h = Math.min(520, Math.max(150, Math.floor(containerRef.current.clientHeight)));
     } else {
       if (ratio > 2) {
         // Pantallas extremadamente chatas / súper horizontales (ej. celulares apaisados)
@@ -272,9 +272,9 @@ export default function PhotoGallery() {
 
   return (
     <>
-      <Section id="fotografia" titleKey="photography.title" actions={actions}>
-        <p className="text-muted text-sm md:text-base mb-4 [@media(max-height:500px)]:mb-2 [@media(max-height:500px)_and_(orientation:landscape)]:text-[12px] [@media(max-height:500px)_and_(orientation:landscape)]:leading-snug">{t('photography.intro')}</p>
-        <div ref={containerRef} className="w-full">
+      <Section id="fotografia" titleKey="photography.title" actions={actions} fill>
+        <p className="text-muted text-sm md:text-base mb-4 short:mb-2 short:text-[12px] short:leading-snug">{t('photography.intro')}</p>
+        <div ref={containerRef} className="w-full short:flex-1 short:min-h-0">
           <ul
             role="list"
             ref={listRef}

@@ -54,6 +54,44 @@ describe('PhotoGallery', () => {
     expect(firstLi.style.height).toBe('453.12px') // from W=1200, H=768 -> h=768*0.59
   })
 
+  it('en modo pantalla baja calcula la altura con clientHeight del contenedor (mínimo 150px en jsdom)', () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
+    Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 0 })
+    window.matchMedia = vi.fn().mockImplementation(query => ({
+      matches: query.includes('landscape') || query.includes('max-height'),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    render(<PhotoGallery />)
+    const images = screen.getAllByRole('button').filter(b => b.querySelector('img'))
+    const firstLi = images[0].parentElement
+    expect(firstLi.style.height).toBe('150px')
+  })
+
+  it('en modo pantalla baja usa clientHeight cuando es mayor a 150px', () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
+    Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 280 })
+    window.matchMedia = vi.fn().mockImplementation(query => ({
+      matches: query.includes('landscape') || query.includes('max-height'),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    render(<PhotoGallery />)
+    const images = screen.getAllByRole('button').filter(b => b.querySelector('img'))
+    const firstLi = images[0].parentElement
+    expect(firstLi.style.height).toBe('280px')
+  })
+
   it('renders alt in Spanish and changes to English', async () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
