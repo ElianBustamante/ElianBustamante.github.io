@@ -5,14 +5,15 @@ import React from 'react'
 import '../i18n'
 
 describe('Section', () => {
-  it('sin fill incluye short:justify-start! y short:pb-3, sin clases fill', () => {
+  it('sin fill incluye short:justify-center! y short:pb-3, sin clases fill', () => {
     const { container } = render(
       <Section id="test-sec" titleKey="photography.title">
         <div>Contenido</div>
       </Section>
     )
     const section = container.querySelector('section')
-    expect(section.className).toContain('short:justify-start!')
+    expect(section.className).toContain('short:justify-center!')
+    expect(section.className).not.toContain('short:justify-start!')
     expect(section.className).toContain('short:pb-3')
     expect(section.className).not.toContain('short:h-[100dvh]')
     expect(section.className).not.toContain('short:pb-6')
