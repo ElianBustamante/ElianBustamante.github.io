@@ -62,8 +62,39 @@ describe('ProjectsCarousel', () => {
     fireEvent.click(nextBtn)
     
     expect(mockChild.scrollIntoView).toHaveBeenCalledWith(expect.objectContaining({
-      behavior: 'smooth'
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
     }))
+  })
+
+  test('scrollIntoView se llama con inline: "start" para coincidir con snap-start', () => {
+    render(<ProjectsCarousel />)
+    const list = screen.getByRole('list')
+    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
+    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
+
+    const mockChild0 = { scrollIntoView: vi.fn(), clientWidth: 200 }
+    const mockChild1 = { scrollIntoView: vi.fn(), clientWidth: 200 }
+    Object.defineProperty(list, 'children', {
+      configurable: true,
+      value: [mockChild0, mockChild1]
+    })
+    Object.defineProperty(list, 'firstElementChild', {
+      configurable: true,
+      value: mockChild0
+    })
+
+    fireEvent.scroll(list)
+
+    const nextBtn = screen.getByRole('button', { name: 'Proyecto siguiente' })
+    fireEvent.click(nextBtn)
+
+    expect(mockChild1.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    })
   })
 
   test('tarjeta con repoUrl: null y demoUrl: null no renderiza pie, y con repoUrl renderiza el enlace con rel', () => {
