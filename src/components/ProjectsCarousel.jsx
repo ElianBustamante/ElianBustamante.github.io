@@ -85,26 +85,28 @@ export default function ProjectsCarousel() {
   return (
     <Section id="proyectos" titleKey="projects.title" actions={actions} fill>
       <div className="short:flex-1 short:min-h-0 short:flex short:flex-col">
-        <ul
-          role="list"
-          ref={listRef}
-          className="flex snap-x snap-mandatory gap-x-4 sm:gap-6 overflow-x-auto overflow-y-hidden scroll-smooth py-6 px-4 -mx-4 -my-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 [scrollbar-width:none] short:py-6 short:-mt-6 short:-mb-3 [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] short:my-auto"
-        >
-          {projectsData.map((project, index) => (
-            <Reveal
-              as="li"
-              key={project.id}
-              delay={index * 80}
-              className="w-[85%] sm:w-[65%] shrink-0 snap-start md:w-[48%] lg:w-[calc((100%-3rem)/3)] short:w-[58%]"
-            >
-              <ProjectCard project={project} isActive={index === activeIndex} />
-            </Reveal>
-          ))}
-        </ul>
-        <div className="mt-4 text-center md:hidden short:block short:m-2 [@media(max-height:330px)]:hidden" aria-live="polite">
-          <span className="text-muted text-[0.875rem] font-medium">
-            {activeIndex + 1} / {projectsData.length}
-          </span>
+        <div className="short:my-auto">
+          <ul
+            role="list"
+            ref={listRef}
+            className="flex snap-x snap-mandatory gap-x-4 sm:gap-6 overflow-x-auto overflow-y-hidden scroll-smooth py-6 px-4 -mx-4 -my-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 [scrollbar-width:none] short:py-6 short:-mt-6 short:-mb-3 [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]"
+          >
+            {projectsData.map((project, index) => (
+              <Reveal
+                as="li"
+                key={project.id}
+                delay={index * 80}
+                className="w-[85%] sm:w-[65%] shrink-0 snap-start md:w-[48%] lg:w-[calc((100%-3rem)/3)] short:w-[58%]"
+              >
+                <ProjectCard project={project} isActive={index === activeIndex} />
+              </Reveal>
+            ))}
+          </ul>
+          <div className="mt-4 text-center md:hidden short:block short:m-2 [@media(max-height:330px)]:hidden" aria-live="polite">
+            <span className="text-muted text-[0.875rem] font-medium">
+              {activeIndex + 1} / {projectsData.length}
+            </span>
+          </div>
         </div>
       </div>
     </Section>
