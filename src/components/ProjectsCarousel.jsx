@@ -6,6 +6,26 @@ import { IconChevronLeft, IconChevronRight } from './icons'
 import Reveal from './Reveal'
 import { projectsData } from '../data/projects'
 
+function getAlignEdge(list) {
+  const listRect = typeof list.getBoundingClientRect === 'function' ? list.getBoundingClientRect() : { left: 0 }
+  let paddingLeft = 16
+  try {
+    if (typeof window !== 'undefined' && window.getComputedStyle) {
+      const parsed = parseFloat(window.getComputedStyle(list).paddingLeft)
+      if (!isNaN(parsed) && parsed > 0) paddingLeft = parsed
+    }
+  } catch {
+    // fallback 16
+  }
+  return (listRect.left ?? 0) + paddingLeft
+}
+
+function scrollElementIntoView(element) {
+  if (!element || typeof element.scrollIntoView !== 'function') return
+  const reduce = Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches)
+  element.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest', inline: 'start' })
+}
+
 export default function ProjectsCarousel() {
   const { t } = useTranslation()
   const listRef = useRef(null)
@@ -17,19 +37,33 @@ export default function ProjectsCarousel() {
   const checkScroll = useCallback(() => {
     if (!listRef.current) return
     const { scrollLeft, scrollWidth, clientWidth } = listRef.current
-    setShowButtons(scrollWidth > clientWidth)
+    const hasOverflow = scrollWidth > clientWidth
+    setShowButtons(hasOverflow)
 
-    const firstItem = listRef.current.firstElementChild
-    if (firstItem) {
-      const itemWidth = firstItem.clientWidth
-      const gap = 24 // gap-6
-      const newIndex = Math.round(scrollLeft / (itemWidth + gap))
-      setActiveIndex(newIndex)
-      setCanPrev(newIndex > 0)
-    } else {
-      setCanPrev(Math.ceil(scrollLeft) > 5)
+    const isAtEnd = hasOverflow && Math.ceil(scrollLeft + clientWidth) >= scrollWidth - 5
+    const children = listRef.current.children
+
+    if (children && children.length > 0) {
+      if (isAtEnd) {
+        setActiveIndex(children.length - 1)
+      } else {
+        const edge = getAlignEdge(listRef.current)
+        let closestIndex = 0
+        let minDiff = Infinity
+        for (let i = 0; i < children.length; i++) {
+          const child = children[i]
+          const childLeft = typeof child.getBoundingClientRect === 'function' ? child.getBoundingClientRect().left : 0
+          const diff = Math.abs(childLeft - edge)
+          if (diff < minDiff) {
+            minDiff = diff
+            closestIndex = i
+          }
+        }
+        setActiveIndex(closestIndex)
+      }
     }
-    
+
+    setCanPrev(scrollLeft > 5)
     setCanNext(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5)
   }, [])
 
@@ -47,17 +81,43 @@ export default function ProjectsCarousel() {
     }
   }, [checkScroll])
 
-  const scrollToIndex = (newIndex) => {
+  const handlePrev = () => {
     if (!listRef.current) return
+    const edge = getAlignEdge(listRef.current)
     const children = listRef.current.children
-    if (newIndex >= 0 && newIndex < children.length) {
-      const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-      children[newIndex].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest', inline: 'start' })
+    let targetChild = null
+    for (let i = children.length - 1; i >= 0; i--) {
+      const child = children[i]
+      const left = typeof child.getBoundingClientRect === 'function' ? child.getBoundingClientRect().left : 0
+      if (left < edge - 4) {
+        targetChild = child
+        break
+      }
+    }
+    if (targetChild) {
+      scrollElementIntoView(targetChild)
     }
   }
 
-  const handlePrev = () => scrollToIndex(activeIndex - 1)
-  const handleNext = () => scrollToIndex(activeIndex + 1)
+  const handleNext = () => {
+    if (!listRef.current) return
+    const { scrollLeft, scrollWidth, clientWidth } = listRef.current
+    if (scrollWidth > clientWidth && Math.ceil(scrollLeft + clientWidth) >= scrollWidth - 5) return
+    const edge = getAlignEdge(listRef.current)
+    const children = listRef.current.children
+    let targetChild = null
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i]
+      const left = typeof child.getBoundingClientRect === 'function' ? child.getBoundingClientRect().left : 0
+      if (left > edge + 4) {
+        targetChild = child
+        break
+      }
+    }
+    if (targetChild) {
+      scrollElementIntoView(targetChild)
+    }
+  }
 
   const actions = showButtons ? (
     <div className="flex items-center gap-2 relative z-10">

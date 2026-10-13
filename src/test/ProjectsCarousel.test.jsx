@@ -48,12 +48,14 @@ describe('ProjectsCarousel', () => {
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
     Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
     
-    const mockChild = { scrollIntoView: vi.fn() }
+    const mockChild0 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 16 }) }
+    const mockChild1 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 200 }) }
+    const mockChild2 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 400 }) }
     
     // Also mock firstElementChild clientWidth for scroll amount
     Object.defineProperty(list, 'children', {
       configurable: true,
-      value: [mockChild, mockChild, mockChild]
+      value: [mockChild0, mockChild1, mockChild2]
     })
     
     fireEvent.scroll(list) // Update state to show buttons
@@ -61,7 +63,7 @@ describe('ProjectsCarousel', () => {
     const nextBtn = screen.getAllByRole('button', { name: /Siguiente/i })[0]
     fireEvent.click(nextBtn)
     
-    expect(mockChild.scrollIntoView).toHaveBeenCalledWith(expect.objectContaining({
+    expect(mockChild1.scrollIntoView).toHaveBeenCalledWith(expect.objectContaining({
       behavior: 'smooth',
       block: 'nearest',
       inline: 'start',
@@ -74,8 +76,8 @@ describe('ProjectsCarousel', () => {
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
     Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
 
-    const mockChild0 = { scrollIntoView: vi.fn(), clientWidth: 200 }
-    const mockChild1 = { scrollIntoView: vi.fn(), clientWidth: 200 }
+    const mockChild0 = { scrollIntoView: vi.fn(), clientWidth: 200, getBoundingClientRect: () => ({ left: 16 }) }
+    const mockChild1 = { scrollIntoView: vi.fn(), clientWidth: 200, getBoundingClientRect: () => ({ left: 200 }) }
     Object.defineProperty(list, 'children', {
       configurable: true,
       value: [mockChild0, mockChild1]
@@ -169,5 +171,84 @@ describe('ProjectsCarousel', () => {
     expect(headerCounter.className).toContain('text-muted')
     expect(headerCounter.className).toContain('tabular-nums')
     expect(headerCounter.textContent).toBe('1 / 3')
+  })
+
+  test('al final del scroll el contador muestra el último ("3 / 3")', () => {
+    const { container } = render(<ProjectsCarousel />)
+    const list = screen.getByRole('list')
+    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
+    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
+    Object.defineProperty(list, 'scrollLeft', { configurable: true, value: 1000 })
+
+    const mockChild0 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: -450 }) }
+    const mockChild1 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 8 }) }
+    const mockChild2 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 260 }) }
+    Object.defineProperty(list, 'children', {
+      configurable: true,
+      value: [mockChild0, mockChild1, mockChild2]
+    })
+
+    fireEvent.scroll(list)
+
+    const bottomSpan = container.querySelector('div.mt-4 span')
+    expect(bottomSpan.textContent).toBe('3 / 3')
+
+    const headerCounter = container.querySelector('span.tabular-nums')
+    expect(headerCounter.textContent).toBe('3 / 3')
+  })
+
+  test('desde el final, prev apunta a la tarjeta 2 y no a la 1', () => {
+    render(<ProjectsCarousel />)
+    const list = screen.getByRole('list')
+    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
+    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
+    Object.defineProperty(list, 'scrollLeft', { configurable: true, value: 1000 })
+
+    const mockChild0 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: -450 }) }
+    const mockChild1 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 8 }) }
+    const mockChild2 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 260 }) }
+    Object.defineProperty(list, 'children', {
+      configurable: true,
+      value: [mockChild0, mockChild1, mockChild2]
+    })
+
+    fireEvent.scroll(list)
+
+    const prevBtn = screen.getByRole('button', { name: 'Proyecto anterior' })
+    expect(prevBtn).not.toBeDisabled()
+    fireEvent.click(prevBtn)
+
+    expect(mockChild1.scrollIntoView).toHaveBeenCalledWith(expect.objectContaining({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    }))
+    expect(mockChild0.scrollIntoView).not.toHaveBeenCalled()
+  })
+
+  test('next no hace nada al final', () => {
+    render(<ProjectsCarousel />)
+    const list = screen.getByRole('list')
+    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
+    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
+    Object.defineProperty(list, 'scrollLeft', { configurable: true, value: 1000 })
+
+    const mockChild0 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: -450 }) }
+    const mockChild1 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 8 }) }
+    const mockChild2 = { scrollIntoView: vi.fn(), getBoundingClientRect: () => ({ left: 260 }) }
+    Object.defineProperty(list, 'children', {
+      configurable: true,
+      value: [mockChild0, mockChild1, mockChild2]
+    })
+
+    fireEvent.scroll(list)
+
+    const nextBtn = screen.getByRole('button', { name: 'Proyecto siguiente' })
+    expect(nextBtn).toBeDisabled()
+    fireEvent.click(nextBtn)
+
+    expect(mockChild0.scrollIntoView).not.toHaveBeenCalled()
+    expect(mockChild1.scrollIntoView).not.toHaveBeenCalled()
+    expect(mockChild2.scrollIntoView).not.toHaveBeenCalled()
   })
 })
