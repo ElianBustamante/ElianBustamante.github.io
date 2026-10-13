@@ -77,12 +77,26 @@ describe('Lightbox', () => {
     expect(figure.className).toContain('justify-center')
 
     const img = screen.getByAltText('F1')
-    expect(img.className).toContain('short:max-h-[calc(100dvh-4.25rem)]!')
+    expect(img.className).toContain('short:max-h-[calc(100dvh-3.75rem)]!')
+    expect(img.className).toContain('max-h-[62dvh]')
+    expect(img.className).toContain('md:max-h-[82dvh]')
 
     const figcaption = container.querySelector('figcaption')
     expect(figcaption.className).toContain('short:absolute')
     expect(figcaption.className).toContain('short:bottom-1')
     expect(figcaption.className).toContain('short:left-0')
     expect(figcaption.className).toContain('short:mt-0!')
+    expect(figcaption.className).toContain('short:items-baseline')
+    expect(figcaption.className).toContain('short:gap-3')
+
+    const dataLine = figcaption.querySelector('div.flex')
+    expect(dataLine.className).toContain('mt-2')
+    expect(dataLine.className).toContain('short:mt-0')
+    expect(dataLine.className).not.toContain('md:mt-3')
+
+    const counterSpan = screen.getByText('Foto 1 de 3')
+    expect(counterSpan.className).toContain('short:font-semibold')
+    expect(counterSpan.className).toContain('short:text-white/70')
+    expect(counterSpan.className).toContain('short:tracking-normal')
   })
 })

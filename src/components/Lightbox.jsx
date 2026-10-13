@@ -335,23 +335,19 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               } select-none [-webkit-touch-callout:none] ${
                 isZoomed
                   ? 'max-w-none max-h-none shadow-[0_0_100px_rgba(0,0,0,0.8)]'
-                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] short:max-h-[calc(100dvh-4.25rem)]! max-w-full w-auto h-auto'
+                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[62dvh] md:max-h-[82dvh] short:max-h-[calc(100dvh-3.75rem)]! max-w-full w-auto h-auto'
               }`}
             />
             {!isZoomed && (
-              <figcaption className="shrink-0 mt-3 md:mt-5 short:mt-1 text-center px-4 w-full animate-fade-in z-20 flex flex-col short:flex-row short:items-center short:justify-center short:gap-3 short:absolute short:bottom-1 short:left-0 short:mt-0!">
+              <figcaption className="shrink-0 mt-3 md:mt-5 text-center px-4 w-full animate-fade-in z-20 flex flex-col short:flex-row short:items-baseline short:justify-center short:gap-3 short:absolute short:bottom-1 short:left-0 short:mt-0!">
                 {title && (
                   <p className="text-sm md:text-[15px] short:text-[12px] font-semibold text-accent drop-shadow-md">
                     {title}
                   </p>
                 )}
 
-                {title && (
-                  <span className="hidden short:inline-block opacity-30 text-white/50 text-[12px]">—</span>
-                )}
-
-                <div className="mt-2 md:mt-3 short:mt-0 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] short:text-[12px] tracking-[0.2em] text-white/50 uppercase drop-shadow-md">
-                  <span>{t('photography.counter', { current: index + 1, total })}</span>
+                <div className="mt-2 short:mt-0 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] short:text-[12px] tracking-[0.2em] text-white/50 uppercase drop-shadow-md">
+                  <span className="short:font-semibold short:text-white/70 short:tracking-normal">{t('photography.counter', { current: index + 1, total })}</span>
 
                   {hasExif && (
                     <span className="hidden md:inline-block short:hidden opacity-30">|</span>
