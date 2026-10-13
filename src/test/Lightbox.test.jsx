@@ -68,4 +68,20 @@ describe('Lightbox', () => {
     fireEvent(img, event)
     expect(event.defaultPrevented).toBe(true)
   })
+
+  it('incluye clases short para figure, img y figcaption', () => {
+    const { container } = render(<Lightbox photos={mockPhotos} index={0} onClose={() => {}} onIndexChange={() => {}} />)
+    const figure = container.querySelector('figure')
+    expect(figure.className).toContain('short:py-1!')
+    expect(figure.className).toContain('short:justify-start!')
+
+    const img = screen.getByAltText('F1')
+    expect(img.className).toContain('short:max-h-[calc(100dvh-3.5rem)]!')
+
+    const figcaption = container.querySelector('figcaption')
+    expect(figcaption.className).toContain('short:absolute')
+    expect(figcaption.className).toContain('short:bottom-1')
+    expect(figcaption.className).toContain('short:left-0')
+    expect(figcaption.className).toContain('short:mt-0!')
+  })
 })
