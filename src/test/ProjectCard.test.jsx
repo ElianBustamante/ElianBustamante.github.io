@@ -171,5 +171,16 @@ describe('ProjectCard +N tooltip', () => {
     expect(chipsWrapper.className).toContain('[@media(orientation:landscape)_and_(max-height:420px)]:hidden')
     expect(chipsWrapper.className).not.toContain('compact:hidden')
   })
+
+  it('usa la sombra reducida shadow-[0_8px_20px_rgba(255,106,26,0.12)] en hover, foco y tarjeta activa', () => {
+    const { container, rerender } = render(<ProjectCard project={project} isActive={false} />)
+    const article = container.querySelector('article')
+    expect(article.className).toContain('has-[:focus-visible]:shadow-[0_8px_20px_rgba(255,106,26,0.12)]')
+    expect(article.className).toContain('lg:hover:shadow-[0_8px_20px_rgba(255,106,26,0.12)]')
+    expect(article.className).not.toContain('shadow-[0_12px_32px_rgba(255,106,26,0.12)]')
+
+    rerender(<ProjectCard project={project} isActive={true} />)
+    expect(article.className).toContain('max-lg:shadow-[0_8px_20px_rgba(255,106,26,0.12)]')
+  })
 })
 
