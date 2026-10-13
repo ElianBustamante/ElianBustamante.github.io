@@ -184,7 +184,7 @@ export default function ProjectCard({ project, isActive }) {
         </div>
       )}
 
-      <div className="flex flex-1 flex-col p-4 sm:p-5 justify-start">
+      <div className="flex flex-1 flex-col p-4 sm:p-5 [@media(max-height:360px)]:p-3.5! justify-start">
         <div className="relative max-w-full self-start">
           <h3 
             title={t(`projects.items.${project.id}.name`)}

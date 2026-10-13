@@ -89,4 +89,12 @@ describe('ProjectsCarousel', () => {
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
+
+  test('el ul incluye las clases short:py-6, short:-mt-6 y short:-mb-3 para evitar recorte de brillo', () => {
+    render(<ProjectsCarousel />)
+    const list = screen.getByRole('list')
+    expect(list.className).toContain('short:py-6')
+    expect(list.className).toContain('short:-mt-6')
+    expect(list.className).toContain('short:-mb-3')
+  })
 })
