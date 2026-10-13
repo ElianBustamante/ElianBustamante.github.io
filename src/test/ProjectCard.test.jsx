@@ -152,7 +152,7 @@ describe('ProjectCard +N tooltip', () => {
   it('incluye clases compact prioritarias con modificador ! en article y descripción', () => {
     const { container } = render(<ProjectCard project={project} />)
     const article = container.querySelector('article')
-    expect(article.className).toContain('compact:h-auto!')
+    expect(article.className).not.toContain('compact:h-auto!')
     expect(article.className).toContain('compact:min-h-0!')
 
     const desc = container.querySelector('p.text-muted')
