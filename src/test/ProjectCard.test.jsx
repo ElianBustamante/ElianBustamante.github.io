@@ -164,5 +164,12 @@ describe('ProjectCard +N tooltip', () => {
     const body = container.querySelector('div.flex-1.flex-col')
     expect(body.className).toContain('[@media(max-height:360px)]:p-3.5!')
   })
+
+  it('oculta chips de tecnologías solo en landscape con max-height:420px', () => {
+    const { container } = render(<ProjectCard project={project} />)
+    const chipsWrapper = container.querySelector('div.flex-nowrap')
+    expect(chipsWrapper.className).toContain('[@media(orientation:landscape)_and_(max-height:420px)]:hidden')
+    expect(chipsWrapper.className).not.toContain('compact:hidden')
+  })
 })
 

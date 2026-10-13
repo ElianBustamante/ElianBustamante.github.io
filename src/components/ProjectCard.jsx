@@ -208,7 +208,7 @@ export default function ProjectCard({ project, isActive }) {
         </p>
         
         {chips.length > 0 && (
-          <div className="flex flex-nowrap sm:flex-wrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 compact:hidden py-1 -my-1">
+          <div className="flex flex-nowrap sm:flex-wrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 [@media(orientation:landscape)_and_(max-height:420px)]:hidden py-1 -my-1">
             {visibles.map((tag, i) => (
               <span
                 key={i}
