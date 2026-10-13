@@ -290,7 +290,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           </button>
 
           <figure
-            className={`flex flex-col relative short:py-1! short:justify-start! ${
+            className={`flex flex-col relative short:py-1! short:justify-center! ${
               isZoomed ? 'min-w-max pt-2 md:pt-6 w-fit h-fit' : 'm-auto w-full h-full items-center justify-center py-2 md:py-6'
             }`}
           >
@@ -335,11 +335,11 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               } select-none [-webkit-touch-callout:none] ${
                 isZoomed
                   ? 'max-w-none max-h-none shadow-[0_0_100px_rgba(0,0,0,0.8)]'
-                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] short:max-h-[calc(100dvh-3.75rem)]! max-w-full w-auto h-auto'
+                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] short:max-h-[calc(100dvh-3.5rem)]! short:m-0! max-w-full w-auto h-auto'
               }`}
             />
             {!isZoomed && (
-              <figcaption className="shrink-0 mt-3 md:mt-5 text-center px-4 w-full animate-fade-in z-20 flex flex-col short:flex-row short:items-baseline short:justify-center short:gap-3 short:absolute short:bottom-1 short:left-0 short:mt-0!">
+              <figcaption className="shrink-0 mt-3 md:mt-5 short:mt-2! text-center px-4 w-full animate-fade-in z-20 flex flex-col short:flex-row short:items-baseline short:justify-center short:gap-3">
                 {title && (
                   <p className="text-sm md:text-[15px] [@media(min-height:800px)]:text-base short:text-[12px] font-semibold text-accent drop-shadow-md">
                     {title}
