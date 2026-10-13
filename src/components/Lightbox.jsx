@@ -291,7 +291,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
 
           <figure
             className={`flex flex-col relative short:py-1! short:justify-start! ${
-              isZoomed ? 'min-w-max pt-2 md:pt-6 w-fit h-fit' : 'm-auto w-full h-full items-center py-2 md:py-6'
+              isZoomed ? 'min-w-max pt-2 md:pt-6 w-fit h-fit' : 'm-auto w-full h-full items-center justify-center py-2 md:py-6'
             }`}
           >
             {isLoading && (
@@ -335,7 +335,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               } select-none [-webkit-touch-callout:none] ${
                 isZoomed
                   ? 'max-w-none max-h-none shadow-[0_0_100px_rgba(0,0,0,0.8)]'
-                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] short:max-h-[calc(100dvh-3.5rem)]! max-w-full w-auto h-auto'
+                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] short:max-h-[calc(100dvh-4.25rem)]! max-w-full w-auto h-auto'
               }`}
             />
             {!isZoomed && (

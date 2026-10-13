@@ -74,9 +74,10 @@ describe('Lightbox', () => {
     const figure = container.querySelector('figure')
     expect(figure.className).toContain('short:py-1!')
     expect(figure.className).toContain('short:justify-start!')
+    expect(figure.className).toContain('justify-center')
 
     const img = screen.getByAltText('F1')
-    expect(img.className).toContain('short:max-h-[calc(100dvh-3.5rem)]!')
+    expect(img.className).toContain('short:max-h-[calc(100dvh-4.25rem)]!')
 
     const figcaption = container.querySelector('figcaption')
     expect(figcaption.className).toContain('short:absolute')
