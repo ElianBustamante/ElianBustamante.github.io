@@ -126,9 +126,9 @@ describe('NavRail', () => {
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('SHORT_SCREEN_QUERY contiene ambas condiciones apaisadas (<=520px y <=1023px con <=620px)', () => {
+  it('SHORT_SCREEN_QUERY contiene ambas condiciones apaisadas (<=520px y <=1023px con <=660px)', () => {
     expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-height: 520px)')
-    expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-width: 1023px) and (max-height: 620px)')
+    expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-width: 1023px) and (max-height: 660px)')
   })
 
   it('el riel incluye la clase short:flex y hidden', () => {
