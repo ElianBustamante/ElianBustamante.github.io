@@ -121,24 +121,50 @@ describe('ProjectsCarousel', () => {
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
-  test('el ul incluye las clases short:py-6, short:-mt-6 y short:-mb-3 para evitar recorte de brillo', () => {
+  test('el ul incluye las clases short:py-6, short:-mt-6 y short:-mb-6 para que el grupo termine en el borde inferior', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     expect(list.className).toContain('short:py-6')
     expect(list.className).toContain('short:-mt-6')
-    expect(list.className).toContain('short:-mb-3')
+    expect(list.className).toContain('short:-mb-6')
+    expect(list.className).not.toContain('short:-mb-3')
     expect(list.className).not.toContain('short:my-auto')
     expect(list.className).toContain('[mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
     expect(list.className).toContain('[-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
   })
 
-  test('en short: Section no tiene fill y el contador de página incluye short:text-xs', () => {
+  test('contador en pantalla baja: se oculta el inferior y se muestra en la cabecera entre las flechas', () => {
     const { container } = render(<ProjectsCarousel />)
     const section = container.querySelector('section#proyectos')
     expect(section.className).not.toContain('short:h-[100dvh]')
     expect(section.className).toContain('short:justify-center!')
 
-    const counterSpan = screen.getByText(/1 \/ /)
-    expect(counterSpan.className).toContain('short:text-xs')
+    const list = screen.getByRole('list')
+    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
+    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
+    fireEvent.scroll(list)
+
+    // Contador de abajo
+    const bottomCounterDiv = container.querySelector('div.mt-4')
+    expect(bottomCounterDiv.className).toContain('short:hidden')
+    expect(bottomCounterDiv.className).not.toContain('short:block')
+    expect(bottomCounterDiv.className).not.toContain('short:m-2')
+    expect(bottomCounterDiv.className).not.toContain('[@media(max-height:330px)]:hidden')
+
+    const bottomSpan = bottomCounterDiv.querySelector('span')
+    expect(bottomSpan.className).not.toContain('short:text-xs')
+
+    // Contador de la cabecera (actions)
+    const headerCounter = container.querySelector('span.tabular-nums')
+    expect(headerCounter).toBeInTheDocument()
+    expect(headerCounter.className).toContain('hidden')
+    expect(headerCounter.className).toContain('short:block')
+    expect(headerCounter.className).toContain('min-w-[2.75rem]')
+    expect(headerCounter.className).toContain('text-center')
+    expect(headerCounter.className).toContain('text-xs')
+    expect(headerCounter.className).toContain('font-medium')
+    expect(headerCounter.className).toContain('text-muted')
+    expect(headerCounter.className).toContain('tabular-nums')
+    expect(headerCounter.textContent).toBe('1 / 3')
   })
 })

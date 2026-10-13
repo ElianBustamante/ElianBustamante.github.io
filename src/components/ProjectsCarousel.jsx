@@ -60,7 +60,7 @@ export default function ProjectsCarousel() {
   const handleNext = () => scrollToIndex(activeIndex + 1)
 
   const actions = showButtons ? (
-    <div className="flex gap-2 relative z-10">
+    <div className="flex items-center gap-2 relative z-10">
       <button
         type="button"
         onClick={handlePrev}
@@ -70,6 +70,9 @@ export default function ProjectsCarousel() {
       >
         <IconChevronLeft className="pointer-events-none" />
       </button>
+      <span aria-live="polite" className="hidden short:block min-w-[2.75rem] text-center text-xs font-medium text-muted tabular-nums">
+        {activeIndex + 1} / {projectsData.length}
+      </span>
       <button
         type="button"
         onClick={handleNext}
@@ -87,7 +90,7 @@ export default function ProjectsCarousel() {
       <ul
         role="list"
         ref={listRef}
-        className="flex snap-x snap-mandatory gap-x-4 sm:gap-6 overflow-x-auto overflow-y-hidden scroll-smooth py-6 px-4 -mx-4 -my-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 [scrollbar-width:none] short:py-6 short:-mt-6 short:-mb-3 [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]"
+        className="flex snap-x snap-mandatory gap-x-4 sm:gap-6 overflow-x-auto overflow-y-hidden scroll-smooth py-6 px-4 -mx-4 -my-4 scroll-px-4 md:scroll-px-6 lg:scroll-px-8 [scrollbar-width:none] short:py-6 short:-mt-6 short:-mb-6 [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]"
       >
         {projectsData.map((project, index) => (
           <Reveal
@@ -100,8 +103,8 @@ export default function ProjectsCarousel() {
           </Reveal>
         ))}
       </ul>
-      <div className="mt-4 text-center md:hidden short:block short:m-2 [@media(max-height:330px)]:hidden" aria-live="polite">
-        <span className="text-muted text-[0.875rem] short:text-xs font-medium">
+      <div className="mt-4 text-center md:hidden short:hidden" aria-live="polite">
+        <span className="text-muted text-[0.875rem] font-medium">
           {activeIndex + 1} / {projectsData.length}
         </span>
       </div>
