@@ -99,4 +99,15 @@ describe('Lightbox', () => {
     expect(counterSpan.className).toContain('short:text-white/70')
     expect(counterSpan.className).toContain('short:tracking-normal')
   })
+
+  it('en pantallas altas (min-height:800px) sube un escalón el tamaño del título y la línea de datos', () => {
+    const { container } = render(<Lightbox photos={mockPhotos} index={0} onClose={() => {}} onIndexChange={() => {}} />)
+    const title = screen.getByText('T1')
+    expect(title.className).toContain('[@media(min-height:800px)]:text-base')
+    expect(title.className).toContain('short:text-[12px]')
+
+    const dataLine = container.querySelector('figcaption div.flex')
+    expect(dataLine.className).toContain('[@media(min-height:800px)]:text-xs')
+    expect(dataLine.className).toContain('short:text-[12px]')
+  })
 })

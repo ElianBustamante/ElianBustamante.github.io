@@ -341,12 +341,12 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             {!isZoomed && (
               <figcaption className="shrink-0 mt-3 md:mt-5 text-center px-4 w-full animate-fade-in z-20 flex flex-col short:flex-row short:items-baseline short:justify-center short:gap-3 short:absolute short:bottom-1 short:left-0 short:mt-0!">
                 {title && (
-                  <p className="text-sm md:text-[15px] short:text-[12px] font-semibold text-accent drop-shadow-md">
+                  <p className="text-sm md:text-[15px] [@media(min-height:800px)]:text-base short:text-[12px] font-semibold text-accent drop-shadow-md">
                     {title}
                   </p>
                 )}
 
-                <div className="mt-2 short:mt-0 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] short:text-[12px] tracking-[0.2em] text-white/50 uppercase drop-shadow-md">
+                <div className="mt-2 short:mt-0 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] md:text-[11px] [@media(min-height:800px)]:text-xs short:text-[12px] tracking-[0.2em] text-white/50 uppercase drop-shadow-md">
                   <span className="short:font-semibold short:text-white/70 short:tracking-normal">{t('photography.counter', { current: index + 1, total })}</span>
 
                   {hasExif && (
