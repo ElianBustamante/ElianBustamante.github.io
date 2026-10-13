@@ -29,12 +29,12 @@ describe('ProjectCard +N tooltip', () => {
 
   it('con >=640px muestra discord.py, aiohttp, curl-cffi, "+2" y el tooltip dice "SQLite, pytest"', () => {
     mockMatchMedia(true)
-    render(<ProjectCard project={project} />)
+    const { container } = render(<ProjectCard project={project} />)
 
-    expect(screen.getByText('discord.py')).toBeInTheDocument()
-    expect(screen.getByText('aiohttp')).toBeInTheDocument()
-    expect(screen.getByText('curl-cffi')).toBeInTheDocument()
-    expect(screen.getByText('+2')).toBeInTheDocument()
+    const visibleChips = Array.from(container.querySelectorAll('div.flex-nowrap > span')).map((s) => s.textContent.trim())
+    expect(visibleChips).toEqual(['discord.py', 'aiohttp', 'curl-cffi'])
+    expect(visibleChips).not.toContain('SQLite')
+    expect(screen.getByRole('button', { name: /\+2|tecnologías más/i })).toBeInTheDocument()
 
     const btn = screen.getByRole('button', { name: /\+2|tecnologías más/i })
     fireEvent.mouseEnter(btn)
@@ -46,12 +46,12 @@ describe('ProjectCard +N tooltip', () => {
 
   it('con <640px muestra discord.py, aiohttp, "+3" y el tooltip "curl-cffi, SQLite, pytest"', () => {
     mockMatchMedia(false)
-    render(<ProjectCard project={project} />)
+    const { container } = render(<ProjectCard project={project} />)
 
-    expect(screen.getByText('discord.py')).toBeInTheDocument()
-    expect(screen.getByText('aiohttp')).toBeInTheDocument()
-    expect(screen.queryByText('curl-cffi')).not.toBeInTheDocument()
-    expect(screen.getByText('+3')).toBeInTheDocument()
+    const visibleChips = Array.from(container.querySelectorAll('div.flex-nowrap > span')).map((s) => s.textContent.trim())
+    expect(visibleChips).toEqual(['discord.py', 'aiohttp'])
+    expect(visibleChips).not.toContain('curl-cffi')
+    expect(screen.getByRole('button', { name: /\+3|tecnologías más/i })).toBeInTheDocument()
 
     const btn = screen.getByRole('button', { name: /\+3|tecnologías más/i })
     fireEvent.mouseEnter(btn)
@@ -183,5 +183,20 @@ describe('ProjectCard +N tooltip', () => {
     rerender(<ProjectCard project={project} isActive={true} />)
     expect(article.className).toContain('max-lg:shadow-[0_8px_20px_rgba(255,106,26,0.12)]')
   })
+
+  it('respaldo con clientWidth 0 sigue mostrando 3 o 2 chips según el ancho de la ventana', () => {
+    mockMatchMedia(true)
+    const { container: cDesktop } = render(<ProjectCard project={project} />)
+    const desktopChips = Array.from(cDesktop.querySelectorAll('div.flex-nowrap > span')).map((s) => s.textContent.trim())
+    expect(desktopChips).toHaveLength(3)
+    expect(desktopChips).toEqual(['discord.py', 'aiohttp', 'curl-cffi'])
+
+    mockMatchMedia(false)
+    const { container: cMobile } = render(<ProjectCard project={project} />)
+    const mobileChips = Array.from(cMobile.querySelectorAll('div.flex-nowrap > span')).map((s) => s.textContent.trim())
+    expect(mobileChips).toHaveLength(2)
+    expect(mobileChips).toEqual(['discord.py', 'aiohttp'])
+  })
 })
+
 

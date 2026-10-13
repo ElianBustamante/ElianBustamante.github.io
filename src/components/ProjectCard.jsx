@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { IconBot, IconDatabase, IconTerminal, IconGithub, IconDiscordAlt, IconGamepad } from './icons'
 import useMediaQuery from '../hooks/useMediaQuery'
+import { fitChipCount } from '../lib/chips'
 
 const IconMap = {
   bot: IconBot,
@@ -19,8 +20,54 @@ export default function ProjectCard({ project, isActive }) {
   const tags = project.tags || []
   const chips = tags.slice(1)
   const visibleCount = useMediaQuery('(min-width: 640px)') ? 3 : 2
-  const visibles = chips.slice(0, visibleCount)
-  const ocultas = chips.slice(visibleCount)
+  const [chipCount, setChipCount] = useState(visibleCount)
+  const chipsContainerRef = useRef(null)
+  const measureContainerRef = useRef(null)
+
+  useLayoutEffect(() => {
+    const container = chipsContainerRef.current
+    const measureEl = measureContainerRef.current
+    if (!container || !measureEl || chips.length === 0) return
+
+    const measure = () => {
+      const clientWidth = container.clientWidth
+      if (clientWidth === 0) {
+        setChipCount(visibleCount)
+        return
+      }
+
+      const children = Array.from(measureEl.children)
+      if (children.length < chips.length + 1) return
+
+      const widths = children.slice(0, chips.length).map((el) => el.offsetWidth)
+      const plusWidth = children[chips.length].offsetWidth
+
+      let gap = 8
+      const computedGap = window.getComputedStyle(container).columnGap
+      if (computedGap) {
+        const parsed = parseFloat(computedGap)
+        if (!isNaN(parsed)) gap = parsed
+      }
+
+      const count = fitChipCount(widths, plusWidth, clientWidth, gap)
+      setChipCount(count)
+    }
+
+    measure()
+
+    let ro
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(measure)
+      ro.observe(container)
+    }
+
+    return () => {
+      if (ro) ro.disconnect()
+    }
+  }, [chips, visibleCount])
+
+  const visibles = chips.slice(0, chipCount)
+  const ocultas = chips.slice(chipCount)
 
   const [tagPos, setTagPos] = useState({ top: 0, left: 0, showAbove: true })
   const tagButtonRef = useRef(null)
@@ -208,7 +255,28 @@ export default function ProjectCard({ project, isActive }) {
         </p>
         
         {chips.length > 0 && (
-          <div className="flex flex-nowrap sm:flex-wrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 [@media(orientation:landscape)_and_(max-height:420px)]:hidden py-1 -my-1">
+          <div
+            ref={chipsContainerRef}
+            className="relative flex flex-nowrap items-center overflow-hidden gap-1.5 sm:gap-2 mb-4 sm:mb-5 [@media(orientation:landscape)_and_(max-height:420px)]:hidden py-1 -my-1"
+          >
+            <div
+              ref={measureContainerRef}
+              aria-hidden="true"
+              className="aria-hidden invisible absolute pointer-events-none flex whitespace-nowrap"
+            >
+              {chips.map((tag, i) => (
+                <span
+                  key={i}
+                  className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] text-muted border border-border whitespace-nowrap"
+                >
+                  {tag}
+                </span>
+              ))}
+              <span className="rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] font-medium border border-border whitespace-nowrap">
+                +{chips.length}
+              </span>
+            </div>
+
             {visibles.map((tag, i) => (
               <span
                 key={i}
@@ -218,11 +286,11 @@ export default function ProjectCard({ project, isActive }) {
               </span>
             ))}
             {ocultas.length > 0 && (
-              <div className="relative group/tag rounded-md shrink-0">
+              <div className="relative group/tag rounded-md shrink-0 flex">
                 <button 
                   ref={tagButtonRef}
                   type="button"
-                  className="relative cursor-pointer focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! rounded-md"
+                  className="relative cursor-pointer focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! rounded-md flex"
                   onClick={handleClick}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
