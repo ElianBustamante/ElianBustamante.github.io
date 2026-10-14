@@ -14,7 +14,7 @@ export default function Hero() {
     >
       {bgUrl && (
         <div 
-          className="absolute inset-0 -z-10"
+          className="absolute inset-y-0 right-0 left-[calc(var(--rail-w)*-1)] -z-10"
           style={{
             backgroundImage: `url(${bgUrl})`,
             backgroundSize: 'cover',
