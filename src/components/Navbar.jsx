@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import LanguageToggle from './LanguageToggle'
 import { IconMenu, IconClose } from './icons'
 import NavRail from './NavRail'
+import { getActiveSectionIndex, canGoPrev, canGoNext } from '../lib/sections'
 
 const links = [
   { href: '#inicio', key: 'nav.home' },
@@ -14,27 +15,66 @@ const links = [
 
 export default function Navbar() {
   const { t } = useTranslation()
-  const [activeId, setActiveId] = useState('inicio')
+  const [{ activeId, canPrev, canNext }, setNavState] = useState({
+    activeId: 'inicio',
+    canPrev: false,
+    canNext: true,
+  })
   const [menuOpen, setMenuOpen] = useState(false)
   const menuButtonRef = useRef(null)
   const mobileMenuRef = useRef(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
-          }
-        })
-      },
-      { rootMargin: '-40% 0px -55% 0px' }
-    )
+    let rafId = null
 
-    const sections = document.querySelectorAll('section[id]')
-    sections.forEach((section) => observer.observe(section))
+    const updateNavState = () => {
+      const sectionElements = Array.from(document.querySelectorAll('section[id]'))
+      if (!sectionElements.length) return
 
-    return () => observer.disconnect()
+      const rects = sectionElements.map((el) => el.getBoundingClientRect())
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0
+
+      const activeIdx = getActiveSectionIndex(rects, viewportHeight)
+      const nextActiveId = sectionElements[activeIdx]?.id || 'inicio'
+      const nextCanPrev = canGoPrev(rects)
+      const nextCanNext = canGoNext(rects)
+
+      setNavState((prev) => {
+        if (
+          prev.activeId === nextActiveId &&
+          prev.canPrev === nextCanPrev &&
+          prev.canNext === nextCanNext
+        ) {
+          return prev
+        }
+        return {
+          activeId: nextActiveId,
+          canPrev: nextCanPrev,
+          canNext: nextCanNext,
+        }
+      })
+    }
+
+    const handleScrollOrResize = () => {
+      if (rafId !== null) return
+      rafId = requestAnimationFrame(() => {
+        rafId = null
+        updateNavState()
+      })
+    }
+
+    updateNavState()
+
+    document.addEventListener('scroll', handleScrollOrResize, { capture: true, passive: true })
+    window.addEventListener('resize', handleScrollOrResize, { passive: true })
+
+    return () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+      document.removeEventListener('scroll', handleScrollOrResize, { capture: true })
+      window.removeEventListener('resize', handleScrollOrResize)
+    }
   }, [])
 
   useEffect(() => {
@@ -76,7 +116,7 @@ export default function Navbar() {
 
   return (
     <>
-      <NavRail activeId={activeId} />
+      <NavRail activeId={activeId} canPrev={canPrev} canNext={canNext} />
       
       {menuOpen && (
         <div 
