@@ -4,6 +4,7 @@ import LanguageToggle from './LanguageToggle'
 import { IconMenu, IconClose } from './icons'
 import { scrollToElement } from '../lib/scroll'
 import { SHORT_SCREEN_QUERY } from '../lib/media'
+import { getPrevSectionIndex, getNextSectionIndex } from '../lib/sections'
 
 const links = [
   { href: '#inicio', key: 'nav.home' },
@@ -13,7 +14,7 @@ const links = [
   { href: '#contacto', key: 'nav.contact' },
 ]
 
-export default function NavRail({ activeId }) {
+export default function NavRail({ activeId, canPrev = false, canNext = true }) {
   const { t } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef(null)
@@ -71,22 +72,22 @@ export default function NavRail({ activeId }) {
   const closeMenu = () => setMenuOpen(false)
   const toggleMenu = () => setMenuOpen((prev) => !prev)
 
-  const isFirst = !activeId || activeId === 'inicio'
-  const isLast = activeId === 'contacto'
+  const isFirst = !canPrev
+  const isLast = !canNext
 
   const handlePrev = () => {
     const sections = Array.from(document.querySelectorAll('section[id]'))
     if (!sections.length) return
-    const currentIdx = Math.max(0, sections.findIndex((s) => s.id === activeId))
-    const targetIdx = Math.max(0, currentIdx - 1)
+    const rects = sections.map((sec) => sec.getBoundingClientRect())
+    const targetIdx = getPrevSectionIndex(rects)
     scrollToElement(sections[targetIdx])
   }
 
   const handleNext = () => {
     const sections = Array.from(document.querySelectorAll('section[id]'))
     if (!sections.length) return
-    const currentIdx = Math.max(0, sections.findIndex((s) => s.id === activeId))
-    const targetIdx = Math.min(sections.length - 1, currentIdx + 1)
+    const rects = sections.map((sec) => sec.getBoundingClientRect())
+    const targetIdx = getNextSectionIndex(rects)
     scrollToElement(sections[targetIdx])
   }
 

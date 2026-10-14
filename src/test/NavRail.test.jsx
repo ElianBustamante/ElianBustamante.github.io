@@ -154,7 +154,7 @@ describe('NavRail', () => {
   })
 
   it('en contacto, el botón siguiente existe pero está disabled, invisible y con aria-hidden', () => {
-    const { container } = render(<NavRail activeId="contacto" />)
+    const { container } = render(<NavRail activeId="contacto" canPrev={true} canNext={false} />)
     const nextButton = container.querySelector('button[aria-label="Siguiente sección"]')
     expect(nextButton).toBeInTheDocument()
     expect(nextButton).toBeDisabled()
@@ -169,12 +169,47 @@ describe('NavRail', () => {
   })
 
   it('las flechas usan las animaciones correctas: ^ usa animate-bounce-up y v usa animate-bounce', () => {
-    render(<NavRail activeId="proyectos" />)
+    render(<NavRail activeId="proyectos" canPrev={true} canNext={true} />)
     const prevButton = screen.getByRole('button', { name: /sección anterior/i })
     const nextButton = screen.getByRole('button', { name: /siguiente sección/i })
 
     expect(prevButton.className).toContain('motion-safe:animate-bounce-up')
     expect(nextButton.className).toContain('motion-safe:animate-bounce')
     expect(nextButton.className).not.toContain('motion-safe:animate-bounce-up')
+  })
+
+  it('handlePrev y handleNext llaman a scrollToElement según las posiciones de las secciones', () => {
+    const sec1 = document.createElement('section')
+    sec1.id = 'inicio'
+    sec1.getBoundingClientRect = () => ({ top: -800, bottom: 0 })
+    sec1.scrollIntoView = vi.fn()
+
+    const sec2 = document.createElement('section')
+    sec2.id = 'proyectos'
+    sec2.getBoundingClientRect = () => ({ top: 0, bottom: 800 })
+    sec2.scrollIntoView = vi.fn()
+
+    const sec3 = document.createElement('section')
+    sec3.id = 'contacto'
+    sec3.getBoundingClientRect = () => ({ top: 800, bottom: 1600 })
+    sec3.scrollIntoView = vi.fn()
+
+    document.body.appendChild(sec1)
+    document.body.appendChild(sec2)
+    document.body.appendChild(sec3)
+
+    render(<NavRail activeId="proyectos" canPrev={true} canNext={true} />)
+
+    const prevButton = screen.getByRole('button', { name: /sección anterior/i })
+    fireEvent.click(prevButton)
+    expect(sec1.scrollIntoView).toHaveBeenCalled()
+
+    const nextButton = screen.getByRole('button', { name: /siguiente sección/i })
+    fireEvent.click(nextButton)
+    expect(sec3.scrollIntoView).toHaveBeenCalled()
+
+    document.body.removeChild(sec1)
+    document.body.removeChild(sec2)
+    document.body.removeChild(sec3)
   })
 })
