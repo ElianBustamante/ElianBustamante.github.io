@@ -45,11 +45,11 @@ export default function Hero() {
             {t('hero.titleLine2')}
           </span>
         </h1>
-        <div className="max-w-[42rem]">
-          <p className="text-[1.125rem] [@media(max-height:500px)]:text-[1rem] text-text mt-6 [@media(max-height:500px)]:mt-2 hero-in" style={{ animationDelay: '240ms' }}>
+        <div className="max-w-[42rem] xl:max-w-[46rem] short:max-w-[42rem]!">
+          <p className="text-[1.125rem] md:text-[1.25rem] xl:text-[1.5rem] short:text-[1rem]! [@media(max-height:500px)]:text-[1rem] text-text mt-6 [@media(max-height:500px)]:mt-2 hero-in" style={{ animationDelay: '240ms' }}>
             {t('hero.subtitle')}
           </p>
-          <p className="text-muted mt-4 [@media(max-height:500px)]:mt-2 hero-in" style={{ animationDelay: '360ms' }}>
+          <p className="text-muted md:text-[1.125rem] xl:text-[1.25rem] text-balance short:text-base! mt-4 [@media(max-height:500px)]:mt-2 hero-in" style={{ animationDelay: '360ms' }}>
             {t('hero.description')}
           </p>
           <div className="flex flex-wrap gap-4 mt-8 [@media(max-height:500px)]:mt-4 hero-in" style={{ animationDelay: '480ms' }}>
