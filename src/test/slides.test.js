@@ -243,5 +243,52 @@ describe('slides logic', () => {
       const cur = { width: 800, height: 600, dpr: 1 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
+
+    it('coarse con solo el alto distinto -> false', () => {
+      // Móvil (<768px): alto cambia significativamente (ej. barra de URL 120px)
+      const prevMobile = { width: 390, height: 844, dpr: 3 }
+      const curMobile = { width: 390, height: 724, dpr: 3 }
+      expect(shouldRealignOnResize({ prev: prevMobile, cur: curMobile, coarse: true })).toBe(false)
+
+      // Tablet / apaisado (>=768px): alto cambia
+      const prevTablet = { width: 800, height: 600, dpr: 2 }
+      const curTablet = { width: 800, height: 520, dpr: 2 }
+      expect(shouldRealignOnResize({ prev: prevTablet, cur: curTablet, coarse: true })).toBe(false)
+    })
+
+    it('coarse con ancho distinto -> true', () => {
+      const prev = { width: 375, height: 667, dpr: 2 }
+      const cur = { width: 390, height: 667, dpr: 2 }
+      expect(shouldRealignOnResize({ prev, cur, coarse: true })).toBe(true)
+    })
+
+    it('coarse cruzando 768px -> true', () => {
+      const prev = { width: 700, height: 600, dpr: 1 }
+      const cur = { width: 800, height: 600, dpr: 1 }
+      expect(shouldRealignOnResize({ prev, cur, coarse: true })).toBe(true)
+
+      const prev2 = { width: 800, height: 600, dpr: 1 }
+      const cur2 = { width: 700, height: 600, dpr: 1 }
+      expect(shouldRealignOnResize({ prev: prev2, cur: cur2, coarse: true })).toBe(true)
+    })
+
+    it('sin coarse (o coarse=false) conserva el mismo resultado que antes', () => {
+      // Escritorio con cambio de alto -> true
+      const prevDesk = { width: 1024, height: 768, dpr: 1 }
+      const curDesk = { width: 1024, height: 769, dpr: 1 }
+      expect(shouldRealignOnResize({ prev: prevDesk, cur: curDesk, coarse: false })).toBe(true)
+      expect(shouldRealignOnResize({ prev: prevDesk, cur: curDesk })).toBe(true)
+
+      // Móvil con cambio de alto <96px -> false
+      const prevMob = { width: 375, height: 611, dpr: 2 }
+      const curMobSmall = { width: 375, height: 667, dpr: 2 }
+      expect(shouldRealignOnResize({ prev: prevMob, cur: curMobSmall, coarse: false })).toBe(false)
+      expect(shouldRealignOnResize({ prev: prevMob, cur: curMobSmall })).toBe(false)
+
+      // Móvil con cambio de alto >=96px -> true
+      const curMobLarge = { width: 375, height: 718, dpr: 2 }
+      expect(shouldRealignOnResize({ prev: prevMob, cur: curMobLarge, coarse: false })).toBe(true)
+      expect(shouldRealignOnResize({ prev: prevMob, cur: curMobLarge })).toBe(true)
+    })
   })
 })

@@ -221,7 +221,11 @@ function App() {
           dpr: window.devicePixelRatio
         }
         if (
-          shouldRealignOnResize({ prev, cur }) &&
+          shouldRealignOnResize({
+            prev,
+            cur,
+            coarse: window.matchMedia?.('(pointer: coarse)').matches === true
+          }) &&
           currentSectionRef.current
         ) {
           scrollToElement(currentSectionRef.current, { behavior: 'auto' })
