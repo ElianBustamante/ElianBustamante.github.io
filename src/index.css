@@ -25,7 +25,7 @@
   --color-on-accent: #0a0a0a;
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --radius-card: 1rem;
-  --container-site: 90rem;
+  --container-site: 81rem;
   --animate-bounce-up: bounce-up 1s infinite;
 
   @keyframes bounce-up {
