@@ -58,10 +58,31 @@ export default function ProjectCard({ project, isActive }) {
     if (typeof ResizeObserver !== 'undefined') {
       ro = new ResizeObserver(measure)
       ro.observe(container)
+      Array.from(measureEl.children).forEach((el) => ro.observe(el))
+    }
+
+    let cancelled = false
+    const onLoadingDone = () => {
+      if (!cancelled) measure()
+    }
+
+    if (typeof document !== 'undefined' && document.fonts) {
+      if (document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+        document.fonts.ready.then(() => {
+          if (!cancelled) measure()
+        })
+      }
+      if (typeof document.fonts.addEventListener === 'function') {
+        document.fonts.addEventListener('loadingdone', onLoadingDone)
+      }
     }
 
     return () => {
+      cancelled = true
       if (ro) ro.disconnect()
+      if (typeof document !== 'undefined' && document.fonts && typeof document.fonts.removeEventListener === 'function') {
+        document.fonts.removeEventListener('loadingdone', onLoadingDone)
+      }
     }
   }, [chips, visibleCount])
 
