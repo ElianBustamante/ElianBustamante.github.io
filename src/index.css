@@ -12,6 +12,12 @@
   }
 }
 
+@custom-variant inner-scroll {
+  @media (max-width: 767.98px) and (pointer: coarse) {
+    @slot;
+  }
+}
+
 @theme {
   --color-bg: #0a0a0a;
   --color-surface: #141312;
@@ -127,7 +133,7 @@ button:not(:disabled) {
   .animate-nav-in { opacity: 1; animation: none; }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 767.98px) and (pointer: coarse) {
   html, body {
     overflow: hidden;
     height: 100dvh;
