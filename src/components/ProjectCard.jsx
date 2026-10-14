@@ -29,8 +29,8 @@ export default function ProjectCard({ project, isActive }) {
     if (!container || !measureEl || chips.length === 0) return
 
     const measure = () => {
-      const clientWidth = container.clientWidth
-      if (clientWidth === 0) {
+      const containerWidth = container.getBoundingClientRect().width
+      if (containerWidth === 0 || container.clientWidth === 0) {
         setChipCount(visibleCount)
         return
       }
@@ -38,8 +38,8 @@ export default function ProjectCard({ project, isActive }) {
       const children = Array.from(measureEl.children)
       if (children.length < chips.length + 1) return
 
-      const widths = children.slice(0, chips.length).map((el) => el.offsetWidth)
-      const plusWidth = children[chips.length].offsetWidth
+      const widths = children.slice(0, chips.length).map((el) => Math.ceil(el.getBoundingClientRect().width))
+      const plusWidth = Math.ceil(children[chips.length].getBoundingClientRect().width)
 
       let gap = 8
       const computedGap = window.getComputedStyle(container).columnGap
@@ -48,7 +48,8 @@ export default function ProjectCard({ project, isActive }) {
         if (!isNaN(parsed)) gap = parsed
       }
 
-      const count = fitChipCount(widths, plusWidth, clientWidth, gap)
+      const available = Math.floor(containerWidth) - 1
+      const count = fitChipCount(widths, plusWidth, available, gap)
       setChipCount(count)
     }
 
