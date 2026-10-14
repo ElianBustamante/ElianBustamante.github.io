@@ -105,18 +105,17 @@ export default function NavRail({ activeId }) {
           EB
         </a>
 
-        {!isFirst ? (
-          <button
-            type="button"
-            onClick={handlePrev}
-            aria-label={t('nav.prevSection')}
-            className="flex items-center justify-center w-11 h-11 min-h-[44px] min-w-[44px] p-2 text-muted hover:text-accent transition-colors motion-safe:animate-bounce focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6"/></svg>
-          </button>
-        ) : (
-          <div className="w-11 h-11" aria-hidden="true" />
-        )}
+        <button
+          type="button"
+          onClick={handlePrev}
+          disabled={isFirst}
+          tabIndex={isFirst ? -1 : undefined}
+          aria-hidden={isFirst ? "true" : undefined}
+          aria-label={t('nav.prevSection')}
+          className={`flex items-center justify-center w-11 h-11 min-h-[44px] min-w-[44px] p-2 text-muted hover:text-accent transition-colors motion-safe:animate-bounce-up focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${isFirst ? 'invisible pointer-events-none' : ''}`}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
 
         <button
           ref={buttonRef}
@@ -129,18 +128,17 @@ export default function NavRail({ activeId }) {
           {menuOpen ? <IconClose /> : <IconMenu />}
         </button>
 
-        {!isLast ? (
-          <button
-            type="button"
-            onClick={handleNext}
-            aria-label={t('nav.nextSection')}
-            className="flex items-center justify-center w-11 h-11 min-h-[44px] min-w-[44px] p-2 text-muted hover:text-accent transition-colors motion-safe:animate-bounce focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-        ) : (
-          <div className="w-11 h-11" aria-hidden="true" />
-        )}
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={isLast}
+          tabIndex={isLast ? -1 : undefined}
+          aria-hidden={isLast ? "true" : undefined}
+          aria-label={t('nav.nextSection')}
+          className={`flex items-center justify-center w-11 h-11 min-h-[44px] min-w-[44px] p-2 text-muted hover:text-accent transition-colors motion-safe:animate-bounce focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${isLast ? 'invisible pointer-events-none' : ''}`}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
 
         <LanguageToggle compact={true} />
       </nav>
