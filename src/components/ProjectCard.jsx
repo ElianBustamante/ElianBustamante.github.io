@@ -309,7 +309,7 @@ export default function ProjectCard({ project, isActive }) {
                     +{ocultas.length}
                   </span>
                   {/* Área táctil de 44x44 */}
-                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[44px] h-[44px] min-w-full min-h-full opacity-0 pointer-events-auto"></span>
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 min-w-full min-h-full opacity-0 pointer-events-auto"></span>
                 </button>
               </div>
             )}
@@ -323,7 +323,7 @@ export default function ProjectCard({ project, isActive }) {
                 href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! compact:min-h-[36px]"
+                className="inline-flex min-h-11 sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! compact:min-h-[36px]"
               >
                 <IconGithub className="w-3.5 h-3.5 sm:w-3.5 sm:h-3.5" />
                 <span className="truncate max-w-[100px] sm:max-w-none">{t('projects.viewCode')}</span>
@@ -334,7 +334,7 @@ export default function ProjectCard({ project, isActive }) {
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! truncate compact:min-h-[36px]"
+                className="inline-flex min-h-11 sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! truncate compact:min-h-[36px]"
               >
                 <span className="truncate">{project.demoLabel || t('projects.viewDemo')}</span>
               </a>

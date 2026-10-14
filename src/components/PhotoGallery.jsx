@@ -254,7 +254,7 @@ export default function PhotoGallery() {
         onClick={() => scrollByAmount(-1)}
         disabled={isAtStart}
         aria-label={t('photography.scrollPrev')}
-        className="flex min-h-[36px] min-w-[36px] md:min-h-[44px] md:min-w-[44px] items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none"
+        className="flex min-h-[36px] min-w-[36px] md:min-h-11 md:min-w-11 items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none"
       >
         <IconChevronLeft className="pointer-events-none" />
       </button>
@@ -263,7 +263,7 @@ export default function PhotoGallery() {
         onClick={() => scrollByAmount(1)}
         disabled={isAtEnd}
         aria-label={t('photography.scrollNext')}
-        className="flex min-h-[36px] min-w-[36px] md:min-h-[44px] md:min-w-[44px] items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none"
+        className="flex min-h-[36px] min-w-[36px] md:min-h-11 md:min-w-11 items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none"
       >
         <IconChevronRight className="pointer-events-none" />
       </button>

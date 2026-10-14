@@ -233,7 +233,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             onClick={toggleZoom}
             aria-pressed={isZoomed}
             aria-label={isZoomed ? t('photography.zoomOut') : t('photography.zoomIn')}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="11" cy="11" r="8" />
@@ -250,7 +250,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               onClose()
             }}
             aria-label={t('photography.close')}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <IconClose />
           </button>
@@ -282,7 +282,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             data-zoom-control
             onClick={goPrev}
             aria-label={t('photography.prev')}
-            className={`hidden md:flex short:flex left-4 z-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors ${
+            className={`hidden md:flex short:flex left-4 z-10 min-h-11 min-w-11 items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors ${
               isZoomed ? 'top-1/2 -translate-y-1/2 fixed' : 'absolute top-1/2 -translate-y-1/2'
             }`}
           >
@@ -418,7 +418,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             data-zoom-control
             onClick={goNext}
             aria-label={t('photography.next')}
-            className={`hidden md:flex short:flex right-4 z-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors ${
+            className={`hidden md:flex short:flex right-4 z-10 min-h-11 min-w-11 items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors ${
               isZoomed ? 'top-1/2 -translate-y-1/2 fixed' : 'absolute top-1/2 -translate-y-1/2'
             }`}
           >
@@ -431,7 +431,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             type="button"
             onClick={goPrev}
             aria-label={t('photography.prev')}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors"
           >
             <IconChevronLeft />
           </button>
@@ -439,7 +439,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             type="button"
             onClick={goNext}
             aria-label={t('photography.next')}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-full bg-surface/50 text-text hover:bg-surface transition-colors"
           >
             <IconChevronRight />
           </button>

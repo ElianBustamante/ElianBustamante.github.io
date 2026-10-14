@@ -55,13 +55,13 @@ export default function Hero() {
           <div className="flex flex-wrap gap-4 mt-8 [@media(max-height:500px)]:mt-4 hero-in" style={{ animationDelay: '480ms' }}>
             <a
               href="#proyectos"
-              className="min-h-[44px] inline-flex items-center justify-center px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors"
+              className="min-h-11 inline-flex items-center justify-center px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors"
             >
               {t('hero.ctaProjects')}
             </a>
             <a
               href="#fotografia"
-              className="min-h-[44px] inline-flex items-center justify-center px-6 border border-text/40 rounded-full font-semibold hover:bg-surface-2 transition-colors"
+              className="min-h-11 inline-flex items-center justify-center px-6 border border-text/40 rounded-full font-semibold hover:bg-surface-2 transition-colors"
             >
               {t('hero.ctaPhotography')}
             </a>
@@ -77,7 +77,7 @@ export default function Hero() {
           scrollToElement(next);
         }} 
         aria-label={t('nav.nextSection')} 
-        className="absolute flex items-center justify-center min-h-[44px] min-w-[44px] bottom-4 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce short:hidden"
+        className="absolute flex items-center justify-center min-h-11 min-w-11 bottom-4 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce short:hidden"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
       </button>

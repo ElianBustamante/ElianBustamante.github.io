@@ -169,7 +169,7 @@ export default function Navbar() {
           
           <a
             href="#contacto"
-            className="hidden lg:flex items-center justify-center min-h-[44px] px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="hidden lg:flex items-center justify-center min-h-11 px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             {t('nav.cta')}
           </a>
@@ -177,7 +177,7 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             ref={menuButtonRef}
-            className="lg:hidden flex items-center justify-center min-h-[44px] min-w-[44px] border border-border rounded-full bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="lg:hidden flex items-center justify-center min-h-11 min-w-11 border border-border rounded-full bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             onClick={toggleMenu}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
@@ -203,7 +203,7 @@ export default function Navbar() {
                 href={link.href}
                 onClick={closeMenu}
                 aria-current={isActive ? 'true' : undefined}
-                className={`hero-in min-h-[44px] w-full flex items-center px-4 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                className={`hero-in min-h-11 w-full flex items-center px-4 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                   isActive 
                     ? 'bg-accent/15 text-accent border-accent/40' 
                     : 'bg-surface-2 text-text border-transparent'
@@ -217,7 +217,7 @@ export default function Navbar() {
           <a
             href="#contacto"
             onClick={closeMenu}
-            className="hero-in min-h-[44px] w-full flex items-center justify-center bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="hero-in min-h-11 w-full flex items-center justify-center bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             style={{ animationDelay: `${links.length * 60}ms` }}
           >
             {t('nav.cta')}

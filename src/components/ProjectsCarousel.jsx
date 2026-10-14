@@ -126,7 +126,7 @@ export default function ProjectsCarousel() {
         onClick={handlePrev}
         disabled={!canPrev}
         aria-label={t('projects.prev')}
-        className="flex min-h-[44px] min-w-[44px] md:min-h-[44px] md:min-w-[44px] items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="flex min-h-11 min-w-11 md:min-h-11 md:min-w-11 items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <IconChevronLeft className="pointer-events-none" />
       </button>
@@ -138,7 +138,7 @@ export default function ProjectsCarousel() {
         onClick={handleNext}
         disabled={!canNext}
         aria-label={t('projects.next')}
-        className="flex min-h-[44px] min-w-[44px] md:min-h-[44px] md:min-w-[44px] items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="flex min-h-11 min-w-11 md:min-h-11 md:min-w-11 items-center justify-center rounded-full border border-border bg-surface/60 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <IconChevronRight className="pointer-events-none" />
       </button>

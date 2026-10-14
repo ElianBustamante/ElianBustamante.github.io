@@ -16,7 +16,7 @@ export default function LanguageToggle({ compact = false }) {
       onClick={toggleLanguage}
       aria-label={label}
       title={label}
-      className={`rounded-full bg-surface-2 border border-border min-h-[44px] ${compact ? 'min-w-[44px] px-0' : 'px-4 gap-2'} flex items-center justify-center font-semibold text-[0.875rem] cursor-pointer hover:border-accent hover:text-accent hover:bg-accent/10 active:bg-accent/20 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`}
+      className={`rounded-full bg-surface-2 border border-border min-h-11 ${compact ? 'min-w-11 px-0' : 'px-4 gap-2'} flex items-center justify-center font-semibold text-[0.875rem] cursor-pointer hover:border-accent hover:text-accent hover:bg-accent/10 active:bg-accent/20 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`}
     >
       {!compact && <IconGlobe size={16} />}
       <span>{isEs ? 'EN' : 'ES'}</span>
