@@ -15,6 +15,7 @@ import {
   getSectionOnFocus,
   shouldRealignOnResize
 } from './lib/slides'
+import { usesInnerScroll } from './lib/media'
 
 function App() {
   const mainRef = useRef(null)
@@ -110,7 +111,7 @@ function App() {
     }
 
     const handleWheel = (e) => {
-      if (window.innerWidth < 768) return
+      if (usesInnerScroll()) return
 
       const sections = Array.from(document.querySelectorAll('section, footer'))
       const closestIndex = findClosestSectionIndex(sections)
@@ -136,7 +137,7 @@ function App() {
     }
 
     const handleKeyDown = (e) => {
-      if (window.innerWidth < 768) return
+      if (usesInnerScroll()) return
       if (!shouldInterceptKey(e)) return
 
       const direction = getKeyDirection(e)
@@ -252,7 +253,7 @@ function App() {
   }, [])
 
   return (
-    <div className="w-full relative overflow-x-clip min-h-screen max-md:min-h-0 max-md:h-[100dvh] max-md:overflow-y-auto max-md:snap-y max-md:snap-mandatory [@media(max-height:600px)]:snap-none scroll-smooth">
+    <div className="w-full relative overflow-x-clip min-h-screen inner-scroll:min-h-0 inner-scroll:h-[100dvh] inner-scroll:overflow-y-auto inner-scroll:snap-y inner-scroll:snap-mandatory [@media(max-height:600px)]:snap-none scroll-smooth">
       <AnimatedBackground />
       
       {/* Contenido protegido por encima del fondo */}
