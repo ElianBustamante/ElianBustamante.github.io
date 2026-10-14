@@ -39,7 +39,7 @@ export default function Section({ id, titleKey, children, actions, fill = false 
         type="button"
         onClick={scrollPrev} 
         aria-label={t('nav.prevSection')} 
-        className="absolute flex items-center justify-center min-h-[44px] min-w-[44px] top-[95px] short:top-2 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce short:hidden"
+        className="absolute flex items-center justify-center min-h-[44px] min-w-[44px] top-[95px] short:top-2 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce-up short:hidden"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6"/></svg>
       </button>
