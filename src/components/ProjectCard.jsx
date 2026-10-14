@@ -197,11 +197,11 @@ export default function ProjectCard({ project, isActive }) {
     <div 
       id={`tooltip-tags-${project.id}`} 
       role="tooltip" 
-      className="fixed z-[70] w-max max-w-[200px] rounded-lg bg-black/95 backdrop-blur-xl border border-white/10 px-3 py-2 text-[12px] font-medium text-white shadow-2xl pointer-events-none animate-fade-in"
+      className="fixed z-[70] w-max max-w-[12.5rem] rounded-lg bg-black/95 backdrop-blur-xl border border-white/10 px-3 py-2 text-[0.75rem] font-medium text-white shadow-2xl pointer-events-none animate-fade-in"
       style={{
          top: tagPos.showAbove ? 'auto' : tagPos.top,
          bottom: tagPos.showAbove ? (typeof window !== 'undefined' ? window.innerHeight - tagPos.top : 0) : 'auto',
-         left: `clamp(108px, ${tagPos.left}px, 100vw - 108px)`,
+         left: `clamp(calc(6.25rem + 8px), ${tagPos.left}px, calc(100vw - 6.25rem - 8px))`,
          transform: 'translateX(-50%)'
       }}
     >
