@@ -137,4 +137,44 @@ describe('NavRail', () => {
     expect(nav.className).toContain('short:flex')
     expect(nav.className).toContain('hidden')
   })
+
+  it('en inicio, el botón anterior existe pero está disabled, invisible y con aria-hidden', () => {
+    const { container } = render(<NavRail activeId="inicio" />)
+    const prevButton = container.querySelector('button[aria-label="Sección anterior"]')
+    expect(prevButton).toBeInTheDocument()
+    expect(prevButton).toBeDisabled()
+    expect(prevButton).toHaveAttribute('tabIndex', '-1')
+    expect(prevButton).toHaveAttribute('aria-hidden', 'true')
+    expect(prevButton.className).toContain('invisible')
+    expect(prevButton.className).toContain('pointer-events-none')
+
+    const nextButton = screen.getByRole('button', { name: /siguiente sección/i })
+    expect(nextButton).not.toBeDisabled()
+    expect(nextButton.className).not.toContain('invisible')
+  })
+
+  it('en contacto, el botón siguiente existe pero está disabled, invisible y con aria-hidden', () => {
+    const { container } = render(<NavRail activeId="contacto" />)
+    const nextButton = container.querySelector('button[aria-label="Siguiente sección"]')
+    expect(nextButton).toBeInTheDocument()
+    expect(nextButton).toBeDisabled()
+    expect(nextButton).toHaveAttribute('tabIndex', '-1')
+    expect(nextButton).toHaveAttribute('aria-hidden', 'true')
+    expect(nextButton.className).toContain('invisible')
+    expect(nextButton.className).toContain('pointer-events-none')
+
+    const prevButton = screen.getByRole('button', { name: /sección anterior/i })
+    expect(prevButton).not.toBeDisabled()
+    expect(prevButton.className).not.toContain('invisible')
+  })
+
+  it('las flechas usan las animaciones correctas: ^ usa animate-bounce-up y v usa animate-bounce', () => {
+    render(<NavRail activeId="proyectos" />)
+    const prevButton = screen.getByRole('button', { name: /sección anterior/i })
+    const nextButton = screen.getByRole('button', { name: /siguiente sección/i })
+
+    expect(prevButton.className).toContain('motion-safe:animate-bounce-up')
+    expect(nextButton.className).toContain('motion-safe:animate-bounce')
+    expect(nextButton.className).not.toContain('motion-safe:animate-bounce-up')
+  })
 })

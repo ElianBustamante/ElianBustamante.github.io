@@ -48,4 +48,18 @@ describe('Section', () => {
     expect(revealContainer.className).toContain('short:flex')
     expect(revealContainer.className).toContain('short:flex-col')
   })
+
+  it('la flecha de arriba usa motion-safe:animate-bounce-up y la de abajo usa motion-safe:animate-bounce', () => {
+    render(
+      <Section id="proyectos" titleKey="projects.title">
+        <div>Contenido</div>
+      </Section>
+    )
+    const prevBtn = screen.getByRole('button', { name: /sección anterior/i })
+    const nextBtn = screen.getByRole('button', { name: /siguiente sección/i })
+
+    expect(prevBtn.className).toContain('motion-safe:animate-bounce-up')
+    expect(nextBtn.className).toContain('motion-safe:animate-bounce')
+    expect(nextBtn.className).not.toContain('motion-safe:animate-bounce-up')
+  })
 })
