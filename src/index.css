@@ -132,6 +132,20 @@ button:not(:disabled) {
   }
 }
 
+@media (pointer: coarse) and (min-width: 768px) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
+
+  section {
+    scroll-snap-align: start;
+  }
+
+  footer {
+    scroll-snap-align: end;
+  }
+}
+
 /* Animaciones GPU para el Corredor de Código 3D */
 @keyframes corridor-left {
   0% { transform: translateX(100vw); }
