@@ -19,8 +19,8 @@ export default function Section({ id, titleKey, children, actions, fill = false 
     : "snap-start [@media(min-height:601px)]:snap-always min-h-[100dvh] flex flex-col justify-center [@media(max-height:600px)]:justify-start short:justify-center! relative pt-[6.5rem] short:pt-3 pb-8 short:pb-3"
 
   const innerClasses = fill
-    ? "w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 relative z-10 -mt-3 short:mt-0 short:flex-1 short:min-h-0 short:flex short:flex-col"
-    : "w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 relative z-10 -mt-3 short:mt-0"
+    ? "w-full max-w-site mx-auto px-4 md:px-6 lg:px-8 relative z-10 -mt-3 short:mt-0 short:flex-1 short:min-h-0 short:flex short:flex-col"
+    : "w-full max-w-site mx-auto px-4 md:px-6 lg:px-8 relative z-10 -mt-3 short:mt-0"
 
   return (
     <section id={id} className={sectionClasses}>

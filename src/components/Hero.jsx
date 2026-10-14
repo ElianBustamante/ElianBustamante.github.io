@@ -36,7 +36,7 @@ export default function Hero() {
           />
         </div>
       )}
-      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 text-left">
+      <div className="w-full max-w-site mx-auto px-4 md:px-6 lg:px-8 text-left">
         <h1 className="uppercase font-extrabold text-[clamp(1.7rem,6vw,4rem)] short:!text-[clamp(1.5rem,4vh,2.5rem)] leading-[1.05] max-w-[60rem]">
           <span className="block text-accent hero-in lg:whitespace-nowrap" style={{ animationDelay: '0ms' }}>
             {t('hero.titleLine1')}
