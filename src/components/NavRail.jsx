@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useRef } from 'react'
 import LanguageToggle from './LanguageToggle'
 import { IconMenu, IconClose } from './icons'
-import { scrollToElement } from '../lib/scroll'
+import { scrollToElement, settleScroll } from '../lib/scroll'
 import { SHORT_SCREEN_QUERY } from '../lib/media'
 import { getPrevSectionIndex, getNextSectionIndex } from '../lib/sections'
 
@@ -81,6 +81,7 @@ export default function NavRail({ activeId, canPrev = false, canNext = true }) {
     const rects = sections.map((sec) => sec.getBoundingClientRect())
     const targetIdx = getPrevSectionIndex(rects)
     scrollToElement(sections[targetIdx])
+    settleScroll(sections[targetIdx])
   }
 
   const handleNext = () => {
@@ -89,6 +90,7 @@ export default function NavRail({ activeId, canPrev = false, canNext = true }) {
     const rects = sections.map((sec) => sec.getBoundingClientRect())
     const targetIdx = getNextSectionIndex(rects)
     scrollToElement(sections[targetIdx])
+    settleScroll(sections[targetIdx])
   }
 
   return (
