@@ -26,8 +26,21 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     expect(rootDiv.className).toContain('inner-scroll:overflow-y-auto')
     expect(rootDiv.className).toContain('inner-scroll:snap-y')
     expect(rootDiv.className).toContain('inner-scroll:snap-mandatory')
+    expect(rootDiv.className).toContain('[@media(orientation:portrait)_and_(max-height:600px)]:snap-none')
     expect(rootDiv.className).not.toContain('max-md:overflow-y-auto')
     expect(rootDiv.className).not.toContain('max-md:h-[100dvh]')
+  })
+
+  it('todas las secciones tienen snap-start y el footer tiene snap-end para el scroll snap', () => {
+    const { container } = render(<App />)
+    const sections = Array.from(container.querySelectorAll('section'))
+    expect(sections.length).toBeGreaterThanOrEqual(5)
+    sections.forEach((sec) => {
+      expect(sec.className).toContain('snap-start')
+    })
+    const footer = container.querySelector('footer')
+    expect(footer).toBeInTheDocument()
+    expect(footer.className).toContain('snap-end')
   })
 
   it('con ratón (pointer: fine) y ancho <768px, el wheel no es bloqueado por usesInnerScroll', () => {
