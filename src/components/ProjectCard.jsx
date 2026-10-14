@@ -241,7 +241,7 @@ export default function ProjectCard({ project, isActive }) {
           </h3>
         </div>
         <div className="flex justify-between items-center mb-2 sm:mb-3">
-          <p className="text-accent/60 font-bold text-[0.75rem] tracking-wider uppercase">
+          <p className="text-accent/60 font-bold text-[0.75rem] min-[1920px]:text-[0.8125rem] tracking-wider uppercase">
             {t(`projects.items.${project.id}.category`)}
           </p>
           {project.tags && project.tags.length > 0 && (
@@ -250,7 +250,7 @@ export default function ProjectCard({ project, isActive }) {
             </span>
           )}
         </div>
-        <p className="text-muted leading-relaxed mb-3 sm:mb-4 flex-1 text-[0.875rem] line-clamp-4 md:line-clamp-none [@media(max-width:767px)_and_(max-height:700px)]:line-clamp-3 compact:line-clamp-2! compact:flex-none">
+        <p className="text-muted leading-relaxed mb-3 sm:mb-4 flex-1 text-[0.875rem] min-[1920px]:text-base line-clamp-4 md:line-clamp-none [@media(max-width:767px)_and_(max-height:700px)]:line-clamp-3 compact:line-clamp-2! compact:flex-none">
           {t(`projects.items.${project.id}.description`)}
         </p>
         
@@ -267,12 +267,12 @@ export default function ProjectCard({ project, isActive }) {
               {chips.map((tag, i) => (
                 <span
                   key={i}
-                  className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] text-muted border border-border whitespace-nowrap"
+                  className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] min-[1920px]:text-[0.8125rem] text-muted border border-border whitespace-nowrap"
                 >
                   {tag}
                 </span>
               ))}
-              <span className="rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] font-medium border border-border whitespace-nowrap">
+              <span className="rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] min-[1920px]:text-[0.8125rem] font-medium border border-border whitespace-nowrap">
                 +{chips.length}
               </span>
             </div>
@@ -280,7 +280,7 @@ export default function ProjectCard({ project, isActive }) {
             {visibles.map((tag, i) => (
               <span
                 key={i}
-                className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] text-muted border border-border whitespace-nowrap transition-colors group-hover:border-accent/20"
+                className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] min-[1920px]:text-[0.8125rem] text-muted border border-border whitespace-nowrap transition-colors group-hover:border-accent/20"
               >
                 {tag}
               </span>
@@ -301,7 +301,7 @@ export default function ProjectCard({ project, isActive }) {
                   aria-describedby={`tooltip-tags-${project.id}`}
                   aria-label={t('projects.moreTechs', { count: ocultas.length, list: ocultas.join(', ') })}
                 >
-                  <span className={`block rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] font-medium border transition-colors ${
+                  <span className={`block rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] min-[1920px]:text-[0.8125rem] font-medium border transition-colors ${
                     activeTooltip === 'tag'
                       ? 'border-accent/50 text-accent bg-accent/10'
                       : 'bg-surface-3 text-text border-border group-hover/tag:border-accent/50 group-hover/tag:text-accent group-hover/tag:bg-accent/10'
