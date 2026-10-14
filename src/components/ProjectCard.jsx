@@ -267,12 +267,12 @@ export default function ProjectCard({ project, isActive }) {
               {chips.map((tag, i) => (
                 <span
                   key={i}
-                  className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] min-[1920px]:text-[0.8125rem] text-muted border border-border whitespace-nowrap"
+                  className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] min-[1920px]:text-[0.875rem] text-muted border border-border whitespace-nowrap"
                 >
                   {tag}
                 </span>
               ))}
-              <span className="rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] min-[1920px]:text-[0.8125rem] font-medium border border-border whitespace-nowrap">
+              <span className="rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] min-[1920px]:text-[0.875rem] font-medium border border-border whitespace-nowrap">
                 +{chips.length}
               </span>
             </div>
@@ -280,7 +280,7 @@ export default function ProjectCard({ project, isActive }) {
             {visibles.map((tag, i) => (
               <span
                 key={i}
-                className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] min-[1920px]:text-[0.8125rem] text-muted border border-border whitespace-nowrap transition-colors group-hover:border-accent/20"
+                className="rounded-md bg-surface-2/50 px-1.5 py-0.5 sm:px-2 text-[0.75rem] min-[1920px]:text-[0.875rem] text-muted border border-border whitespace-nowrap transition-colors group-hover:border-accent/20"
               >
                 {tag}
               </span>
@@ -301,7 +301,7 @@ export default function ProjectCard({ project, isActive }) {
                   aria-describedby={`tooltip-tags-${project.id}`}
                   aria-label={t('projects.moreTechs', { count: ocultas.length, list: ocultas.join(', ') })}
                 >
-                  <span className={`block rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] min-[1920px]:text-[0.8125rem] font-medium border transition-colors ${
+                  <span className={`block rounded-md px-1.5 py-0.5 sm:px-2 text-[0.7rem] sm:text-[0.75rem] min-[1920px]:text-[0.875rem] font-medium border transition-colors ${
                     activeTooltip === 'tag'
                       ? 'border-accent/50 text-accent bg-accent/10'
                       : 'bg-surface-3 text-text border-border group-hover/tag:border-accent/50 group-hover/tag:text-accent group-hover/tag:bg-accent/10'
