@@ -17,6 +17,8 @@ export default function ProjectCard({ project, isActive }) {
   const { t } = useTranslation()
   const [activeTooltip, setActiveTooltip] = useState(null)
 
+  // chips se memoiza con useMemo para evitar crear un nuevo array en cada render
+  // (por ejemplo al hacer hover o abrir el tooltip), lo que re-ejecutaría innecesariamente el efecto de medición.
   const chips = useMemo(() => (project.tags || []).slice(1), [project.tags])
   const visibleCount = useMediaQuery('(min-width: 640px)') ? 3 : 2
   const [chipCount, setChipCount] = useState(visibleCount)
@@ -58,6 +60,8 @@ export default function ProjectCard({ project, isActive }) {
     let ro
     if (typeof ResizeObserver !== 'undefined') {
       ro = new ResizeObserver(measure)
+      // Se observan el contenedor y cada hijo de la fila de medición porque
+      // el ancho de los chips puede cambiar sin que cambie el contenedor (ej. al cargar la fuente Inter Variable).
       ro.observe(container)
       Array.from(measureEl.children).forEach((el) => ro.observe(el))
     }

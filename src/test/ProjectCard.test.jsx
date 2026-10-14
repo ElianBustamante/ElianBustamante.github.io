@@ -197,6 +197,40 @@ describe('ProjectCard +N tooltip', () => {
     expect(mobileChips).toHaveLength(2)
     expect(mobileChips).toEqual(['discord.py', 'aiohttp'])
   })
+
+  it('el ResizeObserver observa el contenedor y todos los hijos de la fila de medición', () => {
+    mockMatchMedia(true)
+    const observeMock = vi.fn()
+    const origRO = window.ResizeObserver
+    window.ResizeObserver = class {
+      observe = observeMock
+      unobserve = vi.fn()
+      disconnect = vi.fn()
+    }
+
+    render(<ProjectCard project={project} />)
+    expect(observeMock).toHaveBeenCalled()
+    // 1 contenedor + 5 chips + 1 indicador "+5" = 7 observaciones
+    expect(observeMock.mock.calls.length).toBeGreaterThanOrEqual(7)
+
+    window.ResizeObserver = origRO
+  })
+
+  it('al pasar el mouse sobre la tarjeta o sobre el botón +N, la cantidad de chips no cambia', () => {
+    mockMatchMedia(true)
+    const { container } = render(<ProjectCard project={project} />)
+    const btn = screen.getByRole('button', { name: /\+2|tecnologías más/i })
+
+    const getChips = () => Array.from(container.querySelectorAll('div.flex-nowrap > span')).map((s) => s.textContent.trim())
+    expect(getChips()).toEqual(['discord.py', 'aiohttp', 'curl-cffi'])
+
+    fireEvent.mouseEnter(btn)
+    expect(getChips()).toEqual(['discord.py', 'aiohttp', 'curl-cffi'])
+    expect(screen.getByRole('button', { name: /\+2|tecnologías más/i })).toBeInTheDocument()
+
+    fireEvent.mouseLeave(btn)
+    expect(getChips()).toEqual(['discord.py', 'aiohttp', 'curl-cffi'])
+  })
 })
 
 
