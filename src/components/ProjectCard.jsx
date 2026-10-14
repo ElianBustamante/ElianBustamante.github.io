@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { IconBot, IconDatabase, IconTerminal, IconGithub, IconDiscordAlt, IconGamepad } from './icons'
 import useMediaQuery from '../hooks/useMediaQuery'
@@ -17,8 +17,7 @@ export default function ProjectCard({ project, isActive }) {
   const { t } = useTranslation()
   const [activeTooltip, setActiveTooltip] = useState(null)
 
-  const tags = project.tags || []
-  const chips = tags.slice(1)
+  const chips = useMemo(() => (project.tags || []).slice(1), [project.tags])
   const visibleCount = useMediaQuery('(min-width: 640px)') ? 3 : 2
   const [chipCount, setChipCount] = useState(visibleCount)
   const chipsContainerRef = useRef(null)
