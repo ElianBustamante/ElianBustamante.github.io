@@ -253,7 +253,7 @@ function App() {
   }, [])
 
   return (
-    <div className="w-full relative overflow-x-clip min-h-screen inner-scroll:min-h-0 inner-scroll:h-[100dvh] inner-scroll:overflow-y-auto inner-scroll:snap-y inner-scroll:snap-mandatory [@media(max-height:600px)]:snap-none scroll-smooth">
+    <div className="w-full relative overflow-x-clip min-h-screen inner-scroll:min-h-0 inner-scroll:h-[100dvh] inner-scroll:overflow-y-auto inner-scroll:snap-y inner-scroll:snap-mandatory [@media(orientation:portrait)_and_(max-height:600px)]:snap-none scroll-smooth">
       <AnimatedBackground />
       
       {/* Contenido protegido por encima del fondo */}
