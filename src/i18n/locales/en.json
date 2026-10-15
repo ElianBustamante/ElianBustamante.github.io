@@ -37,11 +37,12 @@
       "gamesDealTracker": {
         "name": "Games Deal Tracker",
         "category": "Discord bot",
-        "description": "Tracks Steam and Epic Games Store deals: discounts, all-time lows and weekly free games."
+        "description": "Tracks Steam and Epic Games Store deals: discounts, all-time lows and weekly free games.",
+        "demoLabel": "Invite bot"
       },
       "priceAlertBot": {
         "name": "Price Alert Bot",
-        "category": "WhatsApp bot",
+        "category": "Personal WhatsApp bot",
         "description": "Monitors Google Shopping prices in your country and the US and sends WhatsApp alerts without a server, on GitHub Actions."
       },
       "aiMemoryAssistant": {

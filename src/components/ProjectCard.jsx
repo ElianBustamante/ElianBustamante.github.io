@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { IconBot, IconDatabase, IconTerminal, IconGithub, IconDiscordAlt, IconGamepad } from './icons'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { fitChipCount } from '../lib/chips'
+import { isHttpsUrl } from '../lib/url'
 
 const IconMap = {
   bot: IconBot,
@@ -341,9 +342,9 @@ export default function ProjectCard({ project, isActive }) {
           </div>
         )}
 
-        {(project.repoUrl || project.demoUrl) && (
+        {(isHttpsUrl(project.repoUrl) || isHttpsUrl(project.demoUrl)) && (
           <div className="flex flex-wrap sm:flex-nowrap compact:flex-wrap items-center gap-2 sm:gap-3 compact:gap-2 mt-auto pt-3 sm:pt-4 pb-1.5 -mb-1.5 border-t border-border/50 overflow-hidden compact:overflow-visible w-full">
-            {project.repoUrl && (
+            {isHttpsUrl(project.repoUrl) && (
               <a
                 href={project.repoUrl}
                 target="_blank"
@@ -354,14 +355,14 @@ export default function ProjectCard({ project, isActive }) {
                 <span className="truncate max-w-[100px] sm:max-w-none">{t('projects.viewCode')}</span>
               </a>
             )}
-            {project.demoUrl && (
+            {isHttpsUrl(project.demoUrl) && (
               <a
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-11 sm:min-h-0 items-center justify-center shrink-0 gap-1 sm:gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[0.75rem] sm:text-[0.8rem] font-semibold text-text hover:bg-surface-3 hover:text-accent transition-colors focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]! truncate compact:min-h-[36px]"
               >
-                <span className="truncate">{project.demoLabel || t('projects.viewDemo')}</span>
+                <span className="truncate">{t(`projects.items.${project.id}.demoLabel`, { defaultValue: t('projects.viewDemo') })}</span>
               </a>
             )}
           </div>

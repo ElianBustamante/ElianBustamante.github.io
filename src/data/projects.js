@@ -6,7 +6,6 @@ export const projectsData = [
     tags: ['Python 3.11+', 'discord.py', 'aiohttp', 'curl-cffi', 'SQLite', 'pytest'], 
     repoUrl: 'https://github.com/ElianBustamante/games-deal-tracker', 
     demoUrl: 'https://discord.com/oauth2/authorize?client_id=1501675277846052934', 
-    demoLabel: 'Invitar Bot' 
   },
   {
     id: 'priceAlertBot',

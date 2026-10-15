@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import ProjectCard from '../components/ProjectCard'
 import i18n from '../i18n'
@@ -230,6 +230,70 @@ describe('ProjectCard +N tooltip', () => {
 
     fireEvent.mouseLeave(btn)
     expect(getChips()).toEqual(['discord.py', 'aiohttp', 'curl-cffi'])
+  })
+
+  it('renderiza repoUrl y demoUrl solo si empiezan con https://', () => {
+    const projectHttp = {
+      id: 'gamesDealTracker',
+      image: null,
+      tags: ['Python'],
+      repoUrl: 'http://insecure.com',
+      demoUrl: 'ftp://insecure.com',
+    }
+    const { container: c1 } = render(<ProjectCard project={projectHttp} />)
+    expect(c1.querySelector('a')).not.toBeInTheDocument()
+
+    const projectHttps = {
+      id: 'gamesDealTracker',
+      image: null,
+      tags: ['Python'],
+      repoUrl: 'https://github.com/test',
+      demoUrl: 'https://demo.com',
+    }
+    const { container: c2 } = render(<ProjectCard project={projectHttps} />)
+    const links = c2.querySelectorAll('a')
+    expect(links).toHaveLength(2)
+    expect(links[0]).toHaveAttribute('href', 'https://github.com/test')
+    expect(links[1]).toHaveAttribute('href', 'https://demo.com')
+  })
+
+  it('muestra demoLabel desde i18n ("Invitar Bot" / "Invite bot") o fallback a viewDemo', () => {
+    act(() => {
+      i18n.changeLanguage('es')
+    })
+    const projectWithCustom = {
+      id: 'gamesDealTracker',
+      image: null,
+      tags: ['Python'],
+      repoUrl: null,
+      demoUrl: 'https://discord.com',
+    }
+    const { rerender } = render(<ProjectCard project={projectWithCustom} />)
+    expect(screen.getByRole('link', { name: 'Invitar Bot' })).toBeInTheDocument()
+
+    act(() => {
+      i18n.changeLanguage('en')
+      rerender(<ProjectCard project={projectWithCustom} />)
+    })
+    expect(screen.getByRole('link', { name: 'Invite bot' })).toBeInTheDocument()
+
+    const projectFallback = {
+      id: 'aiMemoryAssistant',
+      image: null,
+      tags: ['Python'],
+      repoUrl: null,
+      demoUrl: 'https://demo.com',
+    }
+    act(() => {
+      rerender(<ProjectCard project={projectFallback} />)
+    })
+    expect(screen.getByRole('link', { name: 'View demo' })).toBeInTheDocument()
+
+    act(() => {
+      i18n.changeLanguage('es')
+      rerender(<ProjectCard project={projectFallback} />)
+    })
+    expect(screen.getByRole('link', { name: 'Ver demo' })).toBeInTheDocument()
   })
 })
 
