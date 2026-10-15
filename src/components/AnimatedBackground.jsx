@@ -13,7 +13,7 @@ export default function AnimatedBackground() {
     { code: "import { useState } from 'react';\n\nconst [count, setCount] = useState(0);", top: '42%', delay: '-40s', duration: '50s', depth: 'far', dir: 'left' },
 
     // Pared Derecha
-    { code: "const pipeline = new Pipeline3D({\n  resolution: '4K',\n  engine: 'WebGL2'\n});", top: '8%', delay: '-15s', duration: '40s', depth: 'mid', dir: 'right' },
+    { code: "const assistant = new MemoryAssistant({\n  memory: 'vector',\n  db: 'ChromaDB'\n});", top: '8%', delay: '-15s', duration: '40s', depth: 'mid', dir: 'right' },
     { code: "def analyze_data(df):\n  return df.groupby('date').sum()", top: '30%', delay: '-30s', duration: '32s', depth: 'far', dir: 'right' },
     { code: "export const config = {\n  theme: 'dark',\n  accents: ['#ff6a1a']\n};", top: '65%', delay: '-10s', duration: '38s', depth: 'near', dir: 'right' },
     { code: "<div className=\"flex flex-col\">\n  <header>App</header>\n  <main>{children}</main>\n</div>", top: '82%', delay: '-22s', duration: '34s', depth: 'mid', dir: 'right' },

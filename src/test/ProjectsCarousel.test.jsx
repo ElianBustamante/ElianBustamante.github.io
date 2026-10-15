@@ -20,7 +20,7 @@ describe('ProjectsCarousel', () => {
     render(<ProjectsCarousel />)
     expect(screen.getByText(/Games Deal Tracker/i)).toBeInTheDocument()
     expect(screen.getByText(/Price Alert Bot/i)).toBeInTheDocument()
-    expect(screen.getAllByText(/Pipeline/i)[0]).toBeInTheDocument()
+    expect(screen.getByText(/AI Memory Assistant/i)).toBeInTheDocument()
   })
 
   test('al cambiar a inglés, los nombres y descripciones cambian', () => {
@@ -28,7 +28,7 @@ describe('ProjectsCarousel', () => {
     act(() => {
       i18n.changeLanguage('en')
     })
-    expect(screen.getByText(i18n.t('projects.items.pipeline3d.name'))).toBeInTheDocument()
+    expect(screen.getByText(i18n.t('projects.items.aiMemoryAssistant.name'))).toBeInTheDocument()
   })
 
   test('con scrollWidth <= clientWidth, los botones anterior/siguiente no existen', () => {
