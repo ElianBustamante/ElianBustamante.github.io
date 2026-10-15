@@ -42,6 +42,7 @@ describe('PhotoGallery', () => {
     mockPhotos[0] = { id: '1', thumb: { src: '/photos/1-thumb.webp', width: 800, height: 533 }, large: { src: '/photos/1-large.webp', width: 2400, height: 1600 }, alt: { es: 'Foto uno', en: 'Photo one' }, exif: {} }
     mockPhotos[1] = { id: '2', thumb: { src: '/photos/2-thumb.webp', width: 533, height: 800 }, large: { src: '/photos/2-large.webp', width: 1600, height: 2400 }, alt: { es: 'Foto dos', en: 'Photo two' }, exif: {} }
     mockPhotos[2] = { id: '3', thumb: { src: '/photos/3-thumb.webp', width: 800, height: 533 }, large: { src: '/photos/3-large.webp', width: 2400, height: 1600 }, alt: { es: 'Foto tres', en: 'Photo three' }, exif: {} }
+    window.innerHeight = 768
   })
 
   it('renders one list item per photo with inline height style', () => {
@@ -73,7 +74,7 @@ describe('PhotoGallery', () => {
     expect(firstLi.style.height).toBe('150px')
   })
 
-  it('en modo pantalla baja usa clientHeight cuando es mayor a 150px', () => {
+  it('en modo pantalla baja usa clientHeight cuando es mayor a 150px (factor 1 si H<=520, factor 0.92 si H>520)', () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 280 })
     window.matchMedia = vi.fn().mockImplementation(query => ({
@@ -86,10 +87,27 @@ describe('PhotoGallery', () => {
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
     }))
+
+    // Con H <= 520 (teléfonos): factor = 1 -> 280px
+    window.innerHeight = 500
+    const { unmount } = render(<PhotoGallery />)
+    const images500 = screen.getAllByRole('button').filter(b => b.querySelector('img'))
+    expect(images500[0].parentElement.style.height).toBe('280px')
+    unmount()
+
+    // Con H > 520 (ventanas): factor = 0.92 -> Math.floor(280 * 0.92) = 257px
+    window.innerHeight = 600
     render(<PhotoGallery />)
-    const images = screen.getAllByRole('button').filter(b => b.querySelector('img'))
-    const firstLi = images[0].parentElement
-    expect(firstLi.style.height).toBe('280px')
+    const images600 = screen.getAllByRole('button').filter(b => b.querySelector('img'))
+    expect(images600[0].parentElement.style.height).toBe('257px')
+  })
+
+  it('el contenedor de fotos incluye las clases de centrado vertical para modo riel con alto mayor a 520px', () => {
+    render(<PhotoGallery />)
+    const containerDiv = screen.getByRole('list').parentElement
+    expect(containerDiv.className).toContain('[@media(min-height:521px)]:short:flex')
+    expect(containerDiv.className).toContain('[@media(min-height:521px)]:short:flex-col')
+    expect(containerDiv.className).toContain('[@media(min-height:521px)]:short:justify-center')
   })
 
   it('renders alt in Spanish and changes to English', async () => {
