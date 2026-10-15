@@ -18,7 +18,7 @@ export const projectsData = [
   {
     id: 'aiMemoryAssistant',
     image: null,
-    icon: 'database',
+    icon: 'chat',
     tags: ['Python', 'FastAPI', 'React', 'ChromaDB', 'PostgreSQL', 'Docker', 'OpenAI API'],
     repoUrl: 'https://github.com/ElianBustamante/ai-memory-assistant',
     demoUrl: null,

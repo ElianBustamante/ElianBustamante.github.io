@@ -302,6 +302,21 @@ describe('ProjectCard +N tooltip', () => {
     })
     expect(screen.getByRole('link', { name: 'Ver demo' })).toBeInTheDocument()
   })
+
+  it('renderiza el ícono IconChatSpark cuando project.icon es "chat"', () => {
+    const projectChat = {
+      id: 'aiMemoryAssistant',
+      image: null,
+      icon: 'chat',
+      tags: ['Python'],
+      repoUrl: null,
+      demoUrl: null,
+    }
+    const { container } = render(<ProjectCard project={projectChat} />)
+    const path = container.querySelector('path[d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"]')
+    expect(path).toBeInTheDocument()
+  })
 })
+
 
 
