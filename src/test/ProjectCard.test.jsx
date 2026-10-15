@@ -160,6 +160,13 @@ describe('ProjectCard +N tooltip', () => {
     expect(desc.className).toContain('compact:flex-none')
   })
 
+  it('limita la altura mínima en móvil con tope de 400px (clamp(340px,52dvh,400px))', () => {
+    const { container } = render(<ProjectCard project={project} />)
+    const article = container.querySelector('article')
+    expect(article.className).toContain('max-md:min-h-[clamp(340px,52dvh,400px)]')
+    expect(article.className).not.toContain('max-md:min-h-[clamp(340px,52dvh,520px)]')
+  })
+
   it('el contenedor del cuerpo incluye [@media(max-height:360px)]:p-3.5!', () => {
     const { container } = render(<ProjectCard project={project} />)
     const body = container.querySelector('div.flex-1.flex-col')
