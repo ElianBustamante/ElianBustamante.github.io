@@ -1,4 +1,5 @@
-export const SHORT_SCREEN_QUERY = '(orientation: landscape) and (max-height: 520px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)'
+// Modo riel: debe mantenerse idéntico a @custom-variant short y al @media de :root en src/index.css
+export const SHORT_SCREEN_QUERY = '(orientation: landscape) and (max-height: 600px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)'
 
 export const INNER_SCROLL_QUERY = '(max-width: 767.98px) and (pointer: coarse)'
 
