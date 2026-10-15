@@ -56,6 +56,7 @@ describe('PhotoGallery', () => {
   })
 
   it('en modo pantalla baja calcula la altura con clientHeight del contenedor (mínimo 150px en jsdom)', () => {
+    window.innerHeight = 500
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 0 })
     window.matchMedia = vi.fn().mockImplementation(query => ({
@@ -74,7 +75,7 @@ describe('PhotoGallery', () => {
     expect(firstLi.style.height).toBe('150px')
   })
 
-  it('en modo pantalla baja usa clientHeight cuando es mayor a 150px (factor 1 si H<=520, factor 0.92 si H>520)', () => {
+  it('en modo pantalla baja usa clientHeight si H<=520 y H*0.72 si H>520', () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 280 })
     window.matchMedia = vi.fn().mockImplementation(query => ({
@@ -88,26 +89,26 @@ describe('PhotoGallery', () => {
       dispatchEvent: vi.fn(),
     }))
 
-    // Con H <= 520 (teléfonos): factor = 1 -> 280px
+    // Con H <= 520 (teléfonos): h = clientHeight -> 280px
     window.innerHeight = 500
     const { unmount } = render(<PhotoGallery />)
     const images500 = screen.getAllByRole('button').filter(b => b.querySelector('img'))
     expect(images500[0].parentElement.style.height).toBe('280px')
     unmount()
 
-    // Con H > 520 (ventanas): factor = 0.92 -> Math.floor(280 * 0.92) = 257px
+    // Con H > 520 (ventanas): h = Math.floor(H * 0.72) -> Math.floor(600 * 0.72) = 432px
     window.innerHeight = 600
     render(<PhotoGallery />)
     const images600 = screen.getAllByRole('button').filter(b => b.querySelector('img'))
-    expect(images600[0].parentElement.style.height).toBe('257px')
+    expect(images600[0].parentElement.style.height).toBe('432px')
   })
 
-  it('el contenedor de fotos incluye las clases de centrado vertical para modo riel con alto mayor a 520px', () => {
+  it('el contenedor de fotos incluye las clases compact:flex-1 compact:min-h-0', () => {
     render(<PhotoGallery />)
     const containerDiv = screen.getByRole('list').parentElement
-    expect(containerDiv.className).toContain('[@media(min-height:521px)]:short:flex')
-    expect(containerDiv.className).toContain('[@media(min-height:521px)]:short:flex-col')
-    expect(containerDiv.className).toContain('[@media(min-height:521px)]:short:justify-center')
+    expect(containerDiv.className).toContain('compact:flex-1')
+    expect(containerDiv.className).toContain('compact:min-h-0')
+    expect(containerDiv.className).not.toContain('short:flex-1')
   })
 
   it('renders alt in Spanish and changes to English', async () => {

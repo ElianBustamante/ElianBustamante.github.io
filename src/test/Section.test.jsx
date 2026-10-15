@@ -29,22 +29,23 @@ describe('Section', () => {
       </Section>
     )
     const section = container.querySelector('section')
-    expect(section.className).toContain('short:justify-start!')
+    expect(section.className).toContain('compact:justify-start!')
+    expect(section.className).toContain('[@media(min-height:521px)]:short:justify-center!')
     expect(section.className).toContain('short:h-[100dvh]')
     expect(section.className).toContain('short:min-h-[300px]')
     expect(section.className).toContain('short:pb-6')
     expect(section.className).not.toContain('short:pb-3')
 
     const innerDiv = section.firstElementChild
-    expect(innerDiv.className).toContain('short:flex-1')
-    expect(innerDiv.className).toContain('short:min-h-0')
+    expect(innerDiv.className).toContain('compact:flex-1')
+    expect(innerDiv.className).toContain('compact:min-h-0')
     expect(innerDiv.className).toContain('short:flex')
     expect(innerDiv.className).toContain('short:flex-col')
 
     const child = screen.getByTestId('child')
     const revealContainer = child.parentElement
-    expect(revealContainer.className).toContain('short:flex-1')
-    expect(revealContainer.className).toContain('short:min-h-0')
+    expect(revealContainer.className).toContain('compact:flex-1')
+    expect(revealContainer.className).toContain('compact:min-h-0')
     expect(revealContainer.className).toContain('short:flex')
     expect(revealContainer.className).toContain('short:flex-col')
   })
