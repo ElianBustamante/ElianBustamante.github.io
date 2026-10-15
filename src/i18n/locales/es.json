@@ -42,8 +42,8 @@
       },
       "priceAlertBot": {
         "name": "Price Alert Bot",
-        "category": "Bot personal de WhatsApp",
-        "description": "Monitorea precios en Google Shopping, en tu país y en EE. UU., y envía alertas por WhatsApp sin servidores, en GitHub Actions."
+        "category": "Bot de WhatsApp",
+        "description": "Bot de uso personal que envía alertas de precios por WhatsApp desde Google Shopping de Chile y EE. UU., sin servidores, en GitHub Actions."
       },
       "aiMemoryAssistant": {
         "name": "AI Memory Assistant",
