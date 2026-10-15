@@ -6,6 +6,7 @@ import { IconChevronLeft, IconChevronRight } from './icons'
 import Lightbox from './Lightbox'
 import photosData from '../data/photos.json'
 import { SHORT_SCREEN_QUERY } from '../lib/media'
+import { observeScrollState } from '../lib/overflow'
 
 export default function PhotoGallery() {
   const { t, i18n } = useTranslation()
@@ -69,8 +70,7 @@ export default function PhotoGallery() {
 
 
     setGalleryHeight(h)
-    checkScroll()
-  }, [checkScroll])
+  }, [])
 
   useEffect(() => {
     if (!photosData || photosData.length === 0) return
@@ -91,7 +91,11 @@ export default function PhotoGallery() {
     const list = listRef.current
     if (list) {
       list.addEventListener('scroll', checkScroll, { passive: true })
-      return () => list.removeEventListener('scroll', checkScroll)
+      const cleanupObserver = observeScrollState(list, checkScroll)
+      return () => {
+        list.removeEventListener('scroll', checkScroll)
+        cleanupObserver()
+      }
     }
   }, [checkScroll])
 
