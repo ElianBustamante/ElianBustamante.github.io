@@ -279,7 +279,7 @@ export default function PhotoGallery() {
     <>
       <Section id="fotografia" titleKey="photography.title" actions={actions} fill>
         <p className="text-muted text-sm md:text-base mb-4 short:mb-2 short:text-[12px] short:leading-snug">{t('photography.intro')}</p>
-        <div ref={containerRef} className="w-full short:flex-1 short:min-h-0 [@media(min-height:521px)]:short:flex [@media(min-height:521px)]:short:flex-col [@media(min-height:521px)]:short:justify-center">
+        <div ref={containerRef} className="w-full compact:flex-1 compact:min-h-0">
           <ul
             role="list"
             ref={listRef}
