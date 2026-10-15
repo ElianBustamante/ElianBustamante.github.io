@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useState, useRef, useEffect, useLayoutEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
-import { IconBot, IconDatabase, IconTerminal, IconGithub, IconDiscordAlt, IconGamepad } from './icons'
+import { IconBot, IconDatabase, IconTerminal, IconGithub, IconDiscordAlt, IconGamepad, IconChatSpark } from './icons'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { fitChipCount } from '../lib/chips'
 import { isHttpsUrl } from '../lib/url'
@@ -11,7 +11,8 @@ const IconMap = {
   database: IconDatabase,
   terminal: IconTerminal,
   discord: IconDiscordAlt,
-  gamepad: IconGamepad
+  gamepad: IconGamepad,
+  chat: IconChatSpark
 }
 
 export default function ProjectCard({ project, isActive }) {
