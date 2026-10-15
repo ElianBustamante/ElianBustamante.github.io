@@ -17,11 +17,11 @@ export const projectsData = [
     demoUrl: null, 
   },
   {
-    id: 'pipeline3d',
-    image: null, 
-    icon: 'database', // <--- Muestra un ícono de base de datos/pipeline gigante
-    tags: ['Python', 'WebGL', 'FONDECYT'], 
-    repoUrl: "dfkdfkdk", 
-    demoUrl: null, 
+    id: 'aiMemoryAssistant',
+    image: null,
+    icon: 'database',
+    tags: ['Python', 'FastAPI', 'React', 'ChromaDB', 'PostgreSQL', 'Docker', 'OpenAI API'],
+    repoUrl: 'https://github.com/ElianBustamante/ai-memory-assistant',
+    demoUrl: null,
   }
 ]
