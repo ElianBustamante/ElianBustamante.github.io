@@ -153,7 +153,7 @@ describe('ProjectsCarousel', () => {
     expect(list.className).toContain('[-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
   })
 
-  test('las tarjetas li incluyen short:w-[58%] y short:lg:w-[calc((100%-3rem)/3)]', () => {
+  test('las tarjetas li incluyen short:w-[58%], short:lg:w-[calc((100%-3rem)/3)] y short:min-[960px]:max-lg:w-[calc((100%-1.5rem)/2)]', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     const items = list.querySelectorAll('li')
@@ -161,6 +161,7 @@ describe('ProjectsCarousel', () => {
     items.forEach((item) => {
       expect(item.className).toContain('short:w-[58%]')
       expect(item.className).toContain('short:lg:w-[calc((100%-3rem)/3)]')
+      expect(item.className).toContain('short:min-[960px]:max-lg:w-[calc((100%-1.5rem)/2)]')
     })
   })
 
