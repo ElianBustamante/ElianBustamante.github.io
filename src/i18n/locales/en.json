@@ -42,7 +42,7 @@
       "priceAlertBot": {
         "name": "Price Alert Bot",
         "category": "WhatsApp bot",
-        "description": "WhatsApp price alerts from Chilean and US stores, using SerpAPI and store URL tracking."
+        "description": "Monitors Google Shopping prices in your country and the US and sends WhatsApp alerts without a server, on GitHub Actions."
       },
       "aiMemoryAssistant": {
         "name": "AI Memory Assistant",

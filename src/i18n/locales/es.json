@@ -42,7 +42,7 @@
       "priceAlertBot": {
         "name": "Price Alert Bot",
         "category": "Bot de WhatsApp",
-        "description": "Alertas de precios por WhatsApp de tiendas chilenas y de USA, con SerpAPI y seguimiento de URLs."
+        "description": "Monitorea precios en Google Shopping, en tu país y en EE. UU., y envía alertas por WhatsApp sin servidores, en GitHub Actions."
       },
       "aiMemoryAssistant": {
         "name": "AI Memory Assistant",
