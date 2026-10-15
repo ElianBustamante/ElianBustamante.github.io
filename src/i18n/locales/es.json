@@ -44,10 +44,10 @@
         "category": "Bot de WhatsApp",
         "description": "Alertas de precios por WhatsApp de tiendas chilenas y de USA, con SerpAPI y seguimiento de URLs."
       },
-      "pipeline3d": {
-        "name": "TODO(elian): Pipeline de procesamiento 3D",
-        "category": "Investigación",
-        "description": "Optimización de un pipeline de procesamiento 3D dentro de un proyecto de investigación FONDECYT."
+      "aiMemoryAssistant": {
+        "name": "AI Memory Assistant",
+        "category": "Asistente de IA",
+        "description": "Asistente de IA con memoria a largo plazo: guarda el chat en una base vectorial y recupera contexto de conversaciones pasadas."
       }
     }
   },

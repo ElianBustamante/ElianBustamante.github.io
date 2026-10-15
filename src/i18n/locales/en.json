@@ -44,10 +44,10 @@
         "category": "WhatsApp bot",
         "description": "WhatsApp price alerts from Chilean and US stores, using SerpAPI and store URL tracking."
       },
-      "pipeline3d": {
-        "name": "TODO(elian): 3D processing pipeline",
-        "category": "Research",
-        "description": "Optimization of a 3D processing pipeline within a FONDECYT research project."
+      "aiMemoryAssistant": {
+        "name": "AI Memory Assistant",
+        "category": "AI assistant",
+        "description": "AI assistant with long-term memory: stores chat history in a vector database and retrieves context from past conversations."
       }
     }
   },
