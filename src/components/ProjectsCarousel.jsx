@@ -5,6 +5,7 @@ import ProjectCard from './ProjectCard'
 import { IconChevronLeft, IconChevronRight } from './icons'
 import Reveal from './Reveal'
 import { projectsData } from '../data/projects'
+import { observeScrollState } from '../lib/overflow'
 
 function getAlignEdge(list) {
   const listRect = typeof list.getBoundingClientRect === 'function' ? list.getBoundingClientRect() : { left: 0 }
@@ -68,15 +69,13 @@ export default function ProjectsCarousel() {
   }, [])
 
   useEffect(() => {
-    checkScroll()
     const currentList = listRef.current
     if (currentList) {
       currentList.addEventListener('scroll', checkScroll, { passive: true })
-      const observer = new ResizeObserver(checkScroll)
-      observer.observe(currentList)
+      const cleanupObserver = observeScrollState(currentList, checkScroll)
       return () => {
         currentList.removeEventListener('scroll', checkScroll)
-        observer.disconnect()
+        cleanupObserver()
       }
     }
   }, [checkScroll])
