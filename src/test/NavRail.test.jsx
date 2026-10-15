@@ -126,8 +126,8 @@ describe('NavRail', () => {
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('SHORT_SCREEN_QUERY contiene ambas condiciones apaisadas (<=520px y <=1023px con <=660px)', () => {
-    expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-height: 520px)')
+  it('SHORT_SCREEN_QUERY contiene ambas condiciones apaisadas (<=600px y <=1023px con <=660px)', () => {
+    expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-height: 600px)')
     expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-width: 1023px) and (max-height: 660px)')
   })
 
