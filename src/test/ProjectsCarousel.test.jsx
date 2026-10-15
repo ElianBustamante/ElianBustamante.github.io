@@ -153,7 +153,7 @@ describe('ProjectsCarousel', () => {
     expect(list.className).toContain('[-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
   })
 
-  test('las tarjetas li incluyen short:w-[58%], short:lg:w-[calc((100%-3rem)/3)] y short:min-[960px]:max-lg:w-[calc((100%-1.5rem)/2)]', () => {
+  test('las tarjetas li incluyen short:w-[58%], short:lg:w-[calc((100%-3rem)/3)], short:min-[960px]:max-lg:w-[calc((100%-1.5rem)/2)] y clase para landscape 768-1023px a 521-660px', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     const items = list.querySelectorAll('li')
@@ -162,6 +162,7 @@ describe('ProjectsCarousel', () => {
       expect(item.className).toContain('short:w-[58%]')
       expect(item.className).toContain('short:lg:w-[calc((100%-3rem)/3)]')
       expect(item.className).toContain('short:min-[960px]:max-lg:w-[calc((100%-1.5rem)/2)]')
+      expect(item.className).toContain('[@media(orientation:landscape)_and_(min-width:768px)_and_(max-width:1023px)_and_(min-height:521px)_and_(max-height:660px)]:w-[calc((100%-1.5rem)/2)]')
     })
   })
 
