@@ -1,4 +1,4 @@
-import { render, screen, cleanup, fireEvent, createEvent } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent, createEvent, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import PhotoGallery from '../components/PhotoGallery'
@@ -98,9 +98,27 @@ describe('PhotoGallery', () => {
     const { rerender } = render(<PhotoGallery />)
     expect(screen.getByAltText('Foto uno')).toBeInTheDocument()
     
-    await i18n.changeLanguage('en')
+    await act(async () => {
+      await i18n.changeLanguage('en')
+    })
     rerender(<PhotoGallery />)
     expect(screen.getByAltText('Photo one')).toBeInTheDocument()
+  })
+
+  it('actualiza visibilidad de botones al disparar resize mediante observeScrollState', async () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 400 })
+    Object.defineProperty(HTMLElement.prototype, 'scrollWidth', { configurable: true, value: 1000 })
+    Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
+
+    render(<PhotoGallery />)
+
+    act(() => {
+      window.dispatchEvent(new Event('resize'))
+    })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Más fotos' })).toBeInTheDocument()
+    })
   })
 
   it('does not show buttons and counter when there is only 1 page', () => {

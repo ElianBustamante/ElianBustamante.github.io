@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 import i18n from '../i18n'
 import ProjectsCarousel from '../components/ProjectsCarousel'
@@ -40,6 +40,21 @@ describe('ProjectsCarousel', () => {
     fireEvent.scroll(list) // Trigger checkScroll
     expect(screen.queryByLabelText('Proyecto anterior')).not.toBeInTheDocument()
     expect(screen.queryByLabelText('Proyecto siguiente')).not.toBeInTheDocument()
+  })
+
+  test('las flechas se actualizan tras evento de resize mediante observeScrollState', async () => {
+    render(<ProjectsCarousel />)
+    const list = screen.getByRole('list')
+    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
+    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
+
+    act(() => {
+      window.dispatchEvent(new Event('resize'))
+    })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Proyecto siguiente' })).toBeInTheDocument()
+    })
   })
 
   test('con scrollWidth > clientWidth, el botón siguiente llama a scrollBy con un left positivo', () => {
