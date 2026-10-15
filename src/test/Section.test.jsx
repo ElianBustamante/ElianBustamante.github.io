@@ -62,4 +62,15 @@ describe('Section', () => {
     expect(nextBtn.className).toContain('motion-safe:animate-bounce')
     expect(nextBtn.className).not.toContain('motion-safe:animate-bounce-up')
   })
+
+  it('la flecha de arriba incluye top-[95px] y max-[380px]:top-[83px]', () => {
+    render(
+      <Section id="proyectos" titleKey="projects.title">
+        <div>Contenido</div>
+      </Section>
+    )
+    const prevBtn = screen.getByRole('button', { name: /sección anterior/i })
+    expect(prevBtn.className).toContain('top-[95px]')
+    expect(prevBtn.className).toContain('max-[380px]:top-[83px]')
+  })
 })
