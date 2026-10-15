@@ -81,7 +81,8 @@ describe('Lightbox', () => {
     expect(figure.className).not.toContain('md:py-6')
 
     const img = screen.getByAltText('F1')
-    expect(img.className).toContain('short:max-h-[calc(100dvh-3.5rem)]!')
+    expect(img.className).toContain('compact:max-h-[calc(100dvh-3.5rem)]!')
+    expect(img.className).toContain('[@media(min-height:521px)]:short:max-h-[calc(100dvh-5rem)]!')
     expect(img.className).toContain('short:m-0!')
     expect(img.className).toContain('max-h-[60dvh]')
     expect(img.className).toContain('md:max-h-[80dvh]')
