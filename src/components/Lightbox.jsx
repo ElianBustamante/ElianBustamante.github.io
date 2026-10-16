@@ -402,7 +402,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             >
               <button
                 type="button"
-                onClick={() => applyZoom(zoomLevel - 0.5)}
+                onClick={() => applyZoom(zoomLevel - 0.25)}
                 className="text-white/60 hover:text-white transition-colors p-1"
                 aria-label={t('photography.zoomOut')}
               >
@@ -413,9 +413,9 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
 
               <input
                 type="range"
-                min={MIN_ZOOM}
+                min={minZoom}
                 max={MAX_ZOOM}
-                step="0.1"
+                step="any"
                 value={zoomLevel}
                 onChange={(ev) => applyZoom(parseFloat(ev.target.value))}
                 aria-label={t('photography.zoomIn')}
@@ -424,7 +424,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
 
               <button
                 type="button"
-                onClick={() => applyZoom(zoomLevel + 0.5)}
+                onClick={() => applyZoom(zoomLevel + 0.25)}
                 className="text-white/60 hover:text-white transition-colors p-1"
                 aria-label={t('photography.zoomIn')}
               >
