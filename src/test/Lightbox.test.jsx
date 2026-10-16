@@ -85,6 +85,7 @@ describe('Lightbox', () => {
     expect(img.className).toContain('[@media(min-height:441px)]:compact:max-h-[calc(100dvh-4.5rem)]!')
     expect(img.className).toContain('[@media(min-height:521px)]:short:max-h-[calc(100dvh-6.5rem)]!')
     expect(img.className).toContain('short:m-0!')
+    expect(img.className).toContain('[@media(min-height:441px)]:compact:mt-4!')
     expect(img.className).toContain('max-h-[60dvh]')
     expect(img.className).toContain('md:max-h-[80dvh]')
 
