@@ -78,12 +78,15 @@
   },
   "about": {
     "title": "About me",
+    "prev": "Previous",
+    "next": "Next",
     "p1": "I live in Chile and trained in Informatics Engineering at Universidad de La Frontera. I have under two years of professional experience, split between internships and a short period of formal employment.",
     "p2": "I mostly work with Python, JavaScript and databases. I like building tools that solve concrete problems, like the bots in this portfolio.",
     "p3": "Outside of code I shoot landscape photography. The gallery on this page is a selection.",
     "skills": {
       "title": "Technologies",
       "languages": "Languages",
+      "frameworks": "Frameworks and libraries",
       "databases": "Databases",
       "tools": "Tools"
     }
