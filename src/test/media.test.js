@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { URL } from 'node:url'
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { INNER_SCROLL_QUERY, SHORT_SCREEN_QUERY, usesInnerScroll } from '../lib/media'
+import { ABOUT_PAGED_QUERY, INNER_SCROLL_QUERY, SHORT_SCREEN_QUERY, usesInnerScroll } from '../lib/media'
 
 describe('media queries and helpers', () => {
   const originalMatchMedia = window.matchMedia
@@ -16,6 +16,10 @@ describe('media queries and helpers', () => {
 
   it('exporta SHORT_SCREEN_QUERY correctamente', () => {
     expect(SHORT_SCREEN_QUERY).toBe('(orientation: landscape) and (max-height: 600px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)')
+  })
+
+  it('exporta ABOUT_PAGED_QUERY correctamente', () => {
+    expect(ABOUT_PAGED_QUERY).toBe('(max-width: 767px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)')
   })
 
   it('SHORT_SCREEN_QUERY aparece tal cual dos veces en src/index.css (@custom-variant short y :root)', () => {

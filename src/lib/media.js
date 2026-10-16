@@ -1,6 +1,9 @@
 // Modo riel: debe mantenerse idéntico a @custom-variant short y al @media de :root en src/index.css
 export const SHORT_SCREEN_QUERY = '(orientation: landscape) and (max-height: 600px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)'
 
+// Sobre mí se muestra en dos páginas deslizables en ventanas de menos de 768px y en pantalla baja (modo riel) de menos de 1024px de ancho; es SHORT_SCREEN_QUERY restringido a 1023px
+export const ABOUT_PAGED_QUERY = '(max-width: 767px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)'
+
 export const INNER_SCROLL_QUERY = '(max-width: 767.98px) and (pointer: coarse)'
 
 /**
