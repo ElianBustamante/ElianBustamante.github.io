@@ -1,19 +1,24 @@
-import { render, screen, cleanup, act } from '@testing-library/react'
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { render, screen, cleanup, act, fireEvent } from '@testing-library/react'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import About from '../components/About'
 import i18n from '../i18n'
 import es from '../i18n/locales/es.json'
 import en from '../i18n/locales/en.json'
 import { skills } from '../data/site'
+import { ABOUT_PAGED_QUERY } from '../lib/media'
 
 describe('About', () => {
+  const originalMatchMedia = window.matchMedia
+
   beforeEach(async () => {
+    window.matchMedia = originalMatchMedia
     await act(async () => {
       await i18n.changeLanguage('es')
     })
   })
 
   afterEach(() => {
+    window.matchMedia = originalMatchMedia
     cleanup()
   })
 
@@ -41,17 +46,71 @@ describe('About', () => {
     expect(container.textContent).not.toMatch(/Busco oportunidades|looking for junior opportunities/i)
   })
 
-  it('renders the 3 technology groups and all skill values without translating them', () => {
+  it('renders the 4 technology groups and all skill values without translating them', () => {
     render(<About />)
 
     expect(screen.getByRole('heading', { level: 3, name: es.about.skills.title })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 4, name: es.about.skills.languages })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 4, name: es.about.skills.frameworks })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 4, name: es.about.skills.databases })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 4, name: es.about.skills.tools })).toBeInTheDocument()
 
-    const allSkills = [...skills.languages, ...skills.databases, ...skills.tools]
+    expect(screen.getByText('FastAPI')).toBeInTheDocument()
+    expect(screen.getByText('PostgreSQL')).toBeInTheDocument()
+    expect(screen.getByText('TypeScript')).toBeInTheDocument()
+
+    const allSkills = [
+      ...skills.languages,
+      ...skills.frameworks,
+      ...skills.databases,
+      ...skills.tools,
+    ]
     for (const tech of allSkills) {
       expect(screen.getByText(tech)).toBeInTheDocument()
     }
+  })
+
+  it('in non-paged mode (matches=false), does not render prev/next buttons', () => {
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }))
+
+    render(<About />)
+
+    expect(screen.queryByRole('button', { name: es.about.prev })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: es.about.next })).not.toBeInTheDocument()
+  })
+
+  it('in paged mode (matches=true), shows "1 / 2", disables prev button, and clicking next calls scrollIntoView on the second child', () => {
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === ABOUT_PAGED_QUERY,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }))
+
+    const { container } = render(<About />)
+
+    expect(screen.getAllByText('1 / 2').length).toBeGreaterThan(0)
+
+    const prevBtn = screen.getByRole('button', { name: es.about.prev })
+    const nextBtn = screen.getByRole('button', { name: es.about.next })
+
+    expect(prevBtn).toBeDisabled()
+    expect(nextBtn).not.toBeDisabled()
+
+    const pager = container.querySelector('.snap-x')
+    const secondChild = pager.children[1]
+    secondChild.scrollIntoView = vi.fn()
+
+    fireEvent.click(nextBtn)
+    expect(secondChild.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    })
   })
 })
