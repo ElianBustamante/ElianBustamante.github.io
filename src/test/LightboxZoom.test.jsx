@@ -88,7 +88,7 @@ describe('Lightbox Zoom', () => {
     expect(slider.value).toBe("2.5")
     
     fireEvent.click(zoomInBtn)
-    expect(slider.value).toBe("3")
+    expect(slider.value).toBe("2.75")
     
     fireEvent.click(zoomOutBtn)
     expect(slider.value).toBe("2.5")

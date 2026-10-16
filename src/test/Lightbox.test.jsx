@@ -121,4 +121,55 @@ describe('Lightbox', () => {
     expect(dataLine.className).toContain('[@media(min-height:800px)]:text-xs')
     expect(dataLine.className).toContain('short:text-[11px]')
   })
+
+  it('mantiene el modo zoom y el slider al bajar al mínimo, y sale con el botón de zoom o Escape', () => {
+    const onClose = vi.fn()
+    render(<Lightbox photos={mockPhotos} index={0} onClose={onClose} onIndexChange={() => {}} />)
+
+    const toggleBtn = screen.getByRole('button', { name: 'Ampliar' })
+    expect(toggleBtn).toHaveAttribute('aria-pressed', 'false')
+
+    // (a) al pulsar el botón de zoom aparece el slider y aria-pressed pasa a "true"
+    fireEvent.click(toggleBtn)
+    expect(toggleBtn).toHaveAttribute('aria-pressed', 'true')
+    const slider = screen.getByRole('slider')
+    expect(slider).toBeInTheDocument()
+
+    // (d) el slider tiene max="4" y step="any"
+    expect(slider).toHaveAttribute('max', '4')
+    expect(slider).toHaveAttribute('step', 'any')
+
+    // (b) fireEvent.change del slider a un valor menor que min (0.1) mantiene el slider en el documento y el valor queda acotado a min
+    fireEvent.change(slider, { target: { value: '0.1' } })
+    expect(screen.getByRole('slider')).toBeInTheDocument()
+    expect(slider.value).toBe(slider.min)
+
+    // Subimos de nuevo y probamos (c) varios clics en el botón "-" hasta el tope mantienen el slider presente
+    fireEvent.change(slider, { target: { value: '2.5' } })
+    const minusBtn = screen
+      .getAllByRole('button', { name: 'Reducir' })
+      .find((b) => !b.hasAttribute('aria-pressed'))
+    for (let i = 0; i < 10; i++) {
+      fireEvent.click(minusBtn)
+    }
+    expect(screen.getByRole('slider')).toBeInTheDocument()
+    expect(slider.value).toBe(slider.min)
+
+    // (f) volver a pulsar el botón de zoom sale del zoom
+    fireEvent.click(toggleBtn)
+    expect(toggleBtn).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.queryByRole('slider')).not.toBeInTheDocument()
+
+    // (e) con zoom activo, Escape sale del zoom y NO llama a onClose, y un segundo Escape sí llama a onClose
+    fireEvent.click(toggleBtn)
+    expect(screen.getByRole('slider')).toBeInTheDocument()
+    const dialog = screen.getByRole('dialog')
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+    expect(toggleBtn).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.queryByRole('slider')).not.toBeInTheDocument()
+    expect(onClose).not.toHaveBeenCalled()
+
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
 })
