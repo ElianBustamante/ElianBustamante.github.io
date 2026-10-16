@@ -126,7 +126,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
 
   const handleTouchStart = (e) => {
     if (e.touches.length === 2) {
-      pinchRef.current = { dist: pinchDistance(e.touches), zoom: zoomLevel }
+      pinchRef.current = { dist: pinchDistance(e.touches), zoom: isZoomed ? zoomLevel : measureFitZoom() }
       touchStartRef.current = null
       return
     }
@@ -137,7 +137,17 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   const handleTouchMove = (e) => {
     if (e.touches.length === 2 && pinchRef.current) {
       const ratio = pinchDistance(e.touches) / pinchRef.current.dist
-      applyZoom(pinchRef.current.zoom * ratio)
+      const next = pinchRef.current.zoom * ratio
+      if (!isZoomed) {
+        if (ratio > 1.05) {
+          const m = measureFitZoom()
+          setMinZoom(m)
+          setIsZoomed(true)
+          setZoomLevel(Math.min(MAX_ZOOM, Math.max(m, next)))
+        }
+      } else {
+        applyZoom(next)
+      }
     }
   }
 
