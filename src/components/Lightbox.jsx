@@ -3,12 +3,10 @@ import { useRef, useEffect, useLayoutEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { IconClose, IconChevronLeft, IconChevronRight } from './icons'
 
-const MIN_ZOOM = 1
+const MIN_ZOOM_FLOOR = 0.2
 const MAX_ZOOM = 4
 const DEFAULT_ZOOM = 2.5
 const DRAG_THRESHOLD = 4
-
-const clampZoom = (n) => (n <= 1.05 ? MIN_ZOOM : Math.min(MAX_ZOOM, n))
 
 export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   const { t, i18n } = useTranslation()
@@ -16,9 +14,9 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   const scrollContainerRef = useRef(null)
   const imgRef = useRef(null)
 
-  // Una sola fuente de verdad para el zoom
-  const [zoomLevel, setZoomLevel] = useState(MIN_ZOOM)
-  const isZoomed = zoomLevel > MIN_ZOOM
+  const [isZoomed, setIsZoomed] = useState(false)
+  const [zoomLevel, setZoomLevel] = useState(DEFAULT_ZOOM)
+  const [minZoom, setMinZoom] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [isDragging, setIsDragging] = useState(false)
 
