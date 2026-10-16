@@ -77,11 +77,18 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     return Math.min(1, Math.max(MIN_ZOOM_FLOOR, ratio))
   }
 
-  const applyZoom = (n) => setZoomLevel(clampZoom(n))
-  const toggleZoom = () => setZoomLevel((z) => (z > MIN_ZOOM ? MIN_ZOOM : DEFAULT_ZOOM))
+  const enterZoom = () => {
+    const m = measureFitZoom()
+    setMinZoom(m)
+    setZoomLevel(Math.max(m, DEFAULT_ZOOM))
+    setIsZoomed(true)
+  }
+  const exitZoom = () => setIsZoomed(false)
+  const toggleZoom = () => (isZoomed ? exitZoom() : enterZoom())
+  const applyZoom = (n) => setZoomLevel(Math.min(MAX_ZOOM, Math.max(minZoom, n)))
 
   const changePhoto = (nextIdx) => {
-    setZoomLevel(MIN_ZOOM)
+    setIsZoomed(false)
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     if (document.startViewTransition && !reduce) {
       document.startViewTransition(() => {
@@ -101,7 +108,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     else if (e.key === 'Escape') {
       e.preventDefault()
       if (isZoomed) {
-        setZoomLevel(MIN_ZOOM)
+        setIsZoomed(false)
         dialogRef.current?.focus()
       } else {
         onClose()
