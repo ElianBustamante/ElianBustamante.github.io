@@ -1,6 +1,7 @@
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Section from './components/Section'
+import About from './components/About'
+import Contact from './components/Contact'
 import Footer from './components/Footer'
 import PhotoGallery from './components/PhotoGallery'
 import ProjectsCarousel from './components/ProjectsCarousel'
@@ -263,8 +264,8 @@ function App() {
           <Hero />
           <ProjectsCarousel />
           <PhotoGallery />
-          <Section id="sobre-mi" titleKey="about.title"></Section>
-          <Section id="contacto" titleKey="contact.title"></Section>
+          <About />
+          <Contact />
         </main>
         <div className="pl-[var(--rail-w)]"><Footer /></div>
       </div>
