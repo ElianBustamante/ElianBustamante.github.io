@@ -55,7 +55,8 @@
   "photography": {
     "title": "Fotografía",
     "intro": "Una selección de fotografías del otoño y el invierno en la Araucanía, más saltos de agua y un eclipse lunar total.",
-    "viewDetails": "Ver detalles", "lightboxLabel": "Visor de fotografías",
+    "viewDetails": "Ver detalles",
+    "lightboxLabel": "Visor de fotografías",
     "close": "Cerrar",
     "prev": "Foto anterior",
     "next": "Foto siguiente",

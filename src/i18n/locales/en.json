@@ -55,7 +55,8 @@
   "photography": {
     "title": "Photography",
     "intro": "A selection of photographs of autumn and winter in Araucanía, plus waterfalls and a total lunar eclipse.",
-    "viewDetails": "View details", "lightboxLabel": "Photo viewer",
+    "viewDetails": "View details",
+    "lightboxLabel": "Photo viewer",
     "close": "Close",
     "prev": "Previous photo",
     "next": "Next photo",
