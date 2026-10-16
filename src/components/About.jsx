@@ -27,30 +27,33 @@ export default function About() {
   return (
     <Section id="sobre-mi" titleKey="about.title">
       <div ref={paged ? pagerRef : undefined} className={containerClass}>
-        <div className={`max-w-[65ch] space-y-4 [@media(max-height:520px)]:space-y-2 ${pageItemClass}`.trim()}>
-          <p className="text-text text-[1rem] [@media(max-height:520px)]:text-[0.875rem] leading-relaxed">
+        <div className={`max-w-[65ch] space-y-4 compact:space-y-2 ${pageItemClass}`.trim()}>
+          <p className="text-text text-[1rem] compact:text-[0.875rem] leading-relaxed">
             {t('about.p1')}
           </p>
-          <p className="text-muted text-[1rem] [@media(max-height:520px)]:text-[0.875rem] leading-relaxed">
+          <p className="text-muted text-[1rem] compact:text-[0.875rem] leading-relaxed">
             {t('about.p2')}
           </p>
-          <p className="text-muted text-[1rem] [@media(max-height:520px)]:text-[0.875rem] leading-relaxed">
+          <p className="text-muted text-[1rem] compact:text-[0.875rem] leading-relaxed">
             {t('about.p3')}
           </p>
         </div>
 
-        <Reveal delay={120} className={`space-y-4 [@media(max-height:520px)]:space-y-2.5 ${pageItemClass}`.trim()}>
-          <h3 className="text-lg [@media(max-height:520px)]:text-[1rem] font-bold text-text">
+        <Reveal
+          delay={120}
+          className={`rounded-card border border-border bg-surface p-4 sm:p-5 compact:p-3 space-y-4 compact:space-y-2.5 ${pageItemClass}`.trim()}
+        >
+          <h3 className="text-lg compact:text-[1rem] font-bold text-text">
             {t('about.skills.title')}
           </h3>
 
-          <div className="space-y-4 [@media(max-height:520px)]:space-y-2">
+          <div className="space-y-4 compact:space-y-2">
             {skillGroups.map((group) => (
               <div key={group.key}>
-                <h4 className="text-[0.875rem] font-medium text-muted mb-2 [@media(max-height:520px)]:mb-1">
+                <h4 className="text-[0.875rem] font-medium text-muted mb-2 compact:mb-1">
                   {group.label}
                 </h4>
-                <ul role="list" className="flex flex-wrap gap-2 [@media(max-height:520px)]:gap-1.5">
+                <ul role="list" className="flex flex-wrap gap-2 compact:gap-1.5">
                   {group.items.map((tech) => (
                     <li
                       key={tech}
