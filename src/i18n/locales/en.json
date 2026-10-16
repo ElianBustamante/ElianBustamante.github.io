@@ -62,6 +62,7 @@
     "next": "Next photo",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
+    "zoomLevel": "Zoom level",
     "counter": "Photo {{current}} of {{total}}",
     "exif": {
       "camera": "Camera",

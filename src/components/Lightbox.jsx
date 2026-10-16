@@ -418,7 +418,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
                 step="any"
                 value={zoomLevel}
                 onChange={(ev) => applyZoom(parseFloat(ev.target.value))}
-                aria-label={t('photography.zoomIn')}
+                aria-label={t('photography.zoomLevel')}
                 className="w-24 md:w-32 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(255,255,255,0.8)]"
               />
 
