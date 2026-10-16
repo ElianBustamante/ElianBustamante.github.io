@@ -73,13 +73,13 @@ describe('NavRail', () => {
     const user = userEvent.setup()
     render(<NavRail activeId="inicio" />)
     
-    const langButton = screen.getByRole('button', { name: /cambiar idioma a inglés/i })
+    const langButton = screen.getByRole('button', { name: 'EN: Cambiar idioma a inglés' })
     expect(langButton).toBeInTheDocument()
     
     await user.click(langButton)
     
-    // Al cambiar a inglés, el botón debe decir "Switch language to Spanish"
-    expect(screen.getByRole('button', { name: /switch language to spanish/i })).toBeInTheDocument()
+    // Al cambiar a inglés, el botón debe decir "ES: Switch language to Spanish"
+    expect(screen.getByRole('button', { name: 'ES: Switch language to Spanish' })).toBeInTheDocument()
   })
 
   it('cierra el menú al hacer pointerdown fuera', async () => {

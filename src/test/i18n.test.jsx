@@ -27,7 +27,7 @@ describe('i18n functionality', () => {
 
     // Find and click language toggle (there are two, one mobile, one desktop, so we getAll and click the first)
     const user = userEvent.setup()
-    const toggles = screen.getAllByRole('button', { name: 'Cambiar idioma a inglés' })
+    const toggles = screen.getAllByRole('button', { name: 'EN: Cambiar idioma a inglés' })
     await user.click(toggles[0])
 
     // Check English
