@@ -70,6 +70,13 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     }
   }, [zoomLevel])
 
+  const measureFitZoom = () => {
+    const w = imgRef.current?.getBoundingClientRect?.().width
+    const ratio = w / window.innerWidth
+    if (!Number.isFinite(ratio) || ratio <= 0) return 1
+    return Math.min(1, Math.max(MIN_ZOOM_FLOOR, ratio))
+  }
+
   const applyZoom = (n) => setZoomLevel(clampZoom(n))
   const toggleZoom = () => setZoomLevel((z) => (z > MIN_ZOOM ? MIN_ZOOM : DEFAULT_ZOOM))
 
