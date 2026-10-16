@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function AnimatedBackground() {
   // Bloques de código reales formateados
   const codeBlocks = [
@@ -23,7 +21,7 @@ export default function AnimatedBackground() {
   ];
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-[#0a0a0a]">
+    <div aria-hidden="true" className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-bg motion-reduce:hidden">
       {/* Resplandor central de luz (Efecto del video) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-[radial-gradient(circle,rgba(255,106,26,0.06)_0%,transparent_70%)] blur-3xl rounded-full"></div>
       
