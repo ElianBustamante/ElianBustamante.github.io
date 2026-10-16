@@ -335,7 +335,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               } select-none [-webkit-touch-callout:none] ${
                 isZoomed
                   ? 'max-w-none max-h-none shadow-[0_0_100px_rgba(0,0,0,0.8)]'
-                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] compact:max-h-[calc(100dvh-3.5rem)]! [@media(min-height:441px)]:compact:max-h-[calc(100dvh-4.5rem)]! [@media(min-height:521px)]:short:max-h-[calc(100dvh-6.5rem)]! short:m-0! max-w-full w-auto h-auto'
+                  : 'm-auto -translate-y-1 md:-translate-y-0.5 max-h-[60dvh] md:max-h-[80dvh] compact:max-h-[calc(100dvh-3.5rem)]! [@media(min-height:441px)]:compact:max-h-[calc(100dvh-4.5rem)]! [@media(min-height:521px)]:short:max-h-[calc(100dvh-6.5rem)]! short:m-0! [@media(min-height:441px)]:compact:mt-4! max-w-full w-auto h-auto'
               }`}
             />
             {!isZoomed && (
