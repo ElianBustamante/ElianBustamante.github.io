@@ -6,7 +6,8 @@ export const site = {
 }
 
 export const skills = {
-  languages: ['Python (NumPy, Pandas)', 'JavaScript', 'HTML', 'CSS', 'SQL'],
-  databases: ['MySQL', 'MongoDB'],
-  tools: ['Docker', 'Git', 'GitHub Actions'],
+  languages: ['Python', 'JavaScript', 'TypeScript', 'SQL'],
+  frameworks: ['React', 'FastAPI', 'NumPy', 'Pandas'],
+  databases: ['MySQL', 'PostgreSQL', 'Firestore'],
+  tools: ['Git', 'GitHub Actions', 'Docker', 'REST APIs'],
 }
