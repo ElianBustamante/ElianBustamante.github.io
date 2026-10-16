@@ -1,21 +1,33 @@
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import Section from './Section'
 import Reveal from './Reveal'
 import { skills } from '../data/site'
+import useMediaQuery from '../hooks/useMediaQuery'
+import { ABOUT_PAGED_QUERY } from '../lib/media'
 
 export default function About() {
   const { t } = useTranslation()
+  const paged = useMediaQuery(ABOUT_PAGED_QUERY)
+  const pagerRef = useRef(null)
 
   const skillGroups = [
     { key: 'languages', label: t('about.skills.languages'), items: skills.languages },
+    { key: 'frameworks', label: t('about.skills.frameworks'), items: skills.frameworks },
     { key: 'databases', label: t('about.skills.databases'), items: skills.databases },
     { key: 'tools', label: t('about.skills.tools'), items: skills.tools },
   ]
 
+  const containerClass = paged
+    ? 'flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden scroll-smooth items-start py-1 -my-1 px-4 -mx-4 scroll-px-4 [scrollbar-width:none] mt-4 compact:mt-2'
+    : 'grid grid-cols-2 items-start gap-8 compact:gap-4 mt-4 compact:mt-2'
+
+  const pageItemClass = paged ? 'w-full shrink-0 snap-start' : ''
+
   return (
     <Section id="sobre-mi" titleKey="about.title">
-      <div className="grid grid-cols-1 md:grid-cols-2 [@media(max-height:520px)]:grid-cols-2 items-start gap-8 [@media(max-height:520px)]:gap-4 mt-4 [@media(max-height:520px)]:mt-2">
-        <div className="max-w-[65ch] space-y-4 [@media(max-height:520px)]:space-y-2">
+      <div ref={paged ? pagerRef : undefined} className={containerClass}>
+        <div className={`max-w-[65ch] space-y-4 [@media(max-height:520px)]:space-y-2 ${pageItemClass}`.trim()}>
           <p className="text-text text-[1rem] [@media(max-height:520px)]:text-[0.875rem] leading-relaxed">
             {t('about.p1')}
           </p>
@@ -27,7 +39,7 @@ export default function About() {
           </p>
         </div>
 
-        <Reveal delay={120} className="space-y-4 [@media(max-height:520px)]:space-y-2.5">
+        <Reveal delay={120} className={`space-y-4 [@media(max-height:520px)]:space-y-2.5 ${pageItemClass}`.trim()}>
           <h3 className="text-lg [@media(max-height:520px)]:text-[1rem] font-bold text-text">
             {t('about.skills.title')}
           </h3>
