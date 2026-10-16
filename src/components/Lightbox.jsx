@@ -62,13 +62,13 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
   useLayoutEffect(() => {
     const el = scrollContainerRef.current
     if (!el) return
-    if (zoomLevel > MIN_ZOOM) {
+    if (isZoomed) {
       el.scrollLeft = centerRef.current.x * el.scrollWidth - el.clientWidth / 2
       el.scrollTop = centerRef.current.y * el.scrollHeight - el.clientHeight / 2
     } else {
       centerRef.current = { x: 0.5, y: 0.5 }
     }
-  }, [zoomLevel])
+  }, [zoomLevel, isZoomed])
 
   const measureFitZoom = () => {
     const w = imgRef.current?.getBoundingClientRect?.().width
