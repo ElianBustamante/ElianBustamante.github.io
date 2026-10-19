@@ -90,7 +90,7 @@ export default function About() {
   return (
     <Section id="sobre-mi" titleKey="about.title" actions={actions}>
       <div ref={paged ? pagerRef : undefined} className={containerClass}>
-        <div className={`max-w-[65ch] space-y-4 compact:space-y-2 ${pageItemClass}`.trim()}>
+        <div className={`max-w-[65ch] space-y-4 compact:space-y-2 ${paged ? pageItemClass : 'pt-4 sm:pt-5 compact:pt-3'}`}>
           <p className="text-text text-[1rem] compact:text-[0.875rem] leading-relaxed">
             {t('about.p1')}
           </p>
