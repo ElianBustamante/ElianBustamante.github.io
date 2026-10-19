@@ -107,7 +107,7 @@ export default function About() {
 
         <Reveal
           delay={120}
-          className={`rounded-card border border-border bg-surface p-4 sm:p-5 compact:p-2.5 compact:px-4 [@media(min-height:441px)]:compact:p-4 space-y-4 compact:space-y-2 [@media(min-height:441px)]:compact:space-y-2.5 ${pageItemClass}`.trim()}
+          className={`rounded-card border border-border bg-surface p-4 sm:p-5 pt-2.5 sm:pt-3.5 compact:p-2.5 compact:px-4 compact:pt-1 [@media(min-height:441px)]:compact:p-4 [@media(min-height:441px)]:compact:pt-2.5 space-y-4 compact:space-y-2 [@media(min-height:441px)]:compact:space-y-2.5 ${pageItemClass}`.trim()}
         >
           <h3 className="text-lg compact:text-[1rem] font-bold text-text">
             {t('about.skills.title')}
