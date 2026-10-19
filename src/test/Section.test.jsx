@@ -64,7 +64,7 @@ describe('Section', () => {
     expect(nextBtn.className).not.toContain('motion-safe:animate-bounce-up')
   })
 
-  it('la flecha de arriba incluye top-[95px] y max-[380px]:top-[83px]', () => {
+  it('la flecha de arriba incluye top-[95px], max-[380px]:top-[83px] y [@media(max-width:380px)_and_(max-height:600px)]:top-[68px]!', () => {
     render(
       <Section id="proyectos" titleKey="projects.title">
         <div>Contenido</div>
@@ -73,5 +73,6 @@ describe('Section', () => {
     const prevBtn = screen.getByRole('button', { name: /sección anterior/i })
     expect(prevBtn.className).toContain('top-[95px]')
     expect(prevBtn.className).toContain('max-[380px]:top-[83px]')
+    expect(prevBtn.className).toContain('[@media(max-width:380px)_and_(max-height:600px)]:top-[68px]!')
   })
 })
