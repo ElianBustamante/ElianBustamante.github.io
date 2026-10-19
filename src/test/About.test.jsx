@@ -167,7 +167,7 @@ describe('About', () => {
     expect(panel.className).toContain('[@media(min-height:441px)]:compact:p-4')
   })
 
-  it('text card has border-accent/40 and backdrop-blur-[6px], and shares pt-2.5 with skills panel', () => {
+  it('text card has border-accent/40 and backdrop-blur-[6px], and shares pt-2.5 and compact:pt-2 with skills panel', () => {
     render(<About />)
     const p1 = screen.getByText(es.about.p1)
     const textCard = p1.parentElement
@@ -178,13 +178,16 @@ describe('About', () => {
     expect(textCard.className).toContain('backdrop-blur-[6px]')
     expect(textCard.className).toContain('pt-2.5')
     expect(panel.className).toContain('pt-2.5')
+    expect(textCard.className).toContain('compact:pt-2')
+    expect(panel.className).toContain('compact:pt-2')
   })
 
-  it('container has items-stretch in normal mode and items-start in paged mode', () => {
+  it('container has items-start in both normal two-column mode and paged mode', () => {
     delete window.matchMedia
     const { unmount } = render(<About />)
     const textCardNormal = screen.getByText(es.about.p1).parentElement
-    expect(textCardNormal.parentElement.className).toContain('items-stretch')
+    expect(textCardNormal.parentElement.className).toContain('items-start')
+    expect(textCardNormal.parentElement.className).not.toContain('items-stretch')
     unmount()
 
     window.matchMedia = vi.fn().mockImplementation((query) => ({
@@ -197,5 +200,37 @@ describe('About', () => {
     render(<About />)
     const textCardPaged = screen.getByText(es.about.p1).parentElement
     expect(textCardPaged.parentElement.className).toContain('items-start')
+  })
+
+  it('paragraphs have short:text-[clamp( and max-[400px]:text-[0.9375rem]', () => {
+    render(<About />)
+    const paragraphs = [
+      screen.getByText(es.about.p1),
+      screen.getByText(es.about.p2),
+      screen.getByText(es.about.p3),
+    ]
+    for (const p of paragraphs) {
+      expect(p.className).toContain('short:text-[clamp(')
+      expect(p.className).toContain('max-[400px]:text-[0.9375rem]')
+    }
+  })
+
+  it('in paged mode, the bottom counter has portrait max-height 760px sr-only class', () => {
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === ABOUT_PAGED_QUERY,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }))
+
+    render(<About />)
+    const counters = screen.getAllByText('1 / 2')
+    const bottomCounter = counters[counters.length - 1]
+    expect(bottomCounter.className).toContain(
+      '[@media(orientation:portrait)_and_(max-height:760px)]:sr-only'
+    )
+    expect(bottomCounter.parentElement.className).toContain(
+      '[@media(orientation:portrait)_and_(max-height:760px)]:sr-only'
+    )
   })
 })

@@ -133,4 +133,15 @@ describe('Contact', () => {
     expect(screen.queryByRole('button', { name: 'Copiado' })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Copiar correo' })).toBeInTheDocument()
   })
+
+  it('copy button does not have px-3 or rounded-full and its row has -mb-2.5', () => {
+    render(<Contact />)
+
+    const copyBtn = screen.getByRole('button', { name: 'Copiar correo' })
+    expect(copyBtn.className).not.toContain('px-3')
+    expect(copyBtn.className).not.toContain('rounded-full')
+    expect(copyBtn.className).toContain('px-0')
+    expect(copyBtn.className).toContain('rounded-md')
+    expect(copyBtn.parentElement.className).toContain('-mb-2.5')
+  })
 })
