@@ -55,7 +55,7 @@ export default function About() {
 
   const containerClass = paged
     ? 'flex snap-x snap-mandatory gap-8 overflow-x-auto overflow-y-hidden scroll-smooth items-start py-1 -my-1 px-4 -mx-4 scroll-px-4 [scrollbar-width:none] mt-4 compact:mt-2'
-    : 'grid grid-cols-2 items-start gap-8 compact:gap-4 mt-4 compact:mt-2'
+    : 'grid grid-cols-2 items-stretch gap-8 compact:gap-4 mt-4 compact:mt-2'
 
   const pageItemClass = paged ? 'w-full shrink-0 snap-start' : ''
 
