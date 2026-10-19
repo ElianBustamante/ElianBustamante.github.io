@@ -59,9 +59,9 @@ export default function PhotoGallery() {
         // Pantallas normales horizontales (ej. Laptops, Monitores)
         h = H * 0.59; 
       } else if (ratio < 0.6) {
-        // Pantallas súper verticales (ej. Celulares muy altos y estrechos)
-        // Como hay mucho espacio vertical, dejamos que las fotos crezcan más para llenarlo
-        h = H * 0.55;
+        // Pantallas súper verticales (ej. Celulares muy altos y estrechos):
+        // un poco menos para dejar aire junto a las flechas de subir y bajar
+        h = H * 0.52;
       } else {
         // Pantallas cuadradas o ligeramente verticales
         h = H * 0.50;
