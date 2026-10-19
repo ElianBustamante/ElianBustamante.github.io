@@ -10,7 +10,7 @@ export default function Contact({ siteData = site }) {
   const hasValidEmail = typeof email === 'string' && email.includes('@')
 
   const baseBtnClass =
-    'inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-6 text-[0.875rem] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+    'inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-4 sm:px-6 text-[0.875rem] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
 
   return (
     <Section id="contacto" titleKey="contact.title">
@@ -19,11 +19,11 @@ export default function Contact({ siteData = site }) {
           {t('contact.text')}
         </p>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center">
           {hasValidEmail && (
             <a
               href={`mailto:${email}`}
-              className={`${baseBtnClass} bg-accent text-on-accent hover:bg-accent-hover`}
+              className={`${baseBtnClass} col-span-2 sm:col-span-1 bg-accent text-on-accent hover:bg-accent-hover`}
             >
               <IconMail size={18} />
               <span>{t('contact.email')}</span>
