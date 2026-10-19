@@ -55,4 +55,14 @@ describe('Contact', () => {
     expect(screen.queryByRole('link', { name: 'GitHub' })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'LinkedIn' })).not.toBeInTheDocument()
   })
+
+  it('email button has col-span-2 class and renders updated Spanish contact text', () => {
+    render(<Contact />)
+
+    const emailBtn = screen.getByRole('link', { name: 'Enviar correo' })
+    expect(emailBtn.className).toContain('col-span-2')
+    expect(
+      screen.getByText('¿Quieres conversar sobre un proyecto o una colaboración? Escríbeme.')
+    ).toBeInTheDocument()
+  })
 })
