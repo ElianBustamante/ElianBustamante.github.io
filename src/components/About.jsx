@@ -7,6 +7,7 @@ import { skills } from '../data/site'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { ABOUT_PAGED_QUERY } from '../lib/media'
 import { observeScrollState } from '../lib/overflow'
+import { GLASS_CARD } from '../lib/glass'
 
 export default function About() {
   const { t } = useTranslation()
@@ -90,7 +91,9 @@ export default function About() {
   return (
     <Section id="sobre-mi" titleKey="about.title" actions={actions}>
       <div ref={paged ? pagerRef : undefined} className={containerClass}>
-        <div className={`space-y-4 compact:space-y-2 ${paged ? pageItemClass : 'pt-4 sm:pt-5 compact:pt-2.5 [@media(min-height:441px)]:compact:pt-4'}`}>
+        <div
+          className={`${GLASS_CARD} p-4 sm:p-5 pt-2.5 sm:pt-3.5 compact:p-2.5 compact:px-4 compact:pt-1 [@media(min-height:441px)]:compact:p-4 [@media(min-height:441px)]:compact:pt-2.5 space-y-4 compact:space-y-2 [&>p:last-child]:-mb-1.5 ${pageItemClass}`.trim()}
+        >
           <p className="max-w-[65ch] text-text text-[1rem] compact:text-[0.875rem] leading-relaxed">
             {t('about.p1')}
           </p>
