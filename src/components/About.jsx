@@ -94,13 +94,13 @@ export default function About() {
         <div
           className={`${GLASS_CARD} p-4 sm:p-5 pt-2.5 sm:pt-3.5 compact:p-2.5 compact:px-4 compact:pt-1 [@media(min-height:441px)]:compact:p-4 [@media(min-height:441px)]:compact:pt-2.5 space-y-4 compact:space-y-2 [&>p:last-child]:-mb-1.5 ${pageItemClass}`.trim()}
         >
-          <p className="max-w-[65ch] text-text text-[1rem] compact:text-[0.875rem] leading-relaxed">
+          <p className="max-w-[65ch] text-text text-[1rem] short:text-[clamp(0.8125rem,3.3vh,1rem)] max-[400px]:text-[0.9375rem] max-[340px]:text-[0.875rem] leading-relaxed">
             {t('about.p1')}
           </p>
-          <p className="max-w-[65ch] text-muted text-[1rem] compact:text-[0.875rem] leading-relaxed">
+          <p className="max-w-[65ch] text-muted text-[1rem] short:text-[clamp(0.8125rem,3.3vh,1rem)] max-[400px]:text-[0.9375rem] max-[340px]:text-[0.875rem] leading-relaxed">
             {t('about.p2')}
           </p>
-          <p className="max-w-[65ch] text-muted text-[1rem] compact:text-[0.875rem] leading-relaxed">
+          <p className="max-w-[65ch] text-muted text-[1rem] short:text-[clamp(0.8125rem,3.3vh,1rem)] max-[400px]:text-[0.9375rem] max-[340px]:text-[0.875rem] leading-relaxed">
             {t('about.p3')}
           </p>
         </div>
