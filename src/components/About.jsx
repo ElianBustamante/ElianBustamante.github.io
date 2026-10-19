@@ -136,8 +136,13 @@ export default function About() {
       </div>
 
       {paged && (
-        <div className="mt-4 text-center short:hidden" aria-live="polite">
-          <span className="text-muted text-[0.875rem] font-medium">{page + 1} / 2</span>
+        <div
+          className="mt-4 text-center short:hidden [@media(orientation:portrait)_and_(max-height:760px)]:sr-only"
+          aria-live="polite"
+        >
+          <span className="text-muted text-[0.875rem] font-medium [@media(orientation:portrait)_and_(max-height:760px)]:sr-only">
+            {page + 1} / 2
+          </span>
         </div>
       )}
     </Section>
