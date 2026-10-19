@@ -158,4 +158,12 @@ describe('About', () => {
     const pager = container.querySelector('.snap-x')
     expect(pager.className).toContain('gap-8')
   })
+
+  it('the skills panel has compact:px-4 and [@media(min-height:441px)]:compact:p-4', () => {
+    render(<About />)
+    const heading = screen.getByRole('heading', { level: 3, name: es.about.skills.title })
+    const panel = heading.parentElement
+    expect(panel.className).toContain('compact:px-4')
+    expect(panel.className).toContain('[@media(min-height:441px)]:compact:p-4')
+  })
 })
