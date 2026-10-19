@@ -114,11 +114,11 @@ describe('About', () => {
     })
   })
 
-  it('without matchMedia (normal two-column mode), the text column has class pt-4', () => {
+  it('without matchMedia (normal two-column mode), the text column has class pt-2.5', () => {
     delete window.matchMedia
     render(<About />)
     const p1 = screen.getByText(es.about.p1)
-    expect(p1.parentElement.className).toContain('pt-4')
+    expect(p1.parentElement.className).toContain('pt-2.5')
   })
 
   it('with matchMedia mocked to matches=true (paged mode), the text column does not have class pt-4', () => {
@@ -165,5 +165,37 @@ describe('About', () => {
     const panel = heading.parentElement
     expect(panel.className).toContain('compact:px-4')
     expect(panel.className).toContain('[@media(min-height:441px)]:compact:p-4')
+  })
+
+  it('text card has border-accent/40 and backdrop-blur-[6px], and shares pt-2.5 with skills panel', () => {
+    render(<About />)
+    const p1 = screen.getByText(es.about.p1)
+    const textCard = p1.parentElement
+    const heading = screen.getByRole('heading', { level: 3, name: es.about.skills.title })
+    const panel = heading.parentElement
+
+    expect(textCard.className).toContain('border-accent/40')
+    expect(textCard.className).toContain('backdrop-blur-[6px]')
+    expect(textCard.className).toContain('pt-2.5')
+    expect(panel.className).toContain('pt-2.5')
+  })
+
+  it('container has items-stretch in normal mode and items-start in paged mode', () => {
+    delete window.matchMedia
+    const { unmount } = render(<About />)
+    const textCardNormal = screen.getByText(es.about.p1).parentElement
+    expect(textCardNormal.parentElement.className).toContain('items-stretch')
+    unmount()
+
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === ABOUT_PAGED_QUERY,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }))
+
+    render(<About />)
+    const textCardPaged = screen.getByText(es.about.p1).parentElement
+    expect(textCardPaged.parentElement.className).toContain('items-start')
   })
 })
