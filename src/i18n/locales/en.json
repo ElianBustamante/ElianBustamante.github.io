@@ -96,7 +96,9 @@
     "text": "Want to talk about a project or a collaboration? Write to me.",
     "email": "Send email",
     "github": "GitHub",
-    "linkedin": "LinkedIn"
+    "linkedin": "LinkedIn",
+    "copy": "Copy email",
+    "copied": "Copied"
   },
   "footer": {
     "text": "© {{year}} Elian Bustamante. Built with React, Vite and Tailwind CSS."
