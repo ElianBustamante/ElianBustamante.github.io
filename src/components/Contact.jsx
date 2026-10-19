@@ -14,8 +14,8 @@ export default function Contact({ siteData = site }) {
 
   return (
     <Section id="contacto" titleKey="contact.title">
-      <div className="mt-4 space-y-6">
-        <p className="max-w-[52ch] text-muted text-[1rem] leading-relaxed">
+      <div className="mt-4 compact:mt-2 space-y-6 compact:space-y-3">
+        <p className="max-w-[52ch] text-muted text-[1rem] compact:text-[0.875rem] leading-relaxed">
           {t('contact.text')}
         </p>
 
@@ -59,7 +59,7 @@ export default function Contact({ siteData = site }) {
           <div>
             <a
               href={`mailto:${email}`}
-              className="text-[0.875rem] text-muted hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+              className="text-[0.875rem] text-muted hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded break-words"
             >
               {email}
             </a>
