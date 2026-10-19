@@ -113,4 +113,24 @@ describe('About', () => {
       inline: 'start',
     })
   })
+
+  it('without matchMedia (normal two-column mode), the text column has class pt-4', () => {
+    delete window.matchMedia
+    render(<About />)
+    const p1 = screen.getByText(es.about.p1)
+    expect(p1.parentElement.className).toContain('pt-4')
+  })
+
+  it('with matchMedia mocked to matches=true (paged mode), the text column does not have class pt-4', () => {
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === ABOUT_PAGED_QUERY,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }))
+
+    render(<About />)
+    const p1 = screen.getByText(es.about.p1)
+    expect(p1.parentElement.className).not.toContain('pt-4')
+  })
 })
