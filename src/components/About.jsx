@@ -104,23 +104,23 @@ export default function About() {
 
         <Reveal
           delay={120}
-          className={`rounded-card border border-border bg-surface p-4 sm:p-5 compact:p-3 space-y-4 compact:space-y-2.5 ${pageItemClass}`.trim()}
+          className={`rounded-card border border-border bg-surface p-4 sm:p-5 compact:p-2.5 space-y-4 compact:space-y-2 ${pageItemClass}`.trim()}
         >
           <h3 className="text-lg compact:text-[1rem] font-bold text-text">
             {t('about.skills.title')}
           </h3>
 
-          <div className="space-y-4 compact:space-y-2">
+          <div className="space-y-4 compact:space-y-1.5">
             {skillGroups.map((group) => (
               <div key={group.key}>
-                <h4 className="text-[0.875rem] font-medium text-muted mb-2 compact:mb-1">
+                <h4 className="text-[0.875rem] compact:text-[0.75rem] font-medium text-muted mb-2 compact:mb-0.5">
                   {group.label}
                 </h4>
                 <ul role="list" className="flex flex-wrap gap-2 compact:gap-1.5">
                   {group.items.map((tech) => (
                     <li
                       key={tech}
-                      className="rounded-md bg-surface-2/50 border border-border px-2 py-0.5 text-[0.75rem] text-text"
+                      className="rounded-md bg-surface-2/50 border border-border px-2 py-0.5 compact:py-0 text-[0.75rem] text-text"
                     >
                       {tech}
                     </li>
