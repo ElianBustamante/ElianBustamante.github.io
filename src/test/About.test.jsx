@@ -133,4 +133,29 @@ describe('About', () => {
     const p1 = screen.getByText(es.about.p1)
     expect(p1.parentElement.className).not.toContain('pt-4')
   })
+
+  it('the three paragraphs have class max-w-[65ch] and the text column does not have it', () => {
+    render(<About />)
+    const p1 = screen.getByText(es.about.p1)
+    const p2 = screen.getByText(es.about.p2)
+    const p3 = screen.getByText(es.about.p3)
+
+    expect(p1.className).toContain('max-w-[65ch]')
+    expect(p2.className).toContain('max-w-[65ch]')
+    expect(p3.className).toContain('max-w-[65ch]')
+    expect(p1.parentElement.className).not.toContain('max-w-[65ch]')
+  })
+
+  it('with matchMedia mocked to matches=true (paged mode), the container has class gap-8', () => {
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === ABOUT_PAGED_QUERY,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }))
+
+    const { container } = render(<About />)
+    const pager = container.querySelector('.snap-x')
+    expect(pager.className).toContain('gap-8')
+  })
 })
