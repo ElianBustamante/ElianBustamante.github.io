@@ -1,6 +1,7 @@
 import { render, screen, cleanup, act, fireEvent } from '@testing-library/react'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import About from '../components/About'
+import Hero from '../components/Hero'
 import i18n from '../i18n'
 import es from '../i18n/locales/es.json'
 import en from '../i18n/locales/en.json'
@@ -49,7 +50,7 @@ describe('About', () => {
     expect(container.textContent).not.toMatch(/Busco oportunidades|looking for junior opportunities/i)
   })
 
-  it('about.p1..p3 and hero.subtitle/description exist, are non-empty, match the updated copy, do not contain job-seeking or experience words in es and en, and en.json does not contain Informatics Engineering', () => {
+  it('about.p1..p3 and hero.subtitle/education/description exist, are non-empty, match the updated copy, do not contain job-seeking or experience words in es and en, and en.json does not contain Informatics Engineering', () => {
     expect(es.about.p1).toBe(
       'Vivo en el sur de Chile, donde me titulé en Ingeniería Informática en la Universidad de La Frontera.'
     )
@@ -60,8 +61,11 @@ describe('About', () => {
       'Fuera de la informática, mi pasatiempo principal es la fotografía, sobre todo de paisajes. La galería de esta página es una selección de mis fotos.'
     )
     expect(es.hero.subtitle).toBe('Software y fotografía de paisaje, desde el sur de Chile.')
+    expect(es.hero.education).toBe(
+      'Titulado de Ingeniería Informática, Universidad de La Frontera (Temuco).'
+    )
     expect(es.hero.description).toBe(
-      'Me titulé en Ingeniería Informática en la Universidad de La Frontera. Aquí encontrarás los proyectos que he desarrollado personalmente y una selección de algunas de mis fotografías de paisaje.'
+      'A continuación, los proyectos que he desarrollado personalmente y una selección de mis fotografías.'
     )
 
     expect(en.about.p1).toBe(
@@ -74,15 +78,32 @@ describe('About', () => {
       'Outside of computing, my main hobby is photography, especially landscapes. The gallery on this page is a selection of my photos.'
     )
     expect(en.hero.subtitle).toBe('Software and landscape photography, from southern Chile.')
+    expect(en.hero.education).toBe(
+      'Graduated in Computer Engineering, Universidad de La Frontera (Temuco).'
+    )
     expect(en.hero.description).toBe(
-      "I graduated in Computer Engineering from Universidad de La Frontera. Here you'll find the projects I've developed myself and a selection of some of my landscape photographs."
+      "Below are the projects I've developed myself and a selection of my photographs."
     )
 
     const esForbidden = ['experiencia', 'años', 'empleo', 'oportunidad', 'busco', 'buscando']
     const enForbidden = ['experience', 'years', 'job', 'opportunit', 'looking for']
 
-    const esTexts = [es.about.p1, es.about.p2, es.about.p3, es.hero.subtitle, es.hero.description]
-    const enTexts = [en.about.p1, en.about.p2, en.about.p3, en.hero.subtitle, en.hero.description]
+    const esTexts = [
+      es.about.p1,
+      es.about.p2,
+      es.about.p3,
+      es.hero.subtitle,
+      es.hero.education,
+      es.hero.description,
+    ]
+    const enTexts = [
+      en.about.p1,
+      en.about.p2,
+      en.about.p3,
+      en.hero.subtitle,
+      en.hero.education,
+      en.hero.description,
+    ]
 
     for (const text of esTexts) {
       expect(typeof text).toBe('string')
@@ -101,6 +122,34 @@ describe('About', () => {
     }
 
     expect(JSON.stringify(en)).not.toMatch(/informatics engineering/i)
+  })
+
+  it('Hero renders education and description in two <p> with text-pretty (not text-balance) inside a space-y-3 container in es and en', async () => {
+    render(<Hero />)
+
+    const pEduEs = screen.getByText(es.hero.education)
+    const pDescEs = screen.getByText(es.hero.description)
+    const wrapper = pEduEs.parentElement
+
+    expect(wrapper).toBe(pDescEs.parentElement)
+    expect(wrapper.className).toContain('space-y-3')
+    expect(wrapper.className).toContain('[@media(max-height:500px)]:space-y-1.5')
+    expect(wrapper.querySelectorAll('p')[0]).toBe(pEduEs)
+    expect(wrapper.querySelectorAll('p')[1]).toBe(pDescEs)
+
+    for (const p of [pEduEs, pDescEs]) {
+      expect(p.className).toContain('text-pretty')
+      expect(p.className).not.toContain('text-balance')
+    }
+
+    await act(async () => {
+      await i18n.changeLanguage('en')
+    })
+
+    const pEduEn = screen.getByText(en.hero.education)
+    const pDescEn = screen.getByText(en.hero.description)
+    expect(wrapper.querySelectorAll('p')[0]).toBe(pEduEn)
+    expect(wrapper.querySelectorAll('p')[1]).toBe(pDescEn)
   })
 
   it('renders the 4 technology groups and all skill values without translating them', () => {
