@@ -49,7 +49,7 @@ describe('About', () => {
     expect(container.textContent).not.toMatch(/Busco oportunidades|looking for junior opportunities/i)
   })
 
-  it('about.p1..p3 exist, are non-empty, match the updated copy, and do not contain job-seeking or experience words in es and en', () => {
+  it('about.p1..p3 and hero.subtitle/description exist, are non-empty, match the updated copy, do not contain job-seeking or experience words in es and en, and en.json does not contain Informatics Engineering', () => {
     expect(es.about.p1).toBe(
       'Vivo en el sur de Chile, donde me titulé en Ingeniería Informática en la Universidad de La Frontera.'
     )
@@ -58,6 +58,10 @@ describe('About', () => {
     )
     expect(es.about.p3).toBe(
       'Fuera de la informática, mi pasatiempo principal es la fotografía, sobre todo de paisajes. La galería de esta página es una selección de mis fotos.'
+    )
+    expect(es.hero.subtitle).toBe('Software y fotografía de paisaje, desde el sur de Chile.')
+    expect(es.hero.description).toBe(
+      'Me titulé en Ingeniería Informática en la Universidad de La Frontera. Aquí encontrarás los proyectos que he desarrollado personalmente y una selección de algunas de mis fotografías de paisaje.'
     )
 
     expect(en.about.p1).toBe(
@@ -69,23 +73,34 @@ describe('About', () => {
     expect(en.about.p3).toBe(
       'Outside of computing, my main hobby is photography, especially landscapes. The gallery on this page is a selection of my photos.'
     )
+    expect(en.hero.subtitle).toBe('Software and landscape photography, from southern Chile.')
+    expect(en.hero.description).toBe(
+      "I graduated in Computer Engineering from Universidad de La Frontera. Here you'll find the projects I've developed myself and a selection of some of my landscape photographs."
+    )
 
     const esForbidden = ['experiencia', 'años', 'empleo', 'oportunidad', 'busco', 'buscando']
     const enForbidden = ['experience', 'years', 'job', 'opportunit', 'looking for']
 
-    for (const key of ['p1', 'p2', 'p3']) {
-      expect(typeof es.about[key]).toBe('string')
-      expect(es.about[key].trim().length).toBeGreaterThan(0)
-      for (const word of esForbidden) {
-        expect(es.about[key].toLowerCase()).not.toContain(word)
-      }
+    const esTexts = [es.about.p1, es.about.p2, es.about.p3, es.hero.subtitle, es.hero.description]
+    const enTexts = [en.about.p1, en.about.p2, en.about.p3, en.hero.subtitle, en.hero.description]
 
-      expect(typeof en.about[key]).toBe('string')
-      expect(en.about[key].trim().length).toBeGreaterThan(0)
-      for (const word of enForbidden) {
-        expect(en.about[key].toLowerCase()).not.toContain(word)
+    for (const text of esTexts) {
+      expect(typeof text).toBe('string')
+      expect(text.trim().length).toBeGreaterThan(0)
+      for (const word of esForbidden) {
+        expect(text.toLowerCase()).not.toContain(word)
       }
     }
+
+    for (const text of enTexts) {
+      expect(typeof text).toBe('string')
+      expect(text.trim().length).toBeGreaterThan(0)
+      for (const word of enForbidden) {
+        expect(text.toLowerCase()).not.toContain(word)
+      }
+    }
+
+    expect(JSON.stringify(en)).not.toMatch(/informatics engineering/i)
   })
 
   it('renders the 4 technology groups and all skill values without translating them', () => {
