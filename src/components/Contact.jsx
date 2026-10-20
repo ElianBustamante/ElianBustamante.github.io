@@ -88,14 +88,14 @@ export default function Contact({ siteData = site }) {
         </div>
 
         {hasValidEmail && (
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 -mb-2.5">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
             <span ref={addressRef} className="select-all break-words text-[0.875rem] text-muted">
               {email}
             </span>
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-md px-0 text-[0.875rem] text-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+              className="inline-flex min-h-[44px] -my-3 items-center gap-2 rounded-md px-0 text-[0.875rem] text-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
             >
               {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
               <span>{copied ? t('contact.copied') : t('contact.copy')}</span>
