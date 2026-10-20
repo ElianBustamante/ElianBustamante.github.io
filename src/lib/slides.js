@@ -96,7 +96,7 @@ export function canAdvanceSlide(section, direction, windowHeight) {
 /**
  * Determina si un evento de rueda (wheel) debe interceptarse para cambiar de diapositiva.
  */
-export function shouldInterceptWheel(e, { isReducedMotion, windowHeight, currentSection } = {}) {
+export function shouldInterceptWheel(e, { isReducedMotion, windowHeight, currentSection, minDelta = 5 } = {}) {
   if (!e) return false;
   if (e.ctrlKey || e.metaKey) return false;
 
@@ -104,7 +104,7 @@ export function shouldInterceptWheel(e, { isReducedMotion, windowHeight, current
   if (reduce) return false;
 
   if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return false;
-  if (Math.abs(e.deltaY) <= 5) return false;
+  if (Math.abs(e.deltaY) <= minDelta) return false;
 
   const direction = e.deltaY > 0 ? 1 : -1;
 

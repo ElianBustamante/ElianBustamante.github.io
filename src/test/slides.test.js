@@ -189,6 +189,19 @@ describe('slides logic', () => {
     expect(shouldInterceptWheel(event, { isReducedMotion: true })).toBe(false)
   })
 
+  it('con minDelta: 0 un evento con deltaY = 2 sí se intercepta, y con el valor por defecto no', () => {
+    const event = {
+      ctrlKey: false,
+      metaKey: false,
+      deltaY: 2,
+      deltaX: 0,
+      target: document.body
+    }
+
+    expect(shouldInterceptWheel(event)).toBe(false)
+    expect(shouldInterceptWheel(event, { minDelta: 0 })).toBe(true)
+  })
+
   describe('shouldRealignOnResize', () => {
     it('mismo ancho, alto y dpr -> false', () => {
       const prev = { width: 1024, height: 768, dpr: 1 }
