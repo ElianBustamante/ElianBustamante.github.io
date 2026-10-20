@@ -4,14 +4,27 @@ import { site } from '../data/site'
 
 const metaUrl = import.meta.url
 const html = fs.readFileSync(new URL('../../index.html', metaUrl), 'utf8')
-const noscriptMatch = html.match(/<noscript>([\s\S]*?)<\/noscript>/)
+const headContent = html.match(/<head>([\s\S]*?)<\/head>/)?.[1] ?? ''
+const bodyContent = html.match(/<body>([\s\S]*?)<\/body>/)?.[1] ?? ''
+const headNoscriptMatch = headContent.match(/<noscript>([\s\S]*?)<\/noscript>/)
+const noscriptMatch = bodyContent.match(/<noscript>([\s\S]*?)<\/noscript>/)
 const noscriptContent = noscriptMatch ? noscriptMatch[1] : ''
 
 describe('index.html <noscript>', () => {
+  it('contains a <noscript> in <head> with background:#0a0a0a before </head>', () => {
+    expect(headNoscriptMatch).not.toBeNull()
+    expect(headNoscriptMatch[1]).toContain('background:#0a0a0a')
+    const headNoscriptIndex = html.indexOf('<noscript><style>')
+    const headCloseIndex = html.indexOf('</head>')
+    expect(headNoscriptIndex).toBeGreaterThan(-1)
+    expect(headCloseIndex).toBeGreaterThan(-1)
+    expect(headNoscriptIndex).toBeLessThan(headCloseIndex)
+  })
+
   it('contains a <noscript> block before <div id="root">', () => {
     expect(noscriptMatch).not.toBeNull()
-    const noscriptIndex = html.indexOf('<noscript>')
-    const rootIndex = html.indexOf('<div id="root">')
+    const noscriptIndex = bodyContent.indexOf('<noscript>')
+    const rootIndex = bodyContent.indexOf('<div id="root">')
     expect(noscriptIndex).toBeGreaterThan(-1)
     expect(rootIndex).toBeGreaterThan(-1)
     expect(noscriptIndex).toBeLessThan(rootIndex)
