@@ -21,6 +21,7 @@ export default function About() {
     if (!list) return
 
     const update = () => {
+      if (list.scrollTop !== 0) list.scrollTop = 0
       const { scrollLeft, scrollWidth, clientWidth } = list
       const overflow = scrollWidth > clientWidth + 5
       const atEnd = Math.ceil(scrollLeft + clientWidth) >= scrollWidth - 5
@@ -38,12 +39,15 @@ export default function About() {
   }, [paged])
 
   const goTo = (i) => {
+    const list = pagerRef.current
+    if (!list) return
     const reduce = Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches)
-    pagerRef.current?.children[i]?.scrollIntoView({
-      behavior: reduce ? 'auto' : 'smooth',
-      block: 'nearest',
-      inline: 'start',
-    })
+    const left = i === 0 ? 0 : list.scrollWidth
+    if (typeof list.scrollTo === 'function') {
+      list.scrollTo({ left, top: 0, behavior: reduce ? 'auto' : 'smooth' })
+    } else {
+      list.scrollLeft = left
+    }
   }
 
   const skillGroups = [
