@@ -10,7 +10,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="snap-start relative z-0 min-h-[100svh] flex flex-col justify-center pt-32 pb-20 short:pb-8 short:pt-3"
+      className="snap-start relative z-0 min-h-[100svh] flex flex-col justify-center pt-32 pb-20 short:pb-8 short:pt-3 [@media(orientation:portrait)_and_(max-height:700px)]:pt-24 [@media(orientation:portrait)_and_(max-height:700px)]:pb-16"
     >
       {bgUrl && (
         <div 
