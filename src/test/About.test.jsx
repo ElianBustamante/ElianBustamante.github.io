@@ -49,6 +49,45 @@ describe('About', () => {
     expect(container.textContent).not.toMatch(/Busco oportunidades|looking for junior opportunities/i)
   })
 
+  it('about.p1..p3 exist, are non-empty, match the updated copy, and do not contain job-seeking or experience words in es and en', () => {
+    expect(es.about.p1).toBe(
+      'Vivo en el sur de Chile, donde me titulé en Ingeniería Informática en la Universidad de La Frontera.'
+    )
+    expect(es.about.p2).toBe(
+      'Me gusta convertir ideas en herramientas que resuelvan problemas concretos. Dos de ellas están en este portafolio: un bot de Discord que sigue ofertas de videojuegos y otro de WhatsApp, de uso personal, que busca productos con descuento en tiendas en línea.'
+    )
+    expect(es.about.p3).toBe(
+      'Fuera de la informática, mi pasatiempo principal es la fotografía, sobre todo de paisajes. La galería de esta página es una selección de mis fotos.'
+    )
+
+    expect(en.about.p1).toBe(
+      "I live in southern Chile, where I graduated with a bachelor's degree in Computer Engineering from Universidad de La Frontera."
+    )
+    expect(en.about.p2).toBe(
+      'I like turning ideas into tools that solve real problems. Two of them are in this portfolio: a Discord bot that tracks video game deals and a WhatsApp bot for personal use that looks for discounted products in online stores.'
+    )
+    expect(en.about.p3).toBe(
+      'Outside of computing, my main hobby is photography, especially landscapes. The gallery on this page is a selection of my photos.'
+    )
+
+    const esForbidden = ['experiencia', 'años', 'empleo', 'oportunidad', 'busco', 'buscando']
+    const enForbidden = ['experience', 'years', 'job', 'opportunit', 'looking for']
+
+    for (const key of ['p1', 'p2', 'p3']) {
+      expect(typeof es.about[key]).toBe('string')
+      expect(es.about[key].trim().length).toBeGreaterThan(0)
+      for (const word of esForbidden) {
+        expect(es.about[key].toLowerCase()).not.toContain(word)
+      }
+
+      expect(typeof en.about[key]).toBe('string')
+      expect(en.about[key].trim().length).toBeGreaterThan(0)
+      for (const word of enForbidden) {
+        expect(en.about[key].toLowerCase()).not.toContain(word)
+      }
+    }
+  })
+
   it('renders the 4 technology groups and all skill values without translating them', () => {
     render(<About />)
 
