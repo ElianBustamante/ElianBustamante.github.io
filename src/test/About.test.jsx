@@ -50,7 +50,7 @@ describe('About', () => {
     expect(container.textContent).not.toMatch(/Busco oportunidades|looking for junior opportunities/i)
   })
 
-  it('about.p1..p3 and hero.subtitle/education/description exist, are non-empty, match the updated copy, do not contain job-seeking or experience words in es and en, and en.json does not contain Informatics Engineering', () => {
+  it('about.p1..p3 and hero.subtitle/education exist, are non-empty, match the updated copy, do not contain job-seeking or experience words in es and en, and en.json does not contain Informatics Engineering', () => {
     expect(es.about.p1).toBe(
       'Vivo en el sur de Chile, donde me titulé en Ingeniería Informática en la Universidad de La Frontera.'
     )
@@ -62,11 +62,9 @@ describe('About', () => {
     )
     expect(es.hero.subtitle).toBe('Software y fotografía de paisaje, desde el sur de Chile.')
     expect(es.hero.education).toBe(
-      'Titulado de Ingeniería Informática, Universidad de La Frontera (Temuco).'
+      'Titulado de Ingeniería Informática, Universidad de La Frontera.'
     )
-    expect(es.hero.description).toBe(
-      'A continuación, los proyectos que he desarrollado y una selección de mis fotografías.'
-    )
+    expect(es.hero).not.toHaveProperty('description')
 
     expect(en.about.p1).toBe(
       "I live in southern Chile, where I graduated with a bachelor's degree in Computer Engineering from Universidad de La Frontera."
@@ -79,11 +77,9 @@ describe('About', () => {
     )
     expect(en.hero.subtitle).toBe('Software and landscape photography, from southern Chile.')
     expect(en.hero.education).toBe(
-      'Graduated in Computer Engineering, Universidad de La Frontera (Temuco).'
+      'Graduated in Computer Engineering, Universidad de La Frontera.'
     )
-    expect(en.hero.description).toBe(
-      "Below are the projects I've developed and a selection of my photographs."
-    )
+    expect(en.hero).not.toHaveProperty('description')
 
     const esForbidden = ['experiencia', 'años', 'empleo', 'oportunidad', 'busco', 'buscando']
     const enForbidden = ['experience', 'years', 'job', 'opportunit', 'looking for']
@@ -94,7 +90,6 @@ describe('About', () => {
       es.about.p3,
       es.hero.subtitle,
       es.hero.education,
-      es.hero.description,
     ]
     const enTexts = [
       en.about.p1,
@@ -102,7 +97,6 @@ describe('About', () => {
       en.about.p3,
       en.hero.subtitle,
       en.hero.education,
-      en.hero.description,
     ]
 
     for (const text of esTexts) {
@@ -124,7 +118,7 @@ describe('About', () => {
     expect(JSON.stringify(en)).not.toMatch(/informatics engineering/i)
   })
 
-  it('Hero renders education and description in two <p> with text-pretty (not text-balance) inside a space-y-3 container in es and en, and includes short-portrait spacing classes', async () => {
+  it('Hero renders education in a single <p> with text-pretty (not text-balance) and hero-in in es and en, keeps subtitle and both buttons, and includes short-portrait spacing classes', async () => {
     const { container } = render(<Hero />)
 
     const section = container.querySelector('#inicio')
@@ -140,6 +134,9 @@ describe('About', () => {
     expect(subtitle.className).toContain('[@media(orientation:portrait)_and_(max-height:700px)]:mt-4')
 
     const ctaBtn = screen.getByRole('link', { name: es.hero.ctaProjects })
+    const photoBtn = screen.getByRole('link', { name: es.hero.ctaPhotography })
+    expect(ctaBtn).toBeInTheDocument()
+    expect(photoBtn).toBeInTheDocument()
     const buttonsContainer = ctaBtn.parentElement
     expect(buttonsContainer.className).toContain('mt-8')
     expect(buttonsContainer.className).toContain(
@@ -147,28 +144,21 @@ describe('About', () => {
     )
 
     const pEduEs = screen.getByText(es.hero.education)
-    const pDescEs = screen.getByText(es.hero.description)
-    const wrapper = pEduEs.parentElement
-
-    expect(wrapper).toBe(pDescEs.parentElement)
-    expect(wrapper.className).toContain('space-y-3')
-    expect(wrapper.className).toContain('[@media(max-height:500px)]:space-y-1.5')
-    expect(wrapper.querySelectorAll('p')[0]).toBe(pEduEs)
-    expect(wrapper.querySelectorAll('p')[1]).toBe(pDescEs)
-
-    for (const p of [pEduEs, pDescEs]) {
-      expect(p.className).toContain('text-pretty')
-      expect(p.className).not.toContain('text-balance')
-    }
+    expect(pEduEs.tagName).toBe('P')
+    expect(pEduEs.className).toContain('text-pretty')
+    expect(pEduEs.className).not.toContain('text-balance')
+    expect(pEduEs.className).toContain('hero-in')
+    expect(pEduEs.className).toContain('mt-4')
+    expect(pEduEs.className).toContain('[@media(max-height:500px)]:mt-2')
+    expect(section.querySelectorAll('p')).toHaveLength(2)
 
     await act(async () => {
       await i18n.changeLanguage('en')
     })
 
     const pEduEn = screen.getByText(en.hero.education)
-    const pDescEn = screen.getByText(en.hero.description)
-    expect(wrapper.querySelectorAll('p')[0]).toBe(pEduEn)
-    expect(wrapper.querySelectorAll('p')[1]).toBe(pDescEn)
+    expect(pEduEn).toBe(pEduEs)
+    expect(section.querySelectorAll('p')).toHaveLength(2)
   })
 
   it('renders the 4 technology groups and all skill values without translating them', () => {
