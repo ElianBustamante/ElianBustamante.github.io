@@ -186,3 +186,45 @@ export function shouldRealignOnResize({ prev, cur, coarse = false } = {}) {
   }
   return Math.abs(cur.height - prev.height) >= 96;
 }
+
+/**
+ * Determina si un evento de rueda debe absorberse (preventDefault) mientras hay una transición en curso.
+ */
+export function shouldAbsorbWheel(e, { isTransitioning, isReducedMotion } = {}) {
+  if (!e || !isTransitioning) return false;
+  if (e.ctrlKey || e.metaKey) return false;
+
+  const reduce = isReducedMotion ?? (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+  if (reduce) return false;
+
+  if (typeof e.deltaY !== 'number' || e.deltaY === 0) return false;
+  if (Math.abs(e.deltaY) < Math.abs(e.deltaX || 0)) return false;
+
+  if (e.target?.closest?.('[role="dialog"], dialog')) return false;
+
+  const direction = e.deltaY > 0 ? 1 : -1;
+  if (canElementScroll(e.target, direction)) return false;
+
+  return true;
+}
+
+/**
+ * Devuelve el índice de la sección a la que debe asentarse la vista cuando la rueda queda en reposo,
+ * o -1 si ya está alineada, si es más alta que la pantalla o si el elemento más cercano es un <footer>.
+ */
+export function getSettleIndex(sections, windowHeight, { tolerance = 2 } = {}) {
+  if (!sections || !sections.length) return -1;
+  const idx = findClosestSectionIndex(sections);
+  const sec = sections[idx];
+  if (!sec) return -1;
+  if (sec.tagName?.toUpperCase?.() === 'FOOTER') return -1;
+
+  const rect = typeof sec.getBoundingClientRect === 'function' ? sec.getBoundingClientRect() : sec;
+  if (!rect || typeof rect.top !== 'number' || typeof rect.height !== 'number') return -1;
+
+  const wHeight = windowHeight ?? (typeof window !== 'undefined' ? window.innerHeight : 800);
+  if (Math.abs(rect.top) > tolerance && rect.height <= wHeight + 8) {
+    return idx;
+  }
+  return -1;
+}
