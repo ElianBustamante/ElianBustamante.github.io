@@ -3,6 +3,8 @@ import {
   shouldInterceptKey,
   getKeyDirection,
   shouldInterceptWheel,
+  shouldAbsorbWheel,
+  getSettleIndex,
   canAdvanceSlide,
   getSectionOnFocus,
   shouldRealignOnResize
@@ -289,6 +291,157 @@ describe('slides logic', () => {
       const curMobLarge = { width: 375, height: 718, dpr: 2 }
       expect(shouldRealignOnResize({ prev: prevMob, cur: curMobLarge, coarse: false })).toBe(true)
       expect(shouldRealignOnResize({ prev: prevMob, cur: curMobLarge })).toBe(true)
+    })
+  })
+
+  describe('shouldAbsorbWheel', () => {
+    it('true con isTransitioning true y deltaY pequeño (2)', () => {
+      const event = {
+        ctrlKey: false,
+        metaKey: false,
+        deltaY: 2,
+        deltaX: 0,
+        target: document.body
+      }
+      expect(shouldAbsorbWheel(event, { isTransitioning: true })).toBe(true)
+    })
+
+    it('false con isTransitioning false', () => {
+      const event = {
+        ctrlKey: false,
+        metaKey: false,
+        deltaY: 2,
+        deltaX: 0,
+        target: document.body
+      }
+      expect(shouldAbsorbWheel(event, { isTransitioning: false })).toBe(false)
+    })
+
+    it('false con ctrlKey', () => {
+      const event = {
+        ctrlKey: true,
+        metaKey: false,
+        deltaY: 2,
+        deltaX: 0,
+        target: document.body
+      }
+      expect(shouldAbsorbWheel(event, { isTransitioning: true })).toBe(false)
+    })
+
+    it('false con reduced motion', () => {
+      const event = {
+        ctrlKey: false,
+        metaKey: false,
+        deltaY: 2,
+        deltaX: 0,
+        target: document.body
+      }
+      expect(shouldAbsorbWheel(event, { isTransitioning: true, isReducedMotion: true })).toBe(false)
+    })
+
+    it('false si el evento es horizontal (|deltaX| > |deltaY|)', () => {
+      const event = {
+        ctrlKey: false,
+        metaKey: false,
+        deltaY: 2,
+        deltaX: 10,
+        target: document.body
+      }
+      expect(shouldAbsorbWheel(event, { isTransitioning: true })).toBe(false)
+    })
+
+    it('false si el target está dentro de un [role="dialog"]', () => {
+      const dialog = document.createElement('div')
+      dialog.setAttribute('role', 'dialog')
+      const inner = document.createElement('span')
+      dialog.appendChild(inner)
+      document.body.appendChild(dialog)
+
+      const event = {
+        ctrlKey: false,
+        metaKey: false,
+        deltaY: 2,
+        deltaX: 0,
+        target: inner
+      }
+      expect(shouldAbsorbWheel(event, { isTransitioning: true })).toBe(false)
+
+      document.body.removeChild(dialog)
+    })
+
+    it('false si el target tiene scroll interno disponible', () => {
+      const container = document.createElement('div')
+      Object.defineProperty(container, 'scrollHeight', { value: 500, configurable: true })
+      Object.defineProperty(container, 'clientHeight', { value: 200, configurable: true })
+      container.scrollTop = 50
+      container.style.overflowY = 'auto'
+
+      const innerChild = document.createElement('p')
+      container.appendChild(innerChild)
+      document.body.appendChild(container)
+
+      const event = {
+        ctrlKey: false,
+        metaKey: false,
+        deltaY: 2,
+        deltaX: 0,
+        target: innerChild
+      }
+      expect(shouldAbsorbWheel(event, { isTransitioning: true })).toBe(false)
+
+      document.body.removeChild(container)
+    })
+  })
+
+  describe('getSettleIndex', () => {
+    it('devuelve el índice cuando la sección más cercana tiene top = -70 y alto = windowHeight', () => {
+      const sec0 = document.createElement('section')
+      sec0.getBoundingClientRect = () => ({ top: -870, height: 800 })
+      const sec1 = document.createElement('section')
+      sec1.getBoundingClientRect = () => ({ top: -70, height: 800 })
+
+      expect(getSettleIndex([sec0, sec1], 800)).toBe(1)
+    })
+
+    it('devuelve -1 con top = 0', () => {
+      const sec = document.createElement('section')
+      sec.getBoundingClientRect = () => ({ top: 0, height: 800 })
+
+      expect(getSettleIndex([sec], 800)).toBe(-1)
+    })
+
+    it('devuelve -1 con top = 1 (dentro de la tolerancia)', () => {
+      const sec = document.createElement('section')
+      sec.getBoundingClientRect = () => ({ top: 1, height: 800 })
+
+      expect(getSettleIndex([sec], 800)).toBe(-1)
+    })
+
+    it('devuelve -1 cuando la sección es más alta que windowHeight + 8', () => {
+      const sec = document.createElement('section')
+      sec.getBoundingClientRect = () => ({ top: -70, height: 1200 })
+
+      expect(getSettleIndex([sec], 800)).toBe(-1)
+    })
+
+    it('con varias secciones elige la más cercana', () => {
+      const sec0 = document.createElement('section')
+      sec0.getBoundingClientRect = () => ({ top: -850, height: 800 })
+      const sec1 = document.createElement('section')
+      sec1.getBoundingClientRect = () => ({ top: -50, height: 800 })
+      const sec2 = document.createElement('section')
+      sec2.getBoundingClientRect = () => ({ top: 750, height: 800 })
+
+      expect(getSettleIndex([sec0, sec1, sec2], 800)).toBe(1)
+    })
+
+    it('devuelve -1 si la más cercana es un footer', () => {
+      const sec = document.createElement('section')
+      sec.getBoundingClientRect = () => ({ top: -700, height: 800 })
+      const footer = document.createElement('footer')
+      footer.getBoundingClientRect = () => ({ top: -40, height: 120 })
+
+      expect(getSettleIndex([sec, footer], 800)).toBe(-1)
     })
   })
 })
