@@ -65,7 +65,7 @@ describe('About', () => {
       'Titulado de Ingeniería Informática, Universidad de La Frontera (Temuco).'
     )
     expect(es.hero.description).toBe(
-      'A continuación, los proyectos que he desarrollado personalmente y una selección de mis fotografías.'
+      'A continuación, los proyectos que he desarrollado y una selección de mis fotografías.'
     )
 
     expect(en.about.p1).toBe(
@@ -82,7 +82,7 @@ describe('About', () => {
       'Graduated in Computer Engineering, Universidad de La Frontera (Temuco).'
     )
     expect(en.hero.description).toBe(
-      "Below are the projects I've developed myself and a selection of my photographs."
+      "Below are the projects I've developed and a selection of my photographs."
     )
 
     const esForbidden = ['experiencia', 'años', 'empleo', 'oportunidad', 'busco', 'buscando']
