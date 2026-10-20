@@ -16,6 +16,7 @@ import {
   getSectionOnFocus,
   shouldRealignOnResize
 } from './lib/slides'
+import { createWheelGesture, normalizeWheelDelta } from './lib/wheelGesture'
 import { usesInnerScroll } from './lib/media'
 
 function App() {
@@ -64,21 +65,13 @@ function App() {
   // Controlador de Diapositivas
   useEffect(() => {
     let isTransitioning = false
-    let scrollEnded = true
-    let wheelQuiet = true
-    let wheelTimeout = null
     let fallbackTimeout = null
+    const gesture = createWheelGesture()
 
-    const checkUnlock = () => {
-      if (scrollEnded && wheelQuiet) {
-        isTransitioning = false
-      }
-    }
-
-    const onScrollEnd = () => {
+    const unlock = () => {
       clearTimeout(fallbackTimeout)
-      scrollEnded = true
-      checkUnlock()
+      window.removeEventListener('scrollend', unlock)
+      isTransitioning = false
     }
 
     const performScroll = (direction) => {
@@ -96,45 +89,35 @@ function App() {
         nextIndex--
       }
 
-      if (nextIndex !== closestIndex) {
-        isTransitioning = true
-        scrollEnded = false
-        wheelQuiet = false
+      if (nextIndex === closestIndex) return
 
-        if ('onscrollend' in window) {
-          window.addEventListener('scrollend', onScrollEnd, { once: true })
-        }
-        clearTimeout(fallbackTimeout)
-        fallbackTimeout = setTimeout(onScrollEnd, 800)
-
-        scrollToElement(sections[nextIndex])
+      isTransitioning = true
+      if ('onscrollend' in window) {
+        window.addEventListener('scrollend', unlock, { once: true })
       }
+      clearTimeout(fallbackTimeout)
+      fallbackTimeout = setTimeout(unlock, 1000)
+
+      scrollToElement(sections[nextIndex])
     }
 
     const handleWheel = (e) => {
       if (usesInnerScroll()) return
 
       const sections = Array.from(document.querySelectorAll('section, footer'))
-      const closestIndex = findClosestSectionIndex(sections)
-      const currentSection = sections[closestIndex]
+      const currentSection = sections[findClosestSectionIndex(sections)]
+      const delta = normalizeWheelDelta(e, window.innerHeight)
 
-      if (!shouldInterceptWheel(e, { currentSection, windowHeight: window.innerHeight })) {
+      // minDelta: 0 → también los eventos pequeños de la cola de inercia los controlamos
+      // nosotros; así el navegador nunca desplaza la página por su cuenta en este modo
+      if (!shouldInterceptWheel(e, { currentSection, windowHeight: window.innerHeight, minDelta: 0 })) {
+        gesture.consume({ delta, time: e.timeStamp })
         return
       }
 
       e.preventDefault()
-
-      wheelQuiet = false
-      clearTimeout(wheelTimeout)
-      wheelTimeout = setTimeout(() => {
-        wheelQuiet = true
-        checkUnlock()
-      }, 150)
-
-      if (isTransitioning) return
-
-      const direction = e.deltaY > 0 ? 1 : -1
-      performScroll(direction)
+      const direction = gesture.push({ delta, time: e.timeStamp, busy: isTransitioning })
+      if (direction !== 0) performScroll(direction)
     }
 
     const handleKeyDown = (e) => {
@@ -154,9 +137,8 @@ function App() {
     return () => {
       document.removeEventListener('wheel', handleWheel)
       document.removeEventListener('keydown', handleKeyDown)
-      clearTimeout(wheelTimeout)
       clearTimeout(fallbackTimeout)
-      window.removeEventListener('scrollend', onScrollEnd)
+      window.removeEventListener('scrollend', unlock)
     }
   }, [])
 
