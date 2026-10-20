@@ -46,7 +46,7 @@ export default function Hero() {
           </span>
         </h1>
         <div className="max-w-[42rem] xl:max-w-[46rem] short:max-w-[42rem]!">
-          <p className="text-[1.125rem] md:text-[1.25rem] xl:text-[1.5rem] short:text-[1rem]! [@media(max-height:500px)]:text-[1rem] text-text mt-6 [@media(max-height:500px)]:mt-2 hero-in" style={{ animationDelay: '240ms' }}>
+          <p className="text-[1.125rem] md:text-[1.25rem] xl:text-[1.5rem] short:text-[1rem]! [@media(max-height:500px)]:text-[1rem] text-text mt-6 [@media(max-height:500px)]:mt-2 [@media(orientation:portrait)_and_(max-height:700px)]:mt-4 hero-in" style={{ animationDelay: '240ms' }}>
             {t('hero.subtitle')}
           </p>
           <div className="mt-4 [@media(max-height:500px)]:mt-2 space-y-3 [@media(max-height:500px)]:space-y-1.5 hero-in" style={{ animationDelay: '360ms' }}>
@@ -57,7 +57,7 @@ export default function Hero() {
               {t('hero.description')}
             </p>
           </div>
-          <div className="flex flex-wrap gap-4 mt-8 [@media(max-height:500px)]:mt-4 hero-in" style={{ animationDelay: '480ms' }}>
+          <div className="flex flex-wrap gap-4 mt-8 [@media(max-height:500px)]:mt-4 [@media(orientation:portrait)_and_(max-height:700px)]:mt-6 hero-in" style={{ animationDelay: '480ms' }}>
             <a
               href="#proyectos"
               className="min-h-11 inline-flex items-center justify-center px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors"
