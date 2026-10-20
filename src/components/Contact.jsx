@@ -88,17 +88,21 @@ export default function Contact({ siteData = site }) {
         </div>
 
         {hasValidEmail && (
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-            <span ref={addressRef} className="select-all break-words text-[0.875rem] text-muted">
+          <div className="flex flex-nowrap items-center gap-x-0 sm:gap-x-4">
+            <span ref={addressRef} className="select-all min-w-0 [overflow-wrap:anywhere] text-[0.875rem] text-muted">
               {email}
             </span>
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex min-h-[44px] -my-3 items-center gap-2 rounded-md px-0 text-[0.875rem] text-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+              className={`inline-flex min-h-[44px] min-w-[44px] shrink-0 justify-center -my-3 -mr-3 sm:mr-0 sm:min-w-0 sm:justify-start sm:gap-2 items-center rounded-md px-0 text-[0.875rem] transition-colors ${
+                copied ? 'text-accent' : 'text-muted hover:text-accent'
+              } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-transparent`}
             >
               {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
-              <span>{copied ? t('contact.copied') : t('contact.copy')}</span>
+              <span className="sr-only sm:not-sr-only">
+                {copied ? t('contact.copied') : t('contact.copy')}
+              </span>
             </button>
             <span className="sr-only" aria-live="polite">
               {copied ? t('contact.copied') : ''}
