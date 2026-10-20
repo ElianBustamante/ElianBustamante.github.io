@@ -52,13 +52,13 @@ describe('About', () => {
 
   it('about.p1..p3 and hero.subtitle/education exist, are non-empty, match the updated copy, do not contain job-seeking or experience words in es and en, and en.json does not contain Informatics Engineering', () => {
     expect(es.about.p1).toBe(
-      'Vivo en el sur de Chile, donde me titulé en Ingeniería Informática en la Universidad de La Frontera.'
+      'Actualmente vivo en el sur de Chile, donde me titulé en Ingeniería Informática en la Universidad de La Frontera, en Temuco.'
     )
     expect(es.about.p2).toBe(
-      'Me gusta convertir ideas en herramientas que resuelvan problemas concretos. Dos de ellas están en este portafolio: un bot de Discord que sigue ofertas de videojuegos y otro de WhatsApp, de uso personal, que busca productos con descuento en tiendas en línea.'
+      'Me gusta convertir ideas en herramientas que resuelvan problemas concretos. Algunas de ellas están en este portafolio.'
     )
     expect(es.about.p3).toBe(
-      'Fuera de la informática, mi pasatiempo principal es la fotografía, sobre todo de paisajes. La galería de esta página es una selección de mis fotos.'
+      'Fuera de la informática, mi pasatiempo principal es la fotografía, sobre todo de paisajes. La galería de esta página es una selección de algunas de mis fotografías.'
     )
     expect(es.hero.subtitle).toBe('Software y fotografía de paisaje, desde el sur de Chile.')
     expect(es.hero.education).toBe(
@@ -67,13 +67,13 @@ describe('About', () => {
     expect(es.hero).not.toHaveProperty('description')
 
     expect(en.about.p1).toBe(
-      "I live in southern Chile, where I graduated with a bachelor's degree in Computer Engineering from Universidad de La Frontera."
+      "I currently live in southern Chile, where I graduated with a bachelor's degree in Computer Engineering from Universidad de La Frontera, in Temuco."
     )
     expect(en.about.p2).toBe(
-      'I like turning ideas into tools that solve real problems. Two of them are in this portfolio: a Discord bot that tracks video game deals and a WhatsApp bot for personal use that looks for discounted products in online stores.'
+      'I like turning ideas into tools that solve real problems. Some of them are in this portfolio.'
     )
     expect(en.about.p3).toBe(
-      'Outside of computing, my main hobby is photography, especially landscapes. The gallery on this page is a selection of my photos.'
+      'Outside of computing, my main hobby is photography, especially landscapes. The gallery on this page is a selection of some of my photographs.'
     )
     expect(en.hero.subtitle).toBe('Software and landscape photography, from southern Chile.')
     expect(en.hero.education).toBe(
