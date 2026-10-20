@@ -105,22 +105,28 @@ describe('Contact', () => {
     })
 
     expect(writeText).toHaveBeenCalledWith('elian.bustamante.obreque@gmail.com')
-    expect(screen.getByRole('button', { name: 'Copiado' })).toBeInTheDocument()
+    const copiedBtn = screen.getByRole('button', { name: 'Copiado' })
+    expect(copiedBtn).toBeInTheDocument()
+    expect(copiedBtn.className).toContain('text-accent')
 
     act(() => {
       vi.advanceTimersByTime(2000)
     })
 
-    expect(screen.getByRole('button', { name: 'Copiar correo' })).toBeInTheDocument()
+    const resetBtn = screen.getByRole('button', { name: 'Copiar correo' })
+    expect(resetBtn).toBeInTheDocument()
+    expect(resetBtn.className).toContain('text-muted')
   })
 
-  it('if writeText rejects, does not show "Copiado" and does not throw an error', async () => {
+  it('if writeText rejects, does not show "Copiado", selects the email text, and does not throw an error', async () => {
     const writeText = vi.fn().mockRejectedValue(new Error('Clipboard denied'))
     Object.defineProperty(navigator, 'clipboard', {
       value: { writeText },
       configurable: true,
       writable: true,
     })
+    const selectAllChildren = vi.fn()
+    vi.spyOn(window, 'getSelection').mockReturnValue({ selectAllChildren })
 
     render(<Contact />)
 
@@ -130,11 +136,14 @@ describe('Contact', () => {
     })
 
     expect(writeText).toHaveBeenCalledWith('elian.bustamante.obreque@gmail.com')
+    expect(selectAllChildren).toHaveBeenCalledWith(
+      screen.getByText('elian.bustamante.obreque@gmail.com')
+    )
     expect(screen.queryByRole('button', { name: 'Copiado' })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Copiar correo' })).toBeInTheDocument()
   })
 
-  it('email row does not have -mb-2.5, has gap-y-3, and copy button has -my-3 and min-h-[44px]', () => {
+  it('email row has flex-nowrap, gap-x-0, sm:gap-x-4 (not flex-wrap, -mb-2.5, or gap-y-3), email span has min-w-0 and [overflow-wrap:anywhere], and copy button has min-w-[44px], min-h-[44px], -my-3, -mr-3, px-0, rounded-md with sr-only sm:not-sr-only text', () => {
     render(<Contact />)
 
     const copyBtn = screen.getByRole('button', { name: 'Copiar correo' })
@@ -143,8 +152,24 @@ describe('Contact', () => {
     expect(copyBtn.className).toContain('px-0')
     expect(copyBtn.className).toContain('rounded-md')
     expect(copyBtn.className).toContain('-my-3')
+    expect(copyBtn.className).toContain('-mr-3')
     expect(copyBtn.className).toContain('min-h-[44px]')
-    expect(copyBtn.parentElement.className).not.toContain('-mb-2.5')
-    expect(copyBtn.parentElement.className).toContain('gap-y-3')
+    expect(copyBtn.className).toContain('min-w-[44px]')
+
+    const labelSpan = screen.getByText('Copiar correo')
+    expect(labelSpan.className).toContain('sr-only')
+    expect(labelSpan.className).toContain('sm:not-sr-only')
+
+    const emailSpan = screen.getByText('elian.bustamante.obreque@gmail.com')
+    expect(emailSpan.className).toContain('min-w-0')
+    expect(emailSpan.className).toContain('[overflow-wrap:anywhere]')
+
+    const row = copyBtn.parentElement
+    expect(row.className).toContain('flex-nowrap')
+    expect(row.className).toContain('gap-x-0')
+    expect(row.className).toContain('sm:gap-x-4')
+    expect(row.className).not.toContain('flex-wrap')
+    expect(row.className).not.toContain('-mb-2.5')
+    expect(row.className).not.toContain('gap-y-3')
   })
 })
