@@ -134,7 +134,7 @@ describe('Contact', () => {
     expect(screen.getByRole('button', { name: 'Copiar correo' })).toBeInTheDocument()
   })
 
-  it('copy button does not have px-3 or rounded-full and its row has -mb-2.5', () => {
+  it('email row does not have -mb-2.5, has gap-y-3, and copy button has -my-3 and min-h-[44px]', () => {
     render(<Contact />)
 
     const copyBtn = screen.getByRole('button', { name: 'Copiar correo' })
@@ -142,6 +142,9 @@ describe('Contact', () => {
     expect(copyBtn.className).not.toContain('rounded-full')
     expect(copyBtn.className).toContain('px-0')
     expect(copyBtn.className).toContain('rounded-md')
-    expect(copyBtn.parentElement.className).toContain('-mb-2.5')
+    expect(copyBtn.className).toContain('-my-3')
+    expect(copyBtn.className).toContain('min-h-[44px]')
+    expect(copyBtn.parentElement.className).not.toContain('-mb-2.5')
+    expect(copyBtn.parentElement.className).toContain('gap-y-3')
   })
 })

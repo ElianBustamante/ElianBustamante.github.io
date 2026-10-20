@@ -9,9 +9,11 @@ import { ABOUT_PAGED_QUERY } from '../lib/media'
 
 describe('About', () => {
   const originalMatchMedia = window.matchMedia
+  const originalScrollTo = HTMLElement.prototype.scrollTo
 
   beforeEach(async () => {
     window.matchMedia = originalMatchMedia
+    HTMLElement.prototype.scrollTo = vi.fn()
     await act(async () => {
       await i18n.changeLanguage('es')
     })
@@ -19,6 +21,7 @@ describe('About', () => {
 
   afterEach(() => {
     window.matchMedia = originalMatchMedia
+    HTMLElement.prototype.scrollTo = originalScrollTo
     cleanup()
   })
 
@@ -84,7 +87,7 @@ describe('About', () => {
     expect(screen.queryByRole('button', { name: es.about.next })).not.toBeInTheDocument()
   })
 
-  it('in paged mode (matches=true), shows "1 / 2", disables prev button, and clicking next calls scrollIntoView on the second child', () => {
+  it('in paged mode (matches=true), shows "1 / 2", uses scrollTo with top 0 on next/prev without calling scrollIntoView, and resets scrollTop to 0 on scroll', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: query === ABOUT_PAGED_QUERY,
       media: query,
@@ -103,14 +106,46 @@ describe('About', () => {
     expect(nextBtn).not.toBeDisabled()
 
     const pager = container.querySelector('.snap-x')
+    Object.defineProperty(pager, 'scrollWidth', { value: 800, configurable: true })
+    Object.defineProperty(pager, 'clientWidth', { value: 400, configurable: true })
+    let scrollLeftValue = 0
+    let scrollTopValue = 48
+    Object.defineProperty(pager, 'scrollLeft', {
+      get: () => scrollLeftValue,
+      set: (v) => {
+        scrollLeftValue = v
+      },
+      configurable: true,
+    })
+    Object.defineProperty(pager, 'scrollTop', {
+      get: () => scrollTopValue,
+      set: (v) => {
+        scrollTopValue = v
+      },
+      configurable: true,
+    })
+
     const secondChild = pager.children[1]
     secondChild.scrollIntoView = vi.fn()
 
     fireEvent.click(nextBtn)
-    expect(secondChild.scrollIntoView).toHaveBeenCalledWith({
+    expect(HTMLElement.prototype.scrollTo).toHaveBeenCalledWith({
+      left: 800,
+      top: 0,
       behavior: 'smooth',
-      block: 'nearest',
-      inline: 'start',
+    })
+    expect(secondChild.scrollIntoView).not.toHaveBeenCalled()
+
+    scrollLeftValue = 400
+    fireEvent.scroll(pager)
+    expect(pager.scrollTop).toBe(0)
+    expect(prevBtn).not.toBeDisabled()
+
+    fireEvent.click(prevBtn)
+    expect(HTMLElement.prototype.scrollTo).toHaveBeenCalledWith({
+      left: 0,
+      top: 0,
+      behavior: 'smooth',
     })
   })
 

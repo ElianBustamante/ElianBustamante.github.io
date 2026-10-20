@@ -74,6 +74,7 @@ describe('Lightbox', () => {
     const figure = container.querySelector('figure')
     expect(figure.className).toContain('short:py-1!')
     expect(figure.className).toContain('short:justify-center!')
+    expect(figure.className).toContain('[@media(max-height:440px)]:short:pt-5!')
     expect(figure.className).toContain('justify-center')
     expect(figure.className).toContain('py-2')
     expect(figure.className).toContain('md:pt-11')
