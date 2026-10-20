@@ -12,6 +12,8 @@ import {
   shouldInterceptKey,
   getKeyDirection,
   shouldInterceptWheel,
+  shouldAbsorbWheel,
+  getSettleIndex,
   findClosestSectionIndex,
   getSectionOnFocus,
   shouldRealignOnResize
@@ -68,6 +70,7 @@ function App() {
     let wheelQuiet = true
     let wheelTimeout = null
     let fallbackTimeout = null
+    let settleTimer = null
 
     const checkUnlock = () => {
       if (scrollEnded && wheelQuiet) {
@@ -79,6 +82,29 @@ function App() {
       clearTimeout(fallbackTimeout)
       scrollEnded = true
       checkUnlock()
+    }
+
+    const resetWheelQuiet = () => {
+      wheelQuiet = false
+      clearTimeout(wheelTimeout)
+      wheelTimeout = setTimeout(() => {
+        wheelQuiet = true
+        checkUnlock()
+      }, 150)
+    }
+
+    const lockAndScroll = (section) => {
+      isTransitioning = true
+      scrollEnded = false
+      wheelQuiet = false
+
+      if ('onscrollend' in window) {
+        window.addEventListener('scrollend', onScrollEnd, { once: true })
+      }
+      clearTimeout(fallbackTimeout)
+      fallbackTimeout = setTimeout(onScrollEnd, 800)
+
+      scrollToElement(section)
     }
 
     const performScroll = (direction) => {
@@ -97,39 +123,43 @@ function App() {
       }
 
       if (nextIndex !== closestIndex) {
-        isTransitioning = true
-        scrollEnded = false
-        wheelQuiet = false
-
-        if ('onscrollend' in window) {
-          window.addEventListener('scrollend', onScrollEnd, { once: true })
-        }
-        clearTimeout(fallbackTimeout)
-        fallbackTimeout = setTimeout(onScrollEnd, 800)
-
-        scrollToElement(sections[nextIndex])
+        lockAndScroll(sections[nextIndex])
       }
+    }
+
+    const scheduleSettle = () => {
+      clearTimeout(settleTimer)
+      settleTimer = setTimeout(() => {
+        if (isTransitioning) return
+        const currentSections = Array.from(document.querySelectorAll('section, footer'))
+        const settleIdx = getSettleIndex(currentSections, window.innerHeight)
+        if (settleIdx >= 0 && currentSections[settleIdx]) {
+          lockAndScroll(currentSections[settleIdx])
+        }
+      }, 200)
     }
 
     const handleWheel = (e) => {
       if (usesInnerScroll()) return
+
+      if (shouldAbsorbWheel(e, { isTransitioning: true })) {
+        scheduleSettle()
+      }
 
       const sections = Array.from(document.querySelectorAll('section, footer'))
       const closestIndex = findClosestSectionIndex(sections)
       const currentSection = sections[closestIndex]
 
       if (!shouldInterceptWheel(e, { currentSection, windowHeight: window.innerHeight })) {
+        if (shouldAbsorbWheel(e, { isTransitioning })) {
+          e.preventDefault()
+          resetWheelQuiet()
+        }
         return
       }
 
       e.preventDefault()
-
-      wheelQuiet = false
-      clearTimeout(wheelTimeout)
-      wheelTimeout = setTimeout(() => {
-        wheelQuiet = true
-        checkUnlock()
-      }, 150)
+      resetWheelQuiet()
 
       if (isTransitioning) return
 
@@ -156,6 +186,7 @@ function App() {
       document.removeEventListener('keydown', handleKeyDown)
       clearTimeout(wheelTimeout)
       clearTimeout(fallbackTimeout)
+      clearTimeout(settleTimer)
       window.removeEventListener('scrollend', onScrollEnd)
     }
   }, [])
