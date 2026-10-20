@@ -49,9 +49,14 @@ export default function Hero() {
           <p className="text-[1.125rem] md:text-[1.25rem] xl:text-[1.5rem] short:text-[1rem]! [@media(max-height:500px)]:text-[1rem] text-text mt-6 [@media(max-height:500px)]:mt-2 hero-in" style={{ animationDelay: '240ms' }}>
             {t('hero.subtitle')}
           </p>
-          <p className="text-muted md:text-[1.125rem] xl:text-[1.25rem] text-balance short:text-base! mt-4 [@media(max-height:500px)]:mt-2 hero-in" style={{ animationDelay: '360ms' }}>
-            {t('hero.description')}
-          </p>
+          <div className="mt-4 [@media(max-height:500px)]:mt-2 space-y-3 [@media(max-height:500px)]:space-y-1.5 hero-in" style={{ animationDelay: '360ms' }}>
+            <p className="text-muted md:text-[1.125rem] xl:text-[1.25rem] text-pretty short:text-base!">
+              {t('hero.education')}
+            </p>
+            <p className="text-muted md:text-[1.125rem] xl:text-[1.25rem] text-pretty short:text-base!">
+              {t('hero.description')}
+            </p>
+          </div>
           <div className="flex flex-wrap gap-4 mt-8 [@media(max-height:500px)]:mt-4 hero-in" style={{ animationDelay: '480ms' }}>
             <a
               href="#proyectos"
