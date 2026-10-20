@@ -82,4 +82,45 @@ describe('App scroll mode (inner-scroll vs window)', () => {
 
     expect(wheelEvent.defaultPrevented).toBe(false)
   })
+
+  it('eventos de rueda con deltaY pequeño llaman preventDefault y desbloquean al disparar scrollend', () => {
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }))
+    window.innerWidth = 1024
+
+    render(<App />)
+
+    const smallWheel = new Event('wheel', { bubbles: true, cancelable: true })
+    Object.defineProperty(smallWheel, 'deltaY', { value: 2 })
+    Object.defineProperty(smallWheel, 'deltaX', { value: 0 })
+    Object.defineProperty(smallWheel, 'timeStamp', { value: 10 })
+    document.dispatchEvent(smallWheel)
+
+    expect(smallWheel.defaultPrevented).toBe(true)
+    expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled()
+
+    const bigWheel = new Event('wheel', { bubbles: true, cancelable: true })
+    Object.defineProperty(bigWheel, 'deltaY', { value: 50 })
+    Object.defineProperty(bigWheel, 'deltaX', { value: 0 })
+    Object.defineProperty(bigWheel, 'timeStamp', { value: 20 })
+    document.dispatchEvent(bigWheel)
+
+    expect(bigWheel.defaultPrevented).toBe(true)
+    expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(1)
+
+    window.dispatchEvent(new Event('scrollend'))
+
+    const nextGestureWheel = new Event('wheel', { bubbles: true, cancelable: true })
+    Object.defineProperty(nextGestureWheel, 'deltaY', { value: 50 })
+    Object.defineProperty(nextGestureWheel, 'deltaX', { value: 0 })
+    Object.defineProperty(nextGestureWheel, 'timeStamp', { value: 500 })
+    document.dispatchEvent(nextGestureWheel)
+
+    expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(2)
+  })
 })
