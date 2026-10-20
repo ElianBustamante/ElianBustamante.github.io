@@ -124,8 +124,27 @@ describe('About', () => {
     expect(JSON.stringify(en)).not.toMatch(/informatics engineering/i)
   })
 
-  it('Hero renders education and description in two <p> with text-pretty (not text-balance) inside a space-y-3 container in es and en', async () => {
-    render(<Hero />)
+  it('Hero renders education and description in two <p> with text-pretty (not text-balance) inside a space-y-3 container in es and en, and includes short-portrait spacing classes', async () => {
+    const { container } = render(<Hero />)
+
+    const section = container.querySelector('#inicio')
+    expect(section.className).toContain('pt-32')
+    expect(section.className).toContain('pb-20')
+    expect(section.className).toContain('short:pb-8')
+    expect(section.className).toContain('short:pt-3')
+    expect(section.className).toContain('[@media(orientation:portrait)_and_(max-height:700px)]:pt-24')
+    expect(section.className).toContain('[@media(orientation:portrait)_and_(max-height:700px)]:pb-16')
+
+    const subtitle = screen.getByText(es.hero.subtitle)
+    expect(subtitle.className).toContain('mt-6')
+    expect(subtitle.className).toContain('[@media(orientation:portrait)_and_(max-height:700px)]:mt-4')
+
+    const ctaBtn = screen.getByRole('link', { name: es.hero.ctaProjects })
+    const buttonsContainer = ctaBtn.parentElement
+    expect(buttonsContainer.className).toContain('mt-8')
+    expect(buttonsContainer.className).toContain(
+      '[@media(orientation:portrait)_and_(max-height:700px)]:mt-6'
+    )
 
     const pEduEs = screen.getByText(es.hero.education)
     const pDescEs = screen.getByText(es.hero.description)
