@@ -113,22 +113,29 @@ def main():
         print("Error: No valid images found in input directory.")
         sys.exit(1)
 
+    captions = {}
+    if os.path.exists(args.captions):
+        try:
+            with open(args.captions, "r", encoding="utf-8") as f:
+                loaded_captions = json.load(f)
+        except Exception as e:
+            print(f"Error: Could not parse captions file '{args.captions}' as valid JSON: {e}")
+            sys.exit(1)
+        if not isinstance(loaded_captions, dict):
+            print(f"Error: Captions file '{args.captions}' must contain a JSON object.")
+            sys.exit(1)
+        captions = loaded_captions
+
     os.makedirs(args.output, exist_ok=True)
-    os.makedirs(os.path.dirname(args.data), exist_ok=True)
+    data_dir = os.path.dirname(args.data)
+    if data_dir:
+        os.makedirs(data_dir, exist_ok=True)
 
     for f in glob.glob(os.path.join(args.output, "*.webp")):
         try:
             os.remove(f)
         except OSError:
             pass
-
-    captions = {}
-    if os.path.exists(args.captions):
-        try:
-            with open(args.captions, "r", encoding="utf-8") as f:
-                captions = json.load(f)
-        except Exception as e:
-            print(f"Warning: Could not read captions.json: {e}")
 
     photos_data = []
     large_warnings = 0
