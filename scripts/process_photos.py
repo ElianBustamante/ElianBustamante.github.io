@@ -119,6 +119,10 @@ def main():
     parser.add_argument("--captions", default="src/data/captions.json")
     args = parser.parse_args()
 
+    old_captions_path = "photos-originals/captions.json"
+    if os.path.exists(old_captions_path) and os.path.normpath(args.captions) != os.path.normpath(old_captions_path):
+        print("Aviso: photos-originals/captions.json ya no se usa; los títulos viven en src/data/captions.json")
+
     if not os.path.exists(args.input):
         print(f"Error: Input directory {args.input} does not exist.")
         sys.exit(1)
