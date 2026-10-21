@@ -2,7 +2,7 @@ export const projectsData = [
   {
     id: 'gamesDealTracker',
     image: null, 
-    icon: 'discord', // <--- Ícono de Discord
+    icon: 'discord',
     tags: ['Python 3.11+', 'discord.py', 'aiohttp', 'curl-cffi', 'SQLite', 'pytest'], 
     repoUrl: 'https://github.com/ElianBustamante/games-deal-tracker', 
     demoUrl: 'https://discord.com/oauth2/authorize?client_id=1501675277846052934', 
@@ -10,7 +10,7 @@ export const projectsData = [
   {
     id: 'priceAlertBot',
     image: null, 
-    icon: 'bot', // <--- Muestra un ícono de robot gigante
+    icon: 'bot',
     tags: ['Python 3.11+', 'CallMeBot API', 'SerpAPI', 'GitHub Actions', 'pytest'], 
     repoUrl: 'https://github.com/ElianBustamante/price-alert-bot', 
     demoUrl: null, 
