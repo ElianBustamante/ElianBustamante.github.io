@@ -150,10 +150,6 @@ button:not(:disabled) {
   section {
     scroll-snap-align: start;
   }
-
-  footer {
-    scroll-snap-align: end;
-  }
 }
 
 /* Animaciones GPU para el Corredor de Código 3D */
