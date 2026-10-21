@@ -6,7 +6,10 @@ export default function Footer() {
   const { t } = useTranslation()
 
   return (
-    <footer className="snap-end border-t border-border mt-12 py-8 text-center text-muted px-4">
+    <footer
+      role="contentinfo"
+      className="w-full border-t border-border py-8 short:py-3 text-center text-muted short:text-[0.8125rem] px-4"
+    >
       {t('footer.text', { year })}
     </footer>
   )
