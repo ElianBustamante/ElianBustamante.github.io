@@ -170,9 +170,12 @@ describe('About', () => {
     expect(screen.getByRole('heading', { level: 4, name: es.about.skills.databases })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 4, name: es.about.skills.tools })).toBeInTheDocument()
 
-    expect(screen.getByText('FastAPI')).toBeInTheDocument()
-    expect(screen.getByText('PostgreSQL')).toBeInTheDocument()
-    expect(screen.getByText('TypeScript')).toBeInTheDocument()
+    const visibleItems = screen.getAllByRole('listitem').map((li) => li.textContent)
+    expect(visibleItems).toContain('FastAPI')
+    expect(visibleItems).toContain('PostgreSQL')
+    expect(visibleItems).toContain('TypeScript')
+    expect(visibleItems).toContain('ChromaDB')
+    expect(visibleItems).toContain('Node.js')
 
     const allSkills = [
       ...skills.languages,
@@ -181,7 +184,17 @@ describe('About', () => {
       ...skills.tools,
     ]
     for (const tech of allSkills) {
-      expect(screen.getByText(tech)).toBeInTheDocument()
+      expect(visibleItems).toContain(tech)
+    }
+  })
+
+  it('site.js skills groups have no duplicates (case-insensitive) and do not contain Structured Text', () => {
+    for (const group of Object.values(skills)) {
+      const lowered = group.map((item) => item.toLowerCase())
+      expect(new Set(lowered).size).toBe(group.length)
+      for (const item of group) {
+        expect(item.toLowerCase()).not.toContain('structured text')
+      }
     }
   })
 
