@@ -4,9 +4,6 @@ export const SHORT_SCREEN_QUERY = '(orientation: landscape) and (max-height: 600
 // Sobre mí se muestra en dos páginas deslizables en ventanas de menos de 768px y en pantalla baja (modo riel) de menos de 1024px de ancho; es SHORT_SCREEN_QUERY restringido a 1023px
 export const ABOUT_PAGED_QUERY = '(max-width: 767px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)'
 
-// Sobre mí: con 700px de alto o más, cada grupo de tecnologías puede ocupar 2 líneas; en menos alto (o en modo riel) 1 línea + "+N" para que el panel quepa
-export const ABOUT_TWO_LINES_QUERY = '(min-height: 700px)'
-
 export const INNER_SCROLL_QUERY = '(max-width: 767.98px) and (pointer: coarse)'
 
 /**
