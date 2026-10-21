@@ -162,3 +162,31 @@ def test_8_idempotent_and_orphans(env):
         
     assert data1 == data2
     assert not os.path.exists(output_dir / "orphan.webp")
+
+def test_9_guard_repo_captions_untouched(env):
+    import hashlib
+    repo_captions = os.path.join('photos-originals', 'captions.json')
+    existed_before = os.path.exists(repo_captions)
+    hash_before = None
+    mtime_before = None
+    if existed_before:
+        mtime_before = os.path.getmtime(repo_captions)
+        with open(repo_captions, 'rb') as f_repo:
+            hash_before = hashlib.sha256(f_repo.read()).hexdigest()
+
+    input_dir, output_dir, data_file, captions_file = env
+    img = Image.new('RGB', (100, 100), color='purple')
+    img.save(input_dir / '01-guard.jpg')
+
+    result = run_script(*env)
+    assert result.returncode == 0
+
+    existed_after = os.path.exists(repo_captions)
+    assert existed_after == existed_before
+
+    if existed_before:
+        mtime_after = os.path.getmtime(repo_captions)
+        with open(repo_captions, 'rb') as f_repo:
+            hash_after = hashlib.sha256(f_repo.read()).hexdigest()
+        assert mtime_after == mtime_before
+        assert hash_after == hash_before
