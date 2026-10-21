@@ -116,7 +116,7 @@ def main():
     parser.add_argument("--input", default="photos-originals")
     parser.add_argument("--output", default="public/photos")
     parser.add_argument("--data", default="src/data/photos.json")
-    parser.add_argument("--captions", default="photos-originals/captions.json")
+    parser.add_argument("--captions", default="src/data/captions.json")
     args = parser.parse_args()
 
     if not os.path.exists(args.input):
@@ -267,7 +267,7 @@ def main():
 
     if untitled_es:
         print(f"Fotos sin título (ES): {', '.join(untitled_es)}")
-        print("Rellénalos en captions.json y vuelve a correr `npm run photos`.")
+        print("Rellénalos en src/data/captions.json y vuelve a correr `npm run photos`.")
     
     if large_warnings > 0:
         print(f"Warning: {large_warnings} large images exceed 900 KB.")
