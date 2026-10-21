@@ -166,6 +166,7 @@ def main():
             pass
 
     photos_data = []
+    processed_files = []
     large_warnings = 0
     
     for idx, filename in enumerate(images_to_process, start=1):
@@ -233,11 +234,26 @@ def main():
                     "title": title,
                     "exif": exif_data
                 })
+                processed_files.append(filename)
         except Exception as e:
             print(f"Error processing {filename}: {e}")
 
     with open(args.data, "w", encoding="utf-8") as f:
         json.dump(photos_data, f, ensure_ascii=False, indent=2)
+
+    new_keys = sorted([f for f in processed_files if f not in captions])
+    if new_keys:
+        for f in new_keys:
+            captions[f] = {
+                "title": {"es": "", "en": ""},
+                "alt": {"es": "", "en": ""}
+            }
+        captions_dir = os.path.dirname(args.captions)
+        if captions_dir:
+            os.makedirs(captions_dir, exist_ok=True)
+        with open(args.captions, "w", encoding="utf-8") as f:
+            json.dump(captions, f, ensure_ascii=False, indent=2)
+            f.write("\n")
 
     total_bytes = sum(os.path.getsize(os.path.join(args.output, f)) for f in os.listdir(args.output) if f.endswith(".webp"))
     total_mb = total_bytes / (1024 * 1024)
