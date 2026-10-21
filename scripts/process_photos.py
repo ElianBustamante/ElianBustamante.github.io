@@ -14,6 +14,34 @@ def get_id(filename):
     name = re.sub(r'[^a-z0-9]+', '-', name)
     return name.strip('-')
 
+def _non_empty_str(val):
+    if isinstance(val, str):
+        if val.strip():
+            return val
+    return None
+
+def resolve_caption(caption, idx):
+    if not isinstance(caption, dict):
+        caption = {}
+
+    raw_title = caption.get("title")
+    if not isinstance(raw_title, dict):
+        raw_title = {}
+
+    raw_alt = caption.get("alt")
+    if not isinstance(raw_alt, dict):
+        raw_alt = {}
+
+    title = {
+        "es": _non_empty_str(raw_title.get("es")),
+        "en": _non_empty_str(raw_title.get("en"))
+    }
+    alt = {
+        "es": _non_empty_str(raw_alt.get("es")) or f"Fotografía de paisaje {idx}",
+        "en": _non_empty_str(raw_alt.get("en")) or f"Landscape photograph {idx}"
+    }
+    return title, alt
+
 def parse_exif(exif):
     data = {
         "camera": None,
@@ -187,12 +215,7 @@ def main():
                 if os.path.getsize(large_path) > 900 * 1024:
                     large_warnings += 1
 
-                caption = captions.get(filename, {})
-                title = caption.get("title", {"es": None, "en": None})
-                alt = caption.get("alt", {
-                    "es": f"Fotografía de paisaje {idx}",
-                    "en": f"Landscape photograph {idx}"
-                })
+                title, alt = resolve_caption(captions.get(filename), idx)
 
                 photos_data.append({
                     "id": img_id,
