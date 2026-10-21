@@ -6,16 +6,13 @@ import TechGroup from './TechGroup'
 import { IconChevronLeft, IconChevronRight } from './icons'
 import { skills } from '../data/site'
 import useMediaQuery from '../hooks/useMediaQuery'
-import { ABOUT_PAGED_QUERY, SHORT_SCREEN_QUERY, ABOUT_TWO_LINES_QUERY } from '../lib/media'
+import { ABOUT_PAGED_QUERY } from '../lib/media'
 import { observeScrollState } from '../lib/overflow'
 import { GLASS_CARD } from '../lib/glass'
 
 export default function About() {
   const { t } = useTranslation()
   const paged = useMediaQuery(ABOUT_PAGED_QUERY)
-  const short = useMediaQuery(SHORT_SCREEN_QUERY)
-  const tall = useMediaQuery(ABOUT_TWO_LINES_QUERY)
-  const maxLines = !short && tall ? 2 : 1
   const pagerRef = useRef(null)
   const [page, setPage] = useState(0)
 
@@ -123,12 +120,7 @@ export default function About() {
 
           <div className="space-y-4 compact:space-y-1.5 [@media(min-height:441px)]:compact:space-y-2">
             {skillGroups.map((group) => (
-              <TechGroup
-                key={group.key}
-                label={group.label}
-                items={group.items}
-                maxLines={maxLines}
-              />
+              <TechGroup key={group.key} label={group.label} items={group.items} />
             ))}
           </div>
         </Reveal>
