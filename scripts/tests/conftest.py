@@ -28,7 +28,7 @@ def env(tmp_path):
     input_dir = tmp_path / "photos-originals"
     output_dir = tmp_path / "public/photos"
     data_file = tmp_path / "src/data/photos.json"
-    captions_file = tmp_path / "photos-originals/captions.json"
+    captions_file = tmp_path / "src/data/captions.json"
 
     os.makedirs(input_dir, exist_ok=True)
     os.makedirs(output_dir.parent, exist_ok=True)

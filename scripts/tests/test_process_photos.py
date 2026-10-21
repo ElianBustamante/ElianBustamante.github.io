@@ -165,7 +165,7 @@ def test_8_idempotent_and_orphans(env):
 
 def test_9_guard_repo_captions_untouched(env):
     import hashlib
-    repo_captions = os.path.join('photos-originals', 'captions.json')
+    repo_captions = os.path.join('src', 'data', 'captions.json')
     existed_before = os.path.exists(repo_captions)
     hash_before = None
     mtime_before = None
@@ -190,3 +190,40 @@ def test_9_guard_repo_captions_untouched(env):
             hash_after = hashlib.sha256(f_repo.read()).hexdigest()
         assert mtime_after == mtime_before
         assert hash_after == hash_before
+
+
+def test_10_default_captions_and_repo_untouched(env):
+    import hashlib
+    import sys
+    scripts_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    from process_photos import build_parser
+
+    parser = build_parser()
+    assert parser.get_default('captions') == 'src/data/captions.json'
+    assert parser.parse_args([]).captions == 'src/data/captions.json'
+
+    paths = [
+        os.path.join('photos-originals', 'captions.json'),
+        os.path.join('src', 'data', 'captions.json')
+    ]
+    before_state = {}
+    for p in paths:
+        existed = os.path.exists(p)
+        mtime = os.path.getmtime(p) if existed else None
+        h = hashlib.sha256(open(p, 'rb').read()).hexdigest() if existed else None
+        before_state[p] = (existed, mtime, h)
+
+    input_dir, output_dir, data_file, captions_file = env
+    img = Image.new('RGB', (100, 100), color='orange')
+    img.save(input_dir / '01-isolated.jpg')
+
+    result = run_script(*env)
+    assert result.returncode == 0
+
+    for p in paths:
+        existed_after = os.path.exists(p)
+        mtime_after = os.path.getmtime(p) if existed_after else None
+        h_after = hashlib.sha256(open(p, 'rb').read()).hexdigest() if existed_after else None
+        assert (existed_after, mtime_after, h_after) == before_state[p], f'File {p} state changed!'

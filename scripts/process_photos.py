@@ -111,12 +111,16 @@ def parse_exif(exif):
                 
     return data
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", default="photos-originals")
     parser.add_argument("--output", default="public/photos")
     parser.add_argument("--data", default="src/data/photos.json")
     parser.add_argument("--captions", default="src/data/captions.json")
+    return parser
+
+def main():
+    parser = build_parser()
     args = parser.parse_args()
 
     old_captions_path = "photos-originals/captions.json"
