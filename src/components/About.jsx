@@ -2,16 +2,20 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Section from './Section'
 import Reveal from './Reveal'
+import TechGroup from './TechGroup'
 import { IconChevronLeft, IconChevronRight } from './icons'
 import { skills } from '../data/site'
 import useMediaQuery from '../hooks/useMediaQuery'
-import { ABOUT_PAGED_QUERY } from '../lib/media'
+import { ABOUT_PAGED_QUERY, SHORT_SCREEN_QUERY, ABOUT_TWO_LINES_QUERY } from '../lib/media'
 import { observeScrollState } from '../lib/overflow'
 import { GLASS_CARD } from '../lib/glass'
 
 export default function About() {
   const { t } = useTranslation()
   const paged = useMediaQuery(ABOUT_PAGED_QUERY)
+  const short = useMediaQuery(SHORT_SCREEN_QUERY)
+  const tall = useMediaQuery(ABOUT_TWO_LINES_QUERY)
+  const maxLines = !short && tall ? 2 : 1
   const pagerRef = useRef(null)
   const [page, setPage] = useState(0)
 
@@ -119,21 +123,12 @@ export default function About() {
 
           <div className="space-y-4 compact:space-y-1.5 [@media(min-height:441px)]:compact:space-y-2">
             {skillGroups.map((group) => (
-              <div key={group.key}>
-                <h4 className="text-[0.875rem] compact:text-[0.75rem] [@media(min-height:441px)]:compact:text-[0.875rem] font-medium text-muted mb-2 compact:mb-0.5 [@media(min-height:441px)]:compact:mb-1">
-                  {group.label}
-                </h4>
-                <ul role="list" className="flex flex-wrap gap-2 compact:gap-1.5">
-                  {group.items.map((tech) => (
-                    <li
-                      key={tech}
-                      className="rounded-md bg-surface-2/50 border border-border px-2 py-0.5 compact:py-0 [@media(min-height:441px)]:compact:py-0.5 text-[0.75rem] text-text"
-                    >
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <TechGroup
+                key={group.key}
+                label={group.label}
+                items={group.items}
+                maxLines={maxLines}
+              />
             ))}
           </div>
         </Reveal>
