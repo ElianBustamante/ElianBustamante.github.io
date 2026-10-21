@@ -75,4 +75,43 @@ describe('Section', () => {
     expect(prevBtn.className).toContain('max-[380px]:top-[83px]')
     expect(prevBtn.className).toContain('[@media(max-width:380px)_and_(max-height:600px)]:top-[68px]!')
   })
+
+  it('sin footer no cambia: conserva las mismas clases, sin pb-0! ni contenedor my-auto', () => {
+    const { container } = render(
+      <Section id="test-no-footer" titleKey="photography.title">
+        <div data-testid="inner-child">Contenido</div>
+      </Section>
+    )
+    const section = container.querySelector('section')
+    expect(section.className).toContain('pb-8')
+    expect(section.className).toContain('short:pb-3')
+    expect(section.className).not.toContain('pb-0!')
+    expect(section.className).not.toContain('short:pb-0!')
+    expect(section.querySelector('.my-auto')).toBeNull()
+    expect(section.firstElementChild.className).toContain('max-w-site')
+  })
+
+  it('con footer renderiza el pie dentro de <section>, envuelve el contenido en my-auto y agrega pb-0! short:pb-0!', () => {
+    const { container } = render(
+      <Section
+        id="contacto"
+        titleKey="contact.title"
+        footer={<footer data-testid="custom-footer">Pie de prueba</footer>}
+      >
+        <div data-testid="contact-body">Contenido de contacto</div>
+      </Section>
+    )
+    const section = container.querySelector('section#contacto')
+    expect(section.className).toContain('pb-0!')
+    expect(section.className).toContain('short:pb-0!')
+
+    const myAutoWrapper = section.firstElementChild
+    expect(myAutoWrapper.className).toBe('my-auto')
+    expect(myAutoWrapper.firstElementChild.className).toContain('max-w-site')
+    expect(myAutoWrapper).toContainElement(screen.getByTestId('contact-body'))
+
+    const footerEl = screen.getByTestId('custom-footer')
+    expect(section).toContainElement(footerEl)
+    expect(myAutoWrapper.nextElementSibling).toBe(footerEl)
+  })
 })

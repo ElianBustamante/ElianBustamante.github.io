@@ -172,4 +172,21 @@ describe('Contact', () => {
     expect(row.className).not.toContain('-mb-2.5')
     expect(row.className).not.toContain('gap-y-3')
   })
+
+  it('renders the footer inside #contacto with role="contentinfo" and updated classes', () => {
+    const { container } = render(<Contact />)
+    const section = container.querySelector('section#contacto')
+    const footer = screen.getByRole('contentinfo')
+
+    expect(section).toContainElement(footer)
+    expect(footer.tagName).toBe('FOOTER')
+    expect(footer.className).toContain('w-full')
+    expect(footer.className).toContain('border-t')
+    expect(footer.className).toContain('border-border')
+    expect(footer.className).toContain('py-8')
+    expect(footer.className).toContain('short:py-3')
+    expect(footer.className).toContain('short:text-[0.8125rem]')
+    expect(footer.className).not.toContain('snap-end')
+    expect(footer.className).not.toContain('mt-12')
+  })
 })
