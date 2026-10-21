@@ -6,8 +6,8 @@ export const site = {
 }
 
 export const skills = {
-  languages: ['Python', 'JavaScript', 'TypeScript', 'SQL'],
-  frameworks: ['React', 'FastAPI', 'NumPy', 'Pandas'],
-  databases: ['MySQL', 'PostgreSQL', 'Firestore'],
-  tools: ['Git', 'GitHub Actions', 'Docker', 'REST APIs'],
+  languages: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'HTML', 'CSS'],
+  frameworks: ['React', 'FastAPI', 'NumPy', 'Pandas', 'Express', 'scikit-learn', 'PyVista', 'pytest'],
+  databases: ['MySQL', 'PostgreSQL', 'Firestore', 'MongoDB', 'SQLite', 'ChromaDB'],
+  tools: ['Git', 'GitHub Actions', 'Docker', 'REST APIs', 'GitHub', 'Linux', 'Node.js', 'VS Code'],
 }
