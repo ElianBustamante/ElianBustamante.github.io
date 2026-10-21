@@ -2,29 +2,22 @@ import os
 import json
 import pytest
 import subprocess
+import sys
 from PIL import Image
 from PIL.TiffImagePlugin import IFDRational
 
-@pytest.fixture
-def env(tmp_path):
-    input_dir = tmp_path / "photos-originals"
-    output_dir = tmp_path / "public/photos"
-    data_file = tmp_path / "src/data/photos.json"
-    os.makedirs(input_dir)
-    os.makedirs(output_dir.parent, exist_ok=True)
-    os.makedirs(data_file.parent, exist_ok=True)
-    return input_dir, output_dir, data_file
-
-def run_script(input_dir, output_dir, data_file):
+def run_script(input_dir, output_dir, data_file, captions_file, *extra_args):
     return subprocess.run([
-        "python", "scripts/process_photos.py", 
+        sys.executable, "scripts/process_photos.py", 
         "--input", str(input_dir), 
         "--output", str(output_dir), 
-        "--data", str(data_file)
+        "--data", str(data_file),
+        "--captions", str(captions_file),
+        *extra_args
     ], capture_output=True)
 
 def test_1_horizontal(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     img = Image.new('RGB', (3000, 2000), color='red')
     img.save(input_dir / "01-horizontal.jpg")
     run_script(*env)
@@ -35,7 +28,7 @@ def test_1_horizontal(env):
     assert data[0]['large']['width'] == 2400
 
 def test_2_vertical(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     img = Image.new('RGB', (2000, 3000), color='green')
     img.save(input_dir / "01-vertical.jpg")
     run_script(*env)
@@ -45,7 +38,7 @@ def test_2_vertical(env):
     assert data[0]['large']['height'] == 2400
 
 def test_3_small(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     img = Image.new('RGB', (1000, 700), color='blue')
     img.save(input_dir / "01-small.jpg")
     run_script(*env)
@@ -56,7 +49,7 @@ def test_3_small(env):
     assert data[0]['large']['height'] == 700
 
 def test_4_gps(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     img = Image.new('RGB', (2000, 2000), color='yellow')
     exif = img.getexif()
     gps_ifd = exif.get_ifd(34853)
@@ -76,7 +69,7 @@ def test_4_gps(env):
     assert not dict(webp_img.getexif())
 
 def test_5_exif(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     img = Image.new('RGB', (2000, 2000), color='yellow')
     exif = img.getexif()
     exif[271] = "Nikon" 
@@ -112,7 +105,7 @@ def test_5_exif(env):
     assert data[1]['exif']['lens'] is None
 
 def test_5_1_shutter_format(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     from PIL.ExifTags import IFD
     img = Image.new('RGB', (200, 200), color='white')
     exif = img.getexif()
@@ -135,7 +128,7 @@ def test_5_1_shutter_format(env):
     assert data[1]['exif']['shutter'] == '2.5 s'
 
 def test_6_default_captions(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     img = Image.new('RGB', (2000, 2000), color='red')
     img.save(input_dir / "01-cap.jpg")
     run_script(*env)
@@ -145,13 +138,13 @@ def test_6_default_captions(env):
     assert data[0]['alt']['es'] == "Fotografía de paisaje 1"
 
 def test_7_empty_dir(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     result = run_script(*env)
     assert result.returncode != 0
     assert not os.path.exists(data_file)
 
 def test_8_idempotent_and_orphans(env):
-    input_dir, output_dir, data_file = env
+    input_dir, output_dir, data_file, captions_file = env
     img = Image.new('RGB', (2000, 2000), color='red')
     img.save(input_dir / "01-idem.jpg")
     
