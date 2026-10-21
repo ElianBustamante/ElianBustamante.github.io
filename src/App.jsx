@@ -2,7 +2,6 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
 import Contact from './components/Contact'
-import Footer from './components/Footer'
 import PhotoGallery from './components/PhotoGallery'
 import ProjectsCarousel from './components/ProjectsCarousel'
 import { useEffect, useRef } from 'react'
@@ -77,7 +76,7 @@ function App() {
     const performScroll = (direction) => {
       if (isTransitioning) return
 
-      const sections = Array.from(document.querySelectorAll('section, footer'))
+      const sections = Array.from(document.querySelectorAll('section'))
       if (!sections.length) return
 
       const closestIndex = findClosestSectionIndex(sections)
@@ -104,7 +103,7 @@ function App() {
     const handleWheel = (e) => {
       if (usesInnerScroll()) return
 
-      const sections = Array.from(document.querySelectorAll('section, footer'))
+      const sections = Array.from(document.querySelectorAll('section'))
       const currentSection = sections[findClosestSectionIndex(sections)]
       const delta = normalizeWheelDelta(e, window.innerHeight)
 
@@ -181,7 +180,7 @@ function App() {
 
     const updateCurrentSection = () => {
       if (resizingRef.current) return
-      const sections = Array.from(document.querySelectorAll('section, footer'))
+      const sections = Array.from(document.querySelectorAll('section'))
       if (!sections.length) return
       const idx = findClosestSectionIndex(sections)
       currentSectionRef.current = sections[idx] || null
@@ -249,7 +248,6 @@ function App() {
           <About />
           <Contact />
         </main>
-        <div className="pl-[var(--rail-w)]"><Footer /></div>
       </div>
     </div>
   )
