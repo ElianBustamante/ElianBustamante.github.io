@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Section from './Section'
+import Footer from './Footer'
 import { site } from '../data/site'
 import { isHttpsUrl } from '../lib/url'
 import { GLASS_CARD } from '../lib/glass'
@@ -43,7 +44,7 @@ export default function Contact({ siteData = site }) {
     'inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-4 sm:px-6 text-[0.875rem] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
 
   return (
-    <Section id="contacto" titleKey="contact.title">
+    <Section id="contacto" titleKey="contact.title" footer={<Footer />}>
       <div
         className={`${GLASS_CARD} w-fit max-w-full p-4 sm:p-5 compact:p-2.5 compact:px-4 [@media(min-height:441px)]:compact:p-4 mt-4 compact:mt-2 space-y-6 compact:space-y-3`}
       >
