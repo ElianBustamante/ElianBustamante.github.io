@@ -198,6 +198,73 @@ describe('About', () => {
     }
   })
 
+  it('with mocked layout (container 200, capsules 60, +N 30, gap 8), each technology group renders a single-line subset of capsules and a "+N" button', () => {
+    const origClientWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientWidth')
+    const origOffsetWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth')
+
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+      configurable: true,
+      get() {
+        if (this.tagName === 'DIV' && this.className.includes('relative')) {
+          return 200
+        }
+        return 0
+      },
+    })
+    Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+      configurable: true,
+      get() {
+        if (this.tagName === 'LI') {
+          return this.textContent.startsWith('+') ? 30 : 60
+        }
+        return 0
+      },
+    })
+
+    try {
+      const { container } = render(<About />)
+
+      // En ancho 200 con cápsulas de 60, +N de 30 y gap de 8 (maxLines=1):
+      // cada uno de los 4 grupos muestra 2 cápsulas visibles y un botón "+N"
+      const plusButtons = [
+        screen.getByRole('button', {
+          name: `${skills.languages.length - 2} tecnologías más: ${skills.languages.slice(2).join(', ')}`,
+        }),
+        screen.getByRole('button', {
+          name: `${skills.frameworks.length - 2} tecnologías más: ${skills.frameworks.slice(2).join(', ')}`,
+        }),
+        screen.getByRole('button', {
+          name: `${skills.databases.length - 2} tecnologías más: ${skills.databases.slice(2).join(', ')}`,
+        }),
+        screen.getByRole('button', {
+          name: `${skills.tools.length - 2} tecnologías más: ${skills.tools.slice(2).join(', ')}`,
+        }),
+      ]
+      expect(plusButtons).toHaveLength(4)
+
+      const visibleLists = container.querySelectorAll('ul[role="list"]')
+      expect(visibleLists).toHaveLength(4)
+      const groups = [skills.languages, skills.frameworks, skills.databases, skills.tools]
+      visibleLists.forEach((ul, i) => {
+        const chipTexts = Array.from(ul.querySelectorAll('li'))
+          .map((li) => li.textContent)
+          .filter((t) => !t.startsWith('+'))
+        expect(chipTexts).toEqual(groups[i].slice(0, 2))
+      })
+    } finally {
+      if (origClientWidth) {
+        Object.defineProperty(HTMLElement.prototype, 'clientWidth', origClientWidth)
+      } else {
+        delete HTMLElement.prototype.clientWidth
+      }
+      if (origOffsetWidth) {
+        Object.defineProperty(HTMLElement.prototype, 'offsetWidth', origOffsetWidth)
+      } else {
+        delete HTMLElement.prototype.offsetWidth
+      }
+    }
+  })
+
   it('in non-paged mode (matches=false), does not render prev/next buttons', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,

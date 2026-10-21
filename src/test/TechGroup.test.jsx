@@ -93,5 +93,18 @@ describe('TechGroup', () => {
       .filter((t) => !t.startsWith('+'))
     expect(visibleLine2.length).toBeGreaterThan(visibleLine1.length)
     expect(visibleLine2).toEqual(items)
+
+    // Sin pasar maxLines: usa el valor por defecto 1 y se comporta igual que maxLines=1
+    rerender(<TechGroup label="Lenguajes" items={items} />)
+    const visibleDefault = screen
+      .getAllByRole('listitem')
+      .map((li) => li.textContent)
+      .filter((t) => !t.startsWith('+'))
+    expect(visibleDefault).toEqual(visibleLine1)
+    expect(
+      screen.getByRole('button', {
+        name: '4 tecnologías más: TypeScript, SQL, HTML, CSS',
+      })
+    ).toHaveTextContent('+4')
   })
 })
