@@ -167,6 +167,7 @@ def main():
 
     photos_data = []
     processed_files = []
+    untitled_es = []
     large_warnings = 0
     
     for idx, filename in enumerate(images_to_process, start=1):
@@ -217,6 +218,8 @@ def main():
                     large_warnings += 1
 
                 title, alt = resolve_caption(captions.get(filename), idx)
+                if title["es"] is None:
+                    untitled_es.append(filename)
 
                 photos_data.append({
                     "id": img_id,
@@ -260,6 +263,11 @@ def main():
 
     print(f"Processed {len(images_to_process)} photos.")
     print(f"Total output size: {total_mb:.2f} MB")
+    print(f"Entradas nuevas agregadas a captions: {len(new_keys)}")
+
+    if untitled_es:
+        print(f"Fotos sin título (ES): {', '.join(untitled_es)}")
+        print("Rellénalos en captions.json y vuelve a correr `npm run photos`.")
     
     if large_warnings > 0:
         print(f"Warning: {large_warnings} large images exceed 900 KB.")
