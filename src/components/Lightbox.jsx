@@ -363,7 +363,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
             {!isZoomed && (
               <figcaption className="shrink-0 mt-3 md:mt-5 short:mt-2! text-center px-4 w-full animate-fade-in z-20 flex flex-col short:flex-row short:items-baseline short:justify-center short:gap-3 [@media(min-height:521px)]:short:absolute [@media(min-height:521px)]:short:inset-x-0 [@media(min-height:521px)]:short:bottom-1">
                 {title && (
-                  <p className="text-sm md:text-[15px] [@media(min-height:800px)]:text-base short:text-[12px] font-semibold text-accent drop-shadow-md">
+                  <p className="text-sm md:text-[15px] [@media(min-height:800px)]:text-base short:text-[12px] font-semibold text-text drop-shadow-md">
                     {title}
                   </p>
                 )}
