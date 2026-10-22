@@ -67,7 +67,7 @@ export default function PhotoGallery() {
         h = H * 0.50;
       }
 
-      // Allow fluid scaling with a safety minimum for tiny screens
+      // Enforce a safety floor so gallery height never falls below 25% of viewport height on constrained screens
       h = Math.max(h, H * 0.25); // Never smaller than 25% of height
     }
 
