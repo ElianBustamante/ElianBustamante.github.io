@@ -1,18 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import Reveal from './Reveal'
-import { scrollToElement } from '../lib/scroll'
 
 export default function Section({ id, titleKey, children, actions, fill = false, footer }) {
   const { t } = useTranslation()
-
-  const scrollNext = (e) => {
-    const next = e.currentTarget.closest('section')?.nextElementSibling;
-    scrollToElement(next);
-  }
-  const scrollPrev = (e) => {
-    const prev = e.currentTarget.closest('section')?.previousElementSibling;
-    scrollToElement(prev);
-  }
 
   const baseSectionClasses = fill
     ? "snap-start [@media(min-height:601px)]:snap-always min-h-[100dvh] flex flex-col justify-center [@media(max-height:600px)]:justify-start compact:justify-start! [@media(min-height:521px)]:short:justify-center! relative pt-[6.5rem] short:pt-3 pb-8 short:h-[100dvh] short:min-h-[300px] short:pb-6"
@@ -47,28 +37,6 @@ export default function Section({ id, titleKey, children, actions, fill = false,
         </>
       ) : (
         innerContent
-      )}
-      
-      {/* Up arrow */}
-      <button 
-        type="button"
-        onClick={scrollPrev} 
-        aria-label={t('nav.prevSection')} 
-        className="absolute flex items-center justify-center min-h-11 min-w-11 top-[95px] max-[380px]:top-[83px] [@media(max-width:380px)_and_(max-height:600px)]:top-[68px]! short:top-2 left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce-up short:hidden"
-      >
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6"/></svg>
-      </button>
-
-      {/* Down arrow */}
-      {id !== 'contacto' && (
-        <button 
-          type="button"
-          onClick={scrollNext} 
-          aria-label={t('nav.nextSection')} 
-          className="absolute flex items-center justify-center min-h-11 min-w-11 bottom-[5px] left-1/2 -translate-x-1/2 p-2 text-muted hover:text-accent transition-colors z-20 motion-safe:animate-bounce short:hidden"
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
       )}
     </section>
   )
