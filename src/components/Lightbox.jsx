@@ -244,7 +244,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       aria-label={t('photography.lightboxLabel')}
-      className="fixed inset-0 z-[100] m-0 h-dvh w-dvw max-h-none max-w-none bg-black/95 p-4 short:py-2 transition-opacity duration-150 overscroll-none animate-fade-in"
+      className="fixed inset-0 z-[100] m-0 h-dvh w-dvw max-h-none max-w-none bg-black p-4 short:py-2 transition-opacity duration-150 overscroll-none animate-fade-in"
       style={{ outline: 'none', colorScheme: 'dark' }}
       tabIndex={-1}
     >
