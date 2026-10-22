@@ -24,6 +24,9 @@ def test_1_horizontal(env):
     
     with open(data_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
+    assert data[0]['file'] == '01-horizontal.jpg'
+    assert 'title' not in data[0]
+    assert 'alt' not in data[0]
     assert data[0]['thumb']['width'] == 800
     assert data[0]['large']['width'] == 2400
 
@@ -135,7 +138,15 @@ def test_6_default_captions(env):
     
     with open(data_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    assert data[0]['alt']['es'] == "Fotografía de paisaje 1"
+    assert data[0]['file'] == "01-cap.jpg"
+    assert 'alt' not in data[0]
+    assert 'title' not in data[0]
+
+    with open(captions_file, 'r', encoding='utf-8') as f:
+        caps = json.load(f)
+    assert "01-cap.jpg" in caps
+    assert caps["01-cap.jpg"]["title"] == {"es": "", "en": ""}
+    assert caps["01-cap.jpg"]["alt"] == {"es": "", "en": ""}
 
 def test_7_empty_dir(env):
     input_dir, output_dir, data_file, captions_file = env

@@ -14,34 +14,6 @@ def get_id(filename):
     name = re.sub(r'[^a-z0-9]+', '-', name)
     return name.strip('-')
 
-def _non_empty_str(val):
-    if isinstance(val, str):
-        if val.strip():
-            return val
-    return None
-
-def resolve_caption(caption, idx):
-    if not isinstance(caption, dict):
-        caption = {}
-
-    raw_title = caption.get("title")
-    if not isinstance(raw_title, dict):
-        raw_title = {}
-
-    raw_alt = caption.get("alt")
-    if not isinstance(raw_alt, dict):
-        raw_alt = {}
-
-    title = {
-        "es": _non_empty_str(raw_title.get("es")),
-        "en": _non_empty_str(raw_title.get("en"))
-    }
-    alt = {
-        "es": _non_empty_str(raw_alt.get("es")) or f"Fotografía de paisaje {idx}",
-        "en": _non_empty_str(raw_alt.get("en")) or f"Landscape photograph {idx}"
-    }
-    return title, alt
-
 def parse_exif(exif):
     data = {
         "camera": None,
@@ -225,12 +197,15 @@ def main():
                 if os.path.getsize(large_path) > 900 * 1024:
                     large_warnings += 1
 
-                title, alt = resolve_caption(captions.get(filename), idx)
-                if title["es"] is None:
+                cap_entry = captions.get(filename) if isinstance(captions.get(filename), dict) else {}
+                raw_title = cap_entry.get("title") if isinstance(cap_entry.get("title"), dict) else {}
+                es_title = raw_title.get("es")
+                if not (isinstance(es_title, str) and es_title.strip()):
                     untitled_es.append(filename)
 
                 photos_data.append({
                     "id": img_id,
+                    "file": filename,
                     "thumb": {
                         "src": f"/photos/{thumb_name}",
                         "width": thumb_w,
@@ -241,8 +216,6 @@ def main():
                         "width": large_w,
                         "height": large_h
                     },
-                    "alt": alt,
-                    "title": title,
                     "exif": exif_data
                 })
                 processed_files.append(filename)
