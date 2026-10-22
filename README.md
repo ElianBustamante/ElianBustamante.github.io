@@ -17,4 +17,7 @@ The website is automatically built and deployed to GitHub Pages using GitHub Act
 The build and publish process runs through the deployment workflow once all checks pass.
 Python tests for photo processing scripts are executed independently in a dedicated job.
 
+When changing domains, update the absolute URLs for `canonical`, `og:url`, `og:image`, and `twitter:image` in `index.html`.
+All sharing tags must share the same origin URL, which is enforced by automated unit tests.
+
 ## Decisiones
