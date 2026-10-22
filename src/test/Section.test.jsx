@@ -5,7 +5,7 @@ import React from 'react'
 import '../i18n'
 
 describe('Section', () => {
-  it('sin fill incluye short:justify-center! y short:pb-3, sin clases fill', () => {
+  it('without fill includes short:justify-center! and short:pb-3, without fill classes', () => {
     const { container } = render(
       <Section id="test-sec" titleKey="photography.title">
         <div>Contenido</div>
@@ -22,7 +22,7 @@ describe('Section', () => {
     expect(innerDiv.className).not.toContain('short:flex-1')
   })
 
-  it('con fill incluye short:h-[100dvh] short:min-h-[300px] short:pb-6 y no incluye short:pb-3', () => {
+  it('with fill includes short:h-[100dvh] short:min-h-[300px] short:pb-6 and does not include short:pb-3', () => {
     const { container } = render(
       <Section id="test-sec-fill" titleKey="photography.title" fill>
         <div data-testid="child">Contenido con fill</div>
@@ -50,7 +50,7 @@ describe('Section', () => {
     expect(revealContainer.className).toContain('short:flex-col')
   })
 
-  it('la flecha de arriba usa motion-safe:animate-bounce-up y la de abajo usa motion-safe:animate-bounce', () => {
+  it('top arrow uses motion-safe:animate-bounce-up and bottom arrow uses motion-safe:animate-bounce', () => {
     render(
       <Section id="proyectos" titleKey="projects.title">
         <div>Contenido</div>
@@ -64,7 +64,7 @@ describe('Section', () => {
     expect(nextBtn.className).not.toContain('motion-safe:animate-bounce-up')
   })
 
-  it('la flecha de arriba incluye top-[95px], max-[380px]:top-[83px] y [@media(max-width:380px)_and_(max-height:600px)]:top-[68px]!', () => {
+  it('top arrow includes top-[95px], max-[380px]:top-[83px], and [@media(max-width:380px)_and_(max-height:600px)]:top-[68px]!', () => {
     render(
       <Section id="proyectos" titleKey="projects.title">
         <div>Contenido</div>
@@ -76,7 +76,7 @@ describe('Section', () => {
     expect(prevBtn.className).toContain('[@media(max-width:380px)_and_(max-height:600px)]:top-[68px]!')
   })
 
-  it('sin footer no cambia: conserva las mismas clases, sin pb-0! ni contenedor my-auto', () => {
+  it('without footer does not change: retains same classes, without pb-0! or my-auto container', () => {
     const { container } = render(
       <Section id="test-no-footer" titleKey="photography.title">
         <div data-testid="inner-child">Contenido</div>
@@ -91,7 +91,7 @@ describe('Section', () => {
     expect(section.firstElementChild.className).toContain('max-w-site')
   })
 
-  it('con footer renderiza el pie dentro de <section>, envuelve el contenido en my-auto y agrega pb-0! short:pb-0!', () => {
+  it('with footer renders footer inside <section>, wraps content in my-auto, and adds pb-0! short:pb-0!', () => {
     const { container } = render(
       <Section
         id="contacto"

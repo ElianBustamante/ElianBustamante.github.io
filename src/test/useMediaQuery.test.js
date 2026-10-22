@@ -13,13 +13,13 @@ describe('useMediaQuery', () => {
     window.matchMedia = originalMatchMedia
   })
 
-  it('devuelve false si matchMedia no existe', () => {
+  it('returns false if matchMedia does not exist', () => {
     delete window.matchMedia
     const { result } = renderHook(() => useMediaQuery('(min-width: 640px)'))
     expect(result.current).toBe(false)
   })
 
-  it('responde al estado inicial y a los cambios del media query', () => {
+  it('responds to initial state and media query changes', () => {
     let changeHandler = null
     const mqlMock = {
       matches: false,

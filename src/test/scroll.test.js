@@ -13,7 +13,7 @@ describe('scroll logic', () => {
   })
 
   describe('needsSettle', () => {
-    it('evalúa correctamente los valores especificados (0, 0.1, 1, 5.9, 6, 7, -1, -7)', () => {
+    it('evaluates specified values correctly (0, 0.1, 1, 5.9, 6, 7, -1, -7)', () => {
       // Math.abs(top) > 0.25 && Math.abs(top) <= 6
       expect(needsSettle(0)).toBe(false)
       expect(needsSettle(0.1)).toBe(false)
@@ -25,7 +25,7 @@ describe('scroll logic', () => {
       expect(needsSettle(-7)).toBe(false)
     })
 
-    it('respeta parámetros personalizados maxOffset y epsilon', () => {
+    it('respects custom maxOffset and epsilon parameters', () => {
       expect(needsSettle(0.2, 10, 0.1)).toBe(true)
       expect(needsSettle(0.05, 10, 0.1)).toBe(false)
       expect(needsSettle(11, 10, 0.1)).toBe(false)
@@ -33,11 +33,11 @@ describe('scroll logic', () => {
   })
 
   describe('scrollToElement', () => {
-    it('no falla si el elemento es nulo', () => {
+    it('does not fail if element is null', () => {
       expect(() => scrollToElement(null)).not.toThrow()
     })
 
-    it('llama a scrollIntoView con smooth por defecto', () => {
+    it('calls scrollIntoView with smooth by default', () => {
       const el = { scrollIntoView: vi.fn() }
       scrollToElement(el)
       expect(el.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
@@ -45,11 +45,11 @@ describe('scroll logic', () => {
   })
 
   describe('settleScroll', () => {
-    it('no hace nada si el elemento es nulo', () => {
+    it('does nothing if element is null', () => {
       expect(() => settleScroll(null)).not.toThrow()
     })
 
-    it('no hace nada si prefers-reduced-motion está activo', () => {
+    it('does nothing if prefers-reduced-motion is active', () => {
       const matchMediaMock = vi.fn().mockImplementation((query) => ({
         matches: query === '(prefers-reduced-motion: reduce)',
         addEventListener: vi.fn(),
@@ -68,7 +68,7 @@ describe('scroll logic', () => {
       expect(el.scrollIntoView).not.toHaveBeenCalled()
     })
 
-    it('espera a que el scroll quede en reposo (idleMs) y corrige si needsSettle es true', () => {
+    it('waits for scroll to become idle (idleMs) and settles if needsSettle is true', () => {
       const el = {
         scrollIntoView: vi.fn(),
         getBoundingClientRect: vi.fn().mockReturnValue({ top: 3.5 }),
@@ -76,17 +76,17 @@ describe('scroll logic', () => {
 
       settleScroll(el, { maxOffset: 6, idleMs: 140 })
 
-      // Dispara un evento scroll para reiniciar el temporizador idle
+      // Fire scroll event to reset idle timer
       document.dispatchEvent(new Event('scroll'))
       vi.advanceTimersByTime(100)
       expect(el.scrollIntoView).not.toHaveBeenCalled()
 
-      // Pasan 140ms adicionales sin scroll -> entra en reposo
+      // 140ms elapse without scroll -> enters idle state
       vi.advanceTimersByTime(40)
       expect(el.scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto', block: 'start' })
     })
 
-    it('no llama a scrollIntoView si el elemento ya está bien alineado (top = 0 o dentro de epsilon)', () => {
+    it('does not call scrollIntoView if element is already aligned (top = 0 or within epsilon)', () => {
       const el = {
         scrollIntoView: vi.fn(),
         getBoundingClientRect: vi.fn().mockReturnValue({ top: 0 }),
@@ -98,7 +98,7 @@ describe('scroll logic', () => {
       expect(el.scrollIntoView).not.toHaveBeenCalled()
     })
 
-    it('no llama a scrollIntoView si el desalineamiento excede maxOffset', () => {
+    it('does not call scrollIntoView if misalignment exceeds maxOffset', () => {
       const el = {
         scrollIntoView: vi.fn(),
         getBoundingClientRect: vi.fn().mockReturnValue({ top: 20 }),
@@ -110,7 +110,7 @@ describe('scroll logic', () => {
       expect(el.scrollIntoView).not.toHaveBeenCalled()
     })
 
-    it('cancela la corrección si el usuario interactúa con wheel', () => {
+    it('cancels settling if user interacts with wheel', () => {
       const el = {
         scrollIntoView: vi.fn(),
         getBoundingClientRect: () => ({ top: 3 }),
@@ -123,7 +123,7 @@ describe('scroll logic', () => {
       expect(el.scrollIntoView).not.toHaveBeenCalled()
     })
 
-    it('cancela la corrección si el usuario interactúa con touchstart', () => {
+    it('cancels settling if user interacts with touchstart', () => {
       const el = {
         scrollIntoView: vi.fn(),
         getBoundingClientRect: () => ({ top: 3 }),
@@ -136,7 +136,7 @@ describe('scroll logic', () => {
       expect(el.scrollIntoView).not.toHaveBeenCalled()
     })
 
-    it('cancela la corrección si el usuario interactúa con keydown', () => {
+    it('cancels settling if user interacts with keydown', () => {
       const el = {
         scrollIntoView: vi.fn(),
         getBoundingClientRect: () => ({ top: 3 }),
@@ -149,7 +149,7 @@ describe('scroll logic', () => {
       expect(el.scrollIntoView).not.toHaveBeenCalled()
     })
 
-    it('cancela la corrección si el usuario interactúa con pointerdown', () => {
+    it('cancels settling if user interacts with pointerdown', () => {
       const el = {
         scrollIntoView: vi.fn(),
         getBoundingClientRect: () => ({ top: 3 }),
@@ -162,7 +162,7 @@ describe('scroll logic', () => {
       expect(el.scrollIntoView).not.toHaveBeenCalled()
     })
 
-    it('corrige cuando se alcanza timeoutMs aunque sigan disparándose eventos de scroll', () => {
+    it('settles when timeoutMs is reached even if scroll events keep firing', () => {
       const el = {
         scrollIntoView: vi.fn(),
         getBoundingClientRect: () => ({ top: 4 }),
@@ -170,13 +170,13 @@ describe('scroll logic', () => {
 
       settleScroll(el, { idleMs: 140, timeoutMs: 500 })
 
-      // Simulamos scroll continuo cada 50ms (idleTimer no vencería por su cuenta)
+      // Simulate continuous scroll every 50ms (idleTimer would not expire on its own)
       for (let i = 0; i < 9; i++) {
         vi.advanceTimersByTime(50)
         document.dispatchEvent(new Event('scroll'))
       }
 
-      // Llegamos a los 500ms de timeoutMs
+      // Reach 500ms timeoutMs
       vi.advanceTimersByTime(60)
       expect(el.scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto', block: 'start' })
     })

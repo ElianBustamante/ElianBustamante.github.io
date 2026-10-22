@@ -12,7 +12,7 @@ describe('NavRail', () => {
     i18n.changeLanguage('es')
   })
 
-  it('alterna el aria-expanded del botón de menú', async () => {
+  it('toggles menu button aria-expanded', async () => {
     const user = userEvent.setup()
     render(<NavRail activeId="inicio" />)
     
@@ -26,7 +26,7 @@ describe('NavRail', () => {
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('cierra el panel con Escape y devuelve el foco', async () => {
+  it('closes panel with Escape and returns focus', async () => {
     const user = userEvent.setup()
     render(<NavRail activeId="inicio" />)
     
@@ -36,7 +36,7 @@ describe('NavRail', () => {
     // Panel should be open
     expect(menuButton).toHaveAttribute('aria-expanded', 'true')
     
-    // Foco debería estar en el primer enlace según el código de NavRail (el EB logo, o el primer item de la lista)
+    // Focus should be on first link per NavRail code (EB logo or first item in list)
     const firstLink = screen.getAllByRole('link', { name: /inicio/i, hidden: true })[1] // The menu item
     // Wait, the code focuses `menuRef.current.querySelector('a')`, which is the first item inside rail-menu.
     expect(firstLink).toHaveFocus()
@@ -47,21 +47,21 @@ describe('NavRail', () => {
     // Panel should be closed
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
     
-    // Foco debe regresar al botón
+    // Focus should return to button
     expect(menuButton).toHaveFocus()
   })
 
-  it('contiene los 5 enlaces y el CTA', async () => {
+  it('contains the 5 links and CTA', async () => {
     const user = userEvent.setup()
     render(<NavRail activeId="inicio" />)
     
-    // Abrir menú para que renderice el panel
+    // Open menu to render panel
     const menuButton = screen.getByRole('button', { name: /menú/i })
     await user.click(menuButton)
     
-    // 1 enlace EB en el riel
-    // 5 enlaces en el panel: inicio, proyectos, fotografia, sobre mi, contacto
-    // 1 CTA en el panel: contáctame
+    // 1 EB link on the rail
+    // 5 links in the panel: inicio, proyectos, fotografia, sobre mi, contacto
+    // 1 CTA in the panel: contáctame
     
     expect(screen.getByRole('link', { name: /proyectos/i, hidden: true })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /fotografía/i, hidden: true })).toBeInTheDocument()
@@ -69,7 +69,7 @@ describe('NavRail', () => {
     expect(screen.getByRole('link', { name: /contáctame/i, hidden: true })).toBeInTheDocument()
   })
 
-  it('cambia de idioma con LanguageToggle', async () => {
+  it('switches language with LanguageToggle', async () => {
     const user = userEvent.setup()
     render(<NavRail activeId="inicio" />)
     
@@ -78,11 +78,11 @@ describe('NavRail', () => {
     
     await user.click(langButton)
     
-    // Al cambiar a inglés, el botón debe decir "ES: Switch language to Spanish"
+    // When switching to English, button should say "ES: Switch language to Spanish"
     expect(screen.getByRole('button', { name: 'ES: Switch language to Spanish' })).toBeInTheDocument()
   })
 
-  it('cierra el menú al hacer pointerdown fuera', async () => {
+  it('closes menu when pointerdown occurs outside', async () => {
     const user = userEvent.setup()
     render(<NavRail activeId="inicio" />)
 
@@ -94,7 +94,7 @@ describe('NavRail', () => {
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('cierra el menú cuando la media query del riel deja de cumplirse', async () => {
+  it('closes menu when rail media query no longer matches', async () => {
     let changeHandler = null
     const mqlMock = {
       matches: true,
@@ -126,19 +126,19 @@ describe('NavRail', () => {
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('SHORT_SCREEN_QUERY contiene ambas condiciones apaisadas (<=600px y <=1023px con <=660px)', () => {
+  it('SHORT_SCREEN_QUERY contains both landscape conditions (<=600px and <=1023px with <=660px)', () => {
     expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-height: 600px)')
     expect(SHORT_SCREEN_QUERY).toContain('(orientation: landscape) and (max-width: 1023px) and (max-height: 660px)')
   })
 
-  it('el riel incluye la clase short:flex y hidden', () => {
+  it('rail includes classes short:flex and hidden', () => {
     const { container } = render(<NavRail activeId="inicio" />)
     const nav = container.querySelector('nav')
     expect(nav.className).toContain('short:flex')
     expect(nav.className).toContain('hidden')
   })
 
-  it('en inicio, el botón anterior existe pero está disabled, invisible y con aria-hidden', () => {
+  it('at start, previous button exists but is disabled, invisible, and with aria-hidden', () => {
     const { container } = render(<NavRail activeId="inicio" />)
     const prevButton = container.querySelector('button[aria-label="Sección anterior"]')
     expect(prevButton).toBeInTheDocument()
@@ -153,7 +153,7 @@ describe('NavRail', () => {
     expect(nextButton.className).not.toContain('invisible')
   })
 
-  it('en contacto, el botón siguiente existe pero está disabled, invisible y con aria-hidden', () => {
+  it('at contact, next button exists but is disabled, invisible, and with aria-hidden', () => {
     const { container } = render(<NavRail activeId="contacto" canPrev={true} canNext={false} />)
     const nextButton = container.querySelector('button[aria-label="Siguiente sección"]')
     expect(nextButton).toBeInTheDocument()
@@ -168,7 +168,7 @@ describe('NavRail', () => {
     expect(prevButton.className).not.toContain('invisible')
   })
 
-  it('las flechas usan las animaciones correctas: ^ usa animate-bounce-up y v usa animate-bounce', () => {
+  it('arrows use correct animations: ^ uses animate-bounce-up and v uses animate-bounce', () => {
     render(<NavRail activeId="proyectos" canPrev={true} canNext={true} />)
     const prevButton = screen.getByRole('button', { name: /sección anterior/i })
     const nextButton = screen.getByRole('button', { name: /siguiente sección/i })
@@ -178,7 +178,7 @@ describe('NavRail', () => {
     expect(nextButton.className).not.toContain('motion-safe:animate-bounce-up')
   })
 
-  it('handlePrev y handleNext llaman a scrollToElement según las posiciones de las secciones', () => {
+  it('handlePrev and handleNext call scrollToElement according to section positions', () => {
     const sec1 = document.createElement('section')
     sec1.id = 'inicio'
     sec1.getBoundingClientRect = () => ({ top: -800, bottom: 0 })

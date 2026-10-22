@@ -27,7 +27,7 @@ describe('ProjectCard +N tooltip', () => {
     vi.clearAllMocks()
   })
 
-  it('con >=640px muestra discord.py, aiohttp, curl-cffi, "+2" y el tooltip dice "SQLite, pytest"', () => {
+  it('with >=640px shows discord.py, aiohttp, curl-cffi, "+2" and tooltip says "SQLite, pytest"', () => {
     mockMatchMedia(true)
     const { container } = render(<ProjectCard project={project} />)
 
@@ -44,7 +44,7 @@ describe('ProjectCard +N tooltip', () => {
     expect(screen.getByRole('heading', { level: 3 })).toHaveAttribute('title', 'Games Deal Tracker')
   })
 
-  it('con <640px muestra discord.py, aiohttp, "+3" y el tooltip "curl-cffi, SQLite, pytest"', () => {
+  it('with <640px shows discord.py, aiohttp, "+3" and tooltip "curl-cffi, SQLite, pytest"', () => {
     mockMatchMedia(false)
     const { container } = render(<ProjectCard project={project} />)
 
@@ -60,96 +60,96 @@ describe('ProjectCard +N tooltip', () => {
     expect(tooltip).toHaveTextContent('curl-cffi, SQLite, pytest')
   })
 
-  it('comportamiento: hover no cierra con clic, mouseleave cierra; focus abre, click alterna, blur cierra; toque alterna; escape, click fuera, scroll y resize cierran', () => {
+  it('behavior: hover does not close on click, mouseleave closes; focus opens, click toggles, blur closes; touch toggles; escape, outside click, scroll, and resize close', () => {
     mockMatchMedia(true)
     render(<ProjectCard project={project} />)
 
     const btn = screen.getByRole('button', { name: /\+2|tecnologías más/i })
 
-    // 1. Hover abre
+    // 1. Hover opens
     fireEvent.mouseEnter(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
 
-    // 2. Clic con mouse tras hover NO lo cierra
+    // 2. Mouse click after hover does NOT close it
     fireEvent.click(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
 
-    // 3. Mouseleave cierra
+    // 3. Mouseleave closes
     fireEvent.mouseLeave(btn)
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    // 4. Foco abre
+    // 4. Focus opens
     fireEvent.focus(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
 
-    // 5. Clic con teclado/foco alterna (cierra)
+    // 5. Keyboard/focus click toggles (closes)
     fireEvent.click(btn)
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    // Clic alterna de nuevo (abre)
+    // Click toggles again (opens)
     fireEvent.click(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
 
-    // 6. Blur cierra
+    // 6. Blur closes
     fireEvent.blur(btn)
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    // 7. Toque abre y cierra (alterna)
+    // 7. Touch opens and closes (toggles)
     fireEvent.touchStart(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
     fireEvent.touchStart(btn)
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    // 8. Escape cierra
+    // 8. Escape closes
     fireEvent.focus(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    // 9. Clic fuera cierra
+    // 9. Click outside closes
     fireEvent.focus(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
     fireEvent.pointerDown(document.body)
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    // 10. Scroll cierra
+    // 10. Scroll closes
     fireEvent.focus(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
     fireEvent.scroll(document)
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    // 11. Resize cierra
+    // 11. Resize closes
     fireEvent.focus(btn)
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
     fireEvent(window, new Event('resize'))
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
   })
 
-  it('resaltado de tarjeta: usa has-[:focus-visible] y no focus-within; tras clic con mouse en "+N", la tarjeta no tiene clases de foco persistente con mouse', () => {
+  it('card highlighting: uses has-[:focus-visible] and not focus-within; after mouse click on "+N", card does not have persistent mouse focus classes', () => {
     mockMatchMedia(true)
     const { container } = render(<ProjectCard project={project} />)
     const article = container.querySelector('article')
     const btn = screen.getByRole('button', { name: /\+2|tecnologías más/i })
 
-    // 1. La tarjeta tiene clases de foco condicional por teclado (:focus-visible), no focus-within
+    // 1. Card has keyboard conditional focus classes (:focus-visible), not focus-within
     expect(article.className).toContain('has-[:focus-visible]:border-accent')
     expect(article.className).not.toContain('focus-within:border-accent')
     expect(article.className).not.toContain('focus-within:')
 
-    // 2. Tras clic con mouse en "+N", la tarjeta no adquiere ninguna clase o atributo de resaltado persistente
+    // 2. After mouse click on "+N", card does not acquire any persistent highlight class or attribute
     fireEvent.click(btn)
     expect(article.className).not.toContain('focus-within:border-accent')
     expect(article.classList.contains('border-accent')).toBe(false)
     expect(article.className).toContain('has-[:focus-visible]:border-accent')
 
-    // 3. Con foco en un elemento interactivo (teclado), el botón está enfocado dentro de la tarjeta
+    // 3. With focus on an interactive element (keyboard), button is focused inside the card
     btn.focus()
     expect(document.activeElement).toBe(btn)
     expect(article.contains(btn)).toBe(true)
     expect(article.className).toContain('has-[:focus-visible]:border-accent')
   })
 
-  it('incluye clases compact prioritarias con modificador ! en article y descripción', () => {
+  it('includes compact priority classes with ! modifier on article and description', () => {
     const { container } = render(<ProjectCard project={project} />)
     const article = container.querySelector('article')
     expect(article.className).not.toContain('compact:h-auto!')
@@ -160,27 +160,27 @@ describe('ProjectCard +N tooltip', () => {
     expect(desc.className).toContain('compact:flex-none')
   })
 
-  it('limita la altura mínima en móvil con tope de 400px (clamp(340px,52dvh,400px))', () => {
+  it('limits minimum height on mobile capped at 400px (clamp(340px,52dvh,400px))', () => {
     const { container } = render(<ProjectCard project={project} />)
     const article = container.querySelector('article')
     expect(article.className).toContain('max-md:min-h-[clamp(340px,52dvh,400px)]')
     expect(article.className).not.toContain('max-md:min-h-[clamp(340px,52dvh,520px)]')
   })
 
-  it('el contenedor del cuerpo incluye [@media(max-height:360px)]:p-3.5!', () => {
+  it('body container includes [@media(max-height:360px)]:p-3.5!', () => {
     const { container } = render(<ProjectCard project={project} />)
     const body = container.querySelector('div.flex-1.flex-col')
     expect(body.className).toContain('[@media(max-height:360px)]:p-3.5!')
   })
 
-  it('oculta chips de tecnologías solo en landscape con max-height:420px', () => {
+  it('hides technology chips only in landscape with max-height:420px', () => {
     const { container } = render(<ProjectCard project={project} />)
     const chipsWrapper = container.querySelector('div.flex-nowrap')
     expect(chipsWrapper.className).toContain('[@media(orientation:landscape)_and_(max-height:420px)]:hidden')
     expect(chipsWrapper.className).not.toContain('compact:hidden')
   })
 
-  it('usa la sombra reducida shadow-[0_8px_20px_rgba(255,106,26,0.12)] en hover, foco y tarjeta activa', () => {
+  it('uses reduced box-shadow shadow-[0_8px_20px_rgba(255,106,26,0.12)] on hover, focus, and active card', () => {
     const { container, rerender } = render(<ProjectCard project={project} isActive={false} />)
     const article = container.querySelector('article')
     expect(article.className).toContain('has-[:focus-visible]:shadow-[0_8px_20px_rgba(255,106,26,0.12)]')
@@ -191,7 +191,7 @@ describe('ProjectCard +N tooltip', () => {
     expect(article.className).toContain('max-lg:shadow-[0_8px_20px_rgba(255,106,26,0.12)]')
   })
 
-  it('respaldo con clientWidth 0 sigue mostrando 3 o 2 chips según el ancho de la ventana', () => {
+  it('fallback with clientWidth 0 still displays 3 or 2 chips based on window width', () => {
     mockMatchMedia(true)
     const { container: cDesktop } = render(<ProjectCard project={project} />)
     const desktopChips = Array.from(cDesktop.querySelectorAll('div.flex-nowrap > span')).map((s) => s.textContent.trim())
@@ -205,7 +205,7 @@ describe('ProjectCard +N tooltip', () => {
     expect(mobileChips).toEqual(['discord.py', 'aiohttp'])
   })
 
-  it('el ResizeObserver observa el contenedor y todos los hijos de la fila de medición', () => {
+  it('ResizeObserver observes container and all children of measurement row', () => {
     mockMatchMedia(true)
     const observeMock = vi.fn()
     const origRO = window.ResizeObserver
@@ -217,13 +217,13 @@ describe('ProjectCard +N tooltip', () => {
 
     render(<ProjectCard project={project} />)
     expect(observeMock).toHaveBeenCalled()
-    // 1 contenedor + 5 chips + 1 indicador "+5" = 7 observaciones
+    // 1 container + 5 chips + 1 "+5" indicator = 7 observations
     expect(observeMock.mock.calls.length).toBeGreaterThanOrEqual(7)
 
     window.ResizeObserver = origRO
   })
 
-  it('al pasar el mouse sobre la tarjeta o sobre el botón +N, la cantidad de chips no cambia', () => {
+  it('hovering over card or +N button does not change chip count', () => {
     mockMatchMedia(true)
     const { container } = render(<ProjectCard project={project} />)
     const btn = screen.getByRole('button', { name: /\+2|tecnologías más/i })
@@ -239,7 +239,7 @@ describe('ProjectCard +N tooltip', () => {
     expect(getChips()).toEqual(['discord.py', 'aiohttp', 'curl-cffi'])
   })
 
-  it('renderiza repoUrl y demoUrl solo si empiezan con https://', () => {
+  it('renders repoUrl and demoUrl only if they start with https://', () => {
     const projectHttp = {
       id: 'gamesDealTracker',
       image: null,
@@ -264,7 +264,7 @@ describe('ProjectCard +N tooltip', () => {
     expect(links[1]).toHaveAttribute('href', 'https://demo.com')
   })
 
-  it('muestra demoLabel desde i18n ("Invitar Bot" / "Invite bot") o fallback a viewDemo', () => {
+  it('displays demoLabel from i18n ("Invitar Bot" / "Invite bot") or falls back to viewDemo', () => {
     act(() => {
       i18n.changeLanguage('es')
     })
@@ -303,7 +303,7 @@ describe('ProjectCard +N tooltip', () => {
     expect(screen.getByRole('link', { name: 'Ver demo' })).toBeInTheDocument()
   })
 
-  it('renderiza el ícono IconChatSpark cuando project.icon es "chat"', () => {
+  it('renders IconChatSpark icon when project.icon is "chat"', () => {
     const projectChat = {
       id: 'aiMemoryAssistant',
       image: null,

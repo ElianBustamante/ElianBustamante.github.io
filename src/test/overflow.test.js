@@ -44,7 +44,7 @@ describe('observeScrollState', () => {
     vi.useRealTimers()
   })
 
-  it('devuelve una función vacía si list es null o undefined', () => {
+  it('returns empty function if list is null or undefined', () => {
     const onChange = vi.fn()
     const cleanup = observeScrollState(null, onChange)
     expect(typeof cleanup).toBe('function')
@@ -52,7 +52,7 @@ describe('observeScrollState', () => {
     expect(onChange).not.toHaveBeenCalled()
   })
 
-  it('(a) se llama onChange al inicio (tras el frame)', async () => {
+  it('(a) calls onChange initially (after animation frame)', async () => {
     const onChange = vi.fn()
     const cleanup = observeScrollState(list, onChange)
 
@@ -63,15 +63,15 @@ describe('observeScrollState', () => {
     cleanup()
   })
 
-  it('(b) se llama al disparar ResizeObserver', async () => {
+  it('(b) calls onChange when ResizeObserver triggers', async () => {
     const onChange = vi.fn()
     const cleanup = observeScrollState(list, onChange)
 
-    // Consumir el frame inicial
+    // Consume initial frame
     await new Promise((r) => requestAnimationFrame(r))
     expect(onChange).toHaveBeenCalledTimes(1)
 
-    // Disparar ResizeObserver
+    // Trigger ResizeObserver
     mockResizeCallbacks.forEach((cb) => cb([]))
     await new Promise((r) => requestAnimationFrame(r))
     expect(onChange).toHaveBeenCalledTimes(2)
@@ -79,7 +79,7 @@ describe('observeScrollState', () => {
     cleanup()
   })
 
-  it('(c) se llama al disparar el cambio de matchMedia', async () => {
+  it('(c) calls onChange when matchMedia change fires', async () => {
     let matchMediaCallback = null
     const addEventListenerMock = vi.fn((event, cb) => {
       if (event === 'change') matchMediaCallback = cb
@@ -99,11 +99,11 @@ describe('observeScrollState', () => {
     expect(window.matchMedia).toHaveBeenCalledWith(SHORT_SCREEN_QUERY)
     expect(addEventListenerMock).toHaveBeenCalledWith('change', expect.any(Function))
 
-    // Consumir frame inicial
+    // Consume initial frame
     await new Promise((r) => requestAnimationFrame(r))
     expect(onChange).toHaveBeenCalledTimes(1)
 
-    // Disparar evento change de matchMedia
+    // Trigger matchMedia change event
     expect(matchMediaCallback).toBeTruthy()
     matchMediaCallback({ matches: true })
     await new Promise((r) => requestAnimationFrame(r))
@@ -112,7 +112,7 @@ describe('observeScrollState', () => {
     cleanup()
   })
 
-  it('(d) se observan tanto el elemento como sus hijos directos', () => {
+  it('(d) observes both the element and its direct children', () => {
     const onChange = vi.fn()
     const cleanup = observeScrollState(list, onChange)
 
@@ -124,7 +124,7 @@ describe('observeScrollState', () => {
     cleanup()
   })
 
-  it('(e) la limpieza desconecta el observer, remueve listeners y no dispara onChange posterior', async () => {
+  it('(e) cleanup disconnects observer, removes listeners, and does not fire subsequent onChange', async () => {
     let matchMediaCallback = null
     const removeListenerMock = vi.fn()
     window.matchMedia = vi.fn().mockImplementation((query) => ({
@@ -140,19 +140,19 @@ describe('observeScrollState', () => {
     const onChange = vi.fn()
     const cleanup = observeScrollState(list, onChange)
 
-    // Inmediatamente llamamos a cleanup antes del primer frame
+    // Call cleanup immediately before first frame
     cleanup()
 
-    // Verificamos desconexión de observer y listeners
+    // Verify observer and listeners disconnection
     expect(disconnectMock).toHaveBeenCalledTimes(1)
     expect(removeListenerMock).toHaveBeenCalledWith('change', expect.any(Function))
     expect(removeWindowListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function))
 
-    // Esperar rAF para verificar que onChange NO fue llamado tras cleanup
+    // Wait for rAF to verify onChange was NOT called after cleanup
     await new Promise((r) => requestAnimationFrame(r))
     expect(onChange).not.toHaveBeenCalled()
 
-    // Disparar eventos posteriores no debe causar llamadas
+    // Firing subsequent events must not trigger calls
     mockResizeCallbacks.forEach((cb) => cb([]))
     if (matchMediaCallback) matchMediaCallback({ matches: true })
     window.dispatchEvent(new Event('resize'))
@@ -160,7 +160,7 @@ describe('observeScrollState', () => {
     expect(onChange).not.toHaveBeenCalled()
   })
 
-  it('(f) si faltan ResizeObserver o matchMedia no lanza error', async () => {
+  it('(f) does not throw error if ResizeObserver or matchMedia is missing', async () => {
     const originalRO = global.ResizeObserver
     const originalMM = window.matchMedia
 
@@ -182,17 +182,17 @@ describe('observeScrollState', () => {
     window.matchMedia = originalMM
   })
 
-  it('cancela frames pendientes sucesivos para evitar apilamiento', async () => {
+  it('cancels successive pending frames to avoid stacking', async () => {
     const onChange = vi.fn()
     const cleanup = observeScrollState(list, onChange)
 
-    // Disparar múltiples eventos en el mismo frame
+    // Trigger multiple events in the same frame
     mockResizeCallbacks.forEach((cb) => cb([]))
     mockResizeCallbacks.forEach((cb) => cb([]))
     window.dispatchEvent(new Event('resize'))
 
     await new Promise((r) => requestAnimationFrame(r))
-    // A pesar de múltiples llamadas en el mismo tick/frame, onChange solo se llama una vez
+    // Despite multiple calls in the same tick/frame, onChange is only called once
     expect(onChange).toHaveBeenCalledTimes(1)
 
     cleanup()

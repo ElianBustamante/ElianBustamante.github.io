@@ -18,7 +18,7 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     vi.restoreAllMocks()
   })
 
-  it('el div raíz usa clases inner-scroll: y no max-md: para el scroll interno', () => {
+  it('root div uses inner-scroll: classes and not max-md: for inner scroll', () => {
     const { container } = render(<App />)
     const rootDiv = container.firstElementChild
     expect(rootDiv.className).toContain('inner-scroll:min-h-0')
@@ -31,7 +31,7 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     expect(rootDiv.className).not.toContain('max-md:h-[100dvh]')
   })
 
-  it('todas las secciones tienen snap-start y el footer está dentro de #contacto con role="contentinfo" sin snap-end', () => {
+  it('all sections have snap-start and footer is inside #contacto with role="contentinfo" without snap-end', () => {
     const { container } = render(<App />)
     const sections = Array.from(container.querySelectorAll('section'))
     expect(sections).toHaveLength(5)
@@ -46,7 +46,7 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     expect(footer.className).not.toContain('snap-end')
   })
 
-  it('el controlador de diapositivas cuenta solo section (5 diapositivas) y no desplaza al footer como diapositiva extra al estar en #contacto', () => {
+  it('slides controller counts only sections (5 slides) and does not scroll to footer as an extra slide when at #contacto', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
@@ -62,7 +62,7 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     expect(sections).toHaveLength(5)
     expect(sections[sections.length - 1].id).toBe('contacto')
 
-    // Simulamos que la sección activa (más cercana a top=0) es la última (#contacto, índice 4)
+    // Simulate that active section (closest to top=0) is the last one (#contacto, index 4)
     sections.forEach((sec, idx) => {
       vi.spyOn(sec, 'getBoundingClientRect').mockReturnValue({
         top: (idx - 4) * 800,
@@ -84,7 +84,7 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled()
   })
 
-  it('con ratón (pointer: fine) y ancho <768px, el wheel no es bloqueado por usesInnerScroll', () => {
+  it('with mouse (pointer: fine) and width <768px, wheel is not blocked by usesInnerScroll', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
@@ -104,7 +104,7 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     expect(wheelEvent.defaultPrevented).toBe(true)
   })
 
-  it('con táctil (pointer: coarse) y ancho <768px, el wheel se ignora para permitir scroll nativo táctil', () => {
+  it('with touch (pointer: coarse) and width <768px, wheel is ignored to allow native touch scroll', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: query === INNER_SCROLL_QUERY,
       media: query,
@@ -124,7 +124,7 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     expect(wheelEvent.defaultPrevented).toBe(false)
   })
 
-  it('eventos de rueda con deltaY pequeño llaman preventDefault y desbloquean al disparar scrollend', () => {
+  it('wheel events with small deltaY call preventDefault and unlock when scrollend fires', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,

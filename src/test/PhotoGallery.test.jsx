@@ -56,7 +56,7 @@ describe('PhotoGallery', () => {
     expect(firstLi.style.height).toBe('453.12px') // from W=1200, H=768 -> h=768*0.59
   })
 
-  it('en modo pantalla baja calcula la altura con clientHeight del contenedor (mínimo 150px en jsdom)', () => {
+  it('in short screen mode calculates height with container clientHeight (minimum 150px in jsdom)', () => {
     window.innerHeight = 500
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 0 })
@@ -76,7 +76,7 @@ describe('PhotoGallery', () => {
     expect(firstLi.style.height).toBe('150px')
   })
 
-  it('en modo pantalla baja usa clientHeight si H<=520 y H*0.72 si H>520', () => {
+  it('in short screen mode uses clientHeight if H<=520 and H*0.72 if H>520', () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 280 })
     window.matchMedia = vi.fn().mockImplementation(query => ({
@@ -90,21 +90,21 @@ describe('PhotoGallery', () => {
       dispatchEvent: vi.fn(),
     }))
 
-    // Con H <= 520 (teléfonos): h = clientHeight -> 280px
+    // With H <= 520 (phones): h = clientHeight -> 280px
     window.innerHeight = 500
     const { unmount } = render(<PhotoGallery />)
     const images500 = screen.getAllByRole('button').filter(b => b.querySelector('img'))
     expect(images500[0].parentElement.style.height).toBe('280px')
     unmount()
 
-    // Con H > 520 (ventanas): h = Math.floor(H * 0.72) -> Math.floor(600 * 0.72) = 432px
+    // With H > 520 (windows): h = Math.floor(H * 0.72) -> Math.floor(600 * 0.72) = 432px
     window.innerHeight = 600
     render(<PhotoGallery />)
     const images600 = screen.getAllByRole('button').filter(b => b.querySelector('img'))
     expect(images600[0].parentElement.style.height).toBe('432px')
   })
 
-  it('el contenedor de fotos incluye las clases compact:flex-1 compact:min-h-0', () => {
+  it('photo container includes classes compact:flex-1 compact:min-h-0', () => {
     render(<PhotoGallery />)
     const containerDiv = screen.getByRole('list').parentElement
     expect(containerDiv.className).toContain('compact:flex-1')
@@ -125,7 +125,7 @@ describe('PhotoGallery', () => {
     expect(screen.getByAltText('Photo one')).toBeInTheDocument()
   })
 
-  it('actualiza visibilidad de botones al disparar resize mediante observeScrollState', async () => {
+  it('updates button visibility when resize fires via observeScrollState', async () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 400 })
     Object.defineProperty(HTMLElement.prototype, 'scrollWidth', { configurable: true, value: 1000 })
     Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
@@ -208,7 +208,7 @@ describe('PhotoGallery', () => {
     expect(screen.queryByRole('list')).not.toBeInTheDocument()
   })
 
-  it('una foto tiene draggable="false" y un fireEvent.contextMenu sobre ella devuelve defaultPrevented', () => {
+  it('a photo has draggable="false" and a fireEvent.contextMenu on it returns defaultPrevented', () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
     render(<PhotoGallery />)
@@ -219,7 +219,7 @@ describe('PhotoGallery', () => {
     expect(event.defaultPrevented).toBe(true)
   })
 
-  it('el ul incluye las clases de difuminado mask-image', () => {
+  it('ul includes mask-image fade classes', () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
     render(<PhotoGallery />)

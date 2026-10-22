@@ -67,7 +67,7 @@ describe('Lightbox', () => {
     expect(document.documentElement.classList.contains('overflow-hidden')).toBe(false)
   })
 
-  it('una foto tiene draggable="false" y un fireEvent.contextMenu sobre ella devuelve defaultPrevented', () => {
+  it('a photo has draggable="false" and a fireEvent.contextMenu on it returns defaultPrevented', () => {
     render(<Lightbox photos={mockPhotos} index={0} onClose={() => {}} onIndexChange={() => {}} />)
     const img = screen.getByAltText('F1')
     expect(img).toHaveAttribute('draggable', 'false')
@@ -76,7 +76,7 @@ describe('Lightbox', () => {
     expect(event.defaultPrevented).toBe(true)
   })
 
-  it('incluye clases short para figure, img y figcaption', () => {
+  it('includes short classes for figure, img, and figcaption', () => {
     const { container } = render(<Lightbox photos={mockPhotos} index={0} onClose={() => {}} onIndexChange={() => {}} />)
     const figure = container.querySelector('figure')
     expect(figure.className).toContain('short:py-1!')
@@ -119,7 +119,7 @@ describe('Lightbox', () => {
     expect(counterSpan.className).not.toContain('short:font-semibold')
   })
 
-  it('en pantallas altas (min-height:800px) sube un escalón el tamaño del título y la línea de datos', () => {
+  it('on tall screens (min-height:800px) increases title size and data line by one step', () => {
     const { container } = render(<Lightbox photos={mockPhotos} index={0} onClose={() => {}} onIndexChange={() => {}} />)
     const title = screen.getByText('T1')
     expect(title.className).toContain('[@media(min-height:800px)]:text-base')
@@ -132,29 +132,29 @@ describe('Lightbox', () => {
     expect(dataLine.className).toContain('short:text-[11px]')
   })
 
-  it('mantiene el modo zoom y el slider al bajar al mínimo, y sale con el botón de zoom o Escape', () => {
+  it('maintains zoom mode and slider when lowered to minimum, and exits with zoom button or Escape', () => {
     const onClose = vi.fn()
     render(<Lightbox photos={mockPhotos} index={0} onClose={onClose} onIndexChange={() => {}} />)
 
     const toggleBtn = screen.getByRole('button', { name: 'Ampliar' })
     expect(toggleBtn).toHaveAttribute('aria-pressed', 'false')
 
-    // (a) al pulsar el botón de zoom aparece el slider y aria-pressed pasa a "true"
+    // (a) pressing zoom button displays slider and aria-pressed becomes "true"
     fireEvent.click(toggleBtn)
     expect(toggleBtn).toHaveAttribute('aria-pressed', 'true')
     const slider = screen.getByRole('slider')
     expect(slider).toBeInTheDocument()
 
-    // (d) el slider tiene max="4" y step="any"
+    // (d) slider has max="4" and step="any"
     expect(slider).toHaveAttribute('max', '4')
     expect(slider).toHaveAttribute('step', 'any')
 
-    // (b) fireEvent.change del slider a un valor menor que min (0.1) mantiene el slider en el documento y el valor queda acotado a min
+    // (b) fireEvent.change of slider below min (0.1) keeps slider in document and clamps value to min
     fireEvent.change(slider, { target: { value: '0.1' } })
     expect(screen.getByRole('slider')).toBeInTheDocument()
     expect(slider.value).toBe(slider.min)
 
-    // Subimos de nuevo y probamos (c) varios clics en el botón "-" hasta el tope mantienen el slider presente
+    // Zoom in again and verify (c) multiple clicks on "-" button to limit keep slider present
     fireEvent.change(slider, { target: { value: '2.5' } })
     const minusBtn = screen
       .getAllByRole('button', { name: 'Reducir' })
@@ -165,12 +165,12 @@ describe('Lightbox', () => {
     expect(screen.getByRole('slider')).toBeInTheDocument()
     expect(slider.value).toBe(slider.min)
 
-    // (f) volver a pulsar el botón de zoom sale del zoom
+    // (f) pressing zoom button again exits zoom
     fireEvent.click(toggleBtn)
     expect(toggleBtn).toHaveAttribute('aria-pressed', 'false')
     expect(screen.queryByRole('slider')).not.toBeInTheDocument()
 
-    // (e) con zoom activo, Escape sale del zoom y NO llama a onClose, y un segundo Escape sí llama a onClose
+    // (e) with active zoom, Escape exits zoom and does NOT call onClose, and second Escape calls onClose
     fireEvent.click(toggleBtn)
     expect(screen.getByRole('slider')).toBeInTheDocument()
     const dialog = screen.getByRole('dialog')

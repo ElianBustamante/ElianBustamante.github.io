@@ -224,8 +224,8 @@ describe('About', () => {
     try {
       const { container } = render(<About />)
 
-      // En ancho 200 con cápsulas de 60, +N de 30 y gap de 8 (maxLines=1):
-      // cada uno de los 4 grupos muestra 2 cápsulas visibles y un botón "+N"
+      // At container width 200 with 60px capsules, 30px +N button, and gap of 8 (maxLines=1):
+      // each of the 4 groups renders 2 visible capsules and a "+N" button
       const plusButtons = [
         screen.getByRole('button', {
           name: `${skills.languages.length - 2} tecnologías más: ${skills.languages.slice(2).join(', ')}`,

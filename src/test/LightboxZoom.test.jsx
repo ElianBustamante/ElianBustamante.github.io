@@ -46,11 +46,11 @@ describe('Lightbox Zoom', () => {
     
     const getZoomBtn = () => screen.getAllByRole('button').find(b => b.hasAttribute('aria-pressed'))
     
-    // 1. Clic simple amplía
+    // 1. Single click zooms in
     fireEvent.click(img)
     expect(getZoomBtn().getAttribute('aria-pressed')).toBe('true')
     
-    // 2. Clic simple sobre la ampliada sale
+    // 2. Single click while zoomed in zooms out
     fireEvent.click(img)
     expect(getZoomBtn().getAttribute('aria-pressed')).toBe('false')
     
@@ -58,14 +58,14 @@ describe('Lightbox Zoom', () => {
     fireEvent.click(img)
     expect(getZoomBtn().getAttribute('aria-pressed')).toBe('true')
     
-    // 3. Arrastre de más de 4px mueve scrollLeft/scrollTop y el click posterior NO sale del zoom
+    // 3. Drag of more than 4px moves scrollLeft/scrollTop and subsequent click does NOT exit zoom
     fireEvent.pointerDown(scrollContainer, { pointerId: 1, pointerType: 'mouse', button: 0, buttons: 1, clientX: 100, clientY: 100 })
     fireEvent.pointerMove(scrollContainer, { pointerId: 1, pointerType: 'mouse', button: 0, buttons: 1, clientX: 90, clientY: 90 }) // Moved 10px
     fireEvent.pointerUp(scrollContainer, { pointerId: 1, pointerType: 'mouse', button: 0, buttons: 0 })
     fireEvent.click(img) // Click after drag
     expect(getZoomBtn().getAttribute('aria-pressed')).toBe('true') // Still zoomed
     
-    // 4. Después de un arrastre, un nuevo clic sí sale (el flag se reinicia en pointerDown)
+    // 4. After a drag, a new click does exit zoom (flag resets on pointerDown)
     fireEvent.pointerDown(scrollContainer, { pointerId: 2, pointerType: 'mouse', button: 0, buttons: 1, clientX: 100, clientY: 100 })
     fireEvent.pointerUp(scrollContainer, { pointerId: 2, pointerType: 'mouse', button: 0, buttons: 0 })
     fireEvent.click(img)
@@ -74,12 +74,12 @@ describe('Lightbox Zoom', () => {
     // Enter zoom again
     fireEvent.click(img)
     
-    // 5. pointerMove sin buttons no mueve nada ni activa el arrastre
+    // 5. pointerMove without buttons moves nothing and does not activate drag
     fireEvent.pointerMove(scrollContainer, { pointerId: 3, pointerType: 'mouse', button: 0, buttons: 0, clientX: 50, clientY: 50 })
     fireEvent.click(img) // This should successfully zoom out because pointerMove without buttons doesn't activate drag
     expect(getZoomBtn().getAttribute('aria-pressed')).toBe('false')
     
-    // 6. - y + cambian el nivel
+    // 6. - and + change zoom level
     fireEvent.click(img) // zoom in to 2.5
     const zoomInBtn = screen.getByRole('button', { name: 'photography.zoomIn' }) // +
     const zoomOutBtn = screen.getAllByRole('button', { name: 'photography.zoomOut' }).find(b => !b.hasAttribute('aria-pressed')) // -
@@ -93,20 +93,20 @@ describe('Lightbox Zoom', () => {
     fireEvent.click(zoomOutBtn)
     expect(slider.value).toBe("2.5")
     
-    // 7. Los controles (cerrar, lupa, prev, next) siguen presentes con zoom
+    // 7. Controls (close, zoom toggle, prev, next) remain present while zoomed
     expect(screen.getByRole('button', { name: 'photography.close' })).toBeInTheDocument()
     expect(screen.getAllByRole('button', { name: 'photography.prev' }).length).toBeGreaterThan(0)
     expect(screen.getAllByRole('button', { name: 'photography.next' }).length).toBeGreaterThan(0)
     expect(getZoomBtn()).toBeInTheDocument()
     
-    // 8. Escape con zoom sale del zoom sin llamar a onClose
+    // 8. Escape with active zoom exits zoom without calling onClose
     fireEvent.keyDown(document.body, { key: 'Escape', code: 'Escape' }) // The component listens to Escape on dialog, not document body. Wait, Lightbox has onKeyDown on the dialog wrapper
     const dialog = screen.getByRole('dialog', { hidden: true }) || scrollContainer.parentElement
     fireEvent.keyDown(dialog, { key: 'Escape', code: 'Escape' })
     expect(getZoomBtn().getAttribute('aria-pressed')).toBe('false')
     expect(onClose).not.toHaveBeenCalled()
     
-    // Escape sin zoom llama a onClose
+    // Escape without zoom calls onClose
     fireEvent.keyDown(dialog, { key: 'Escape', code: 'Escape' })
     expect(onClose).toHaveBeenCalled()
   })

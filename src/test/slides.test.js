@@ -9,7 +9,7 @@ import {
 } from '../lib/slides'
 
 describe('slides logic', () => {
-  it('foco en una sección con top=0 -> null', () => {
+  it('focus on a section with top=0 -> null', () => {
     const sec = document.createElement('section')
     sec.id = 'inicio'
     sec.getBoundingClientRect = () => ({ top: 0, height: 800, bottom: 800 })
@@ -25,7 +25,7 @@ describe('slides logic', () => {
     expect(result).toBeNull()
   })
 
-  it('foco en una sección con top=-300 y altura igual a la pantalla -> esa sección', () => {
+  it('focus on a section with top=-300 and height equal to screen -> that section', () => {
     const sec = document.createElement('section')
     sec.id = 'proyectos'
     sec.getBoundingClientRect = () => ({ top: -300, height: 800, bottom: 500 })
@@ -41,13 +41,13 @@ describe('slides logic', () => {
     expect(result).toBe(sec)
   })
 
-  it('sección más alta que la pantalla con el elemento visible -> null', () => {
+  it('section taller than screen with element visible -> null', () => {
     const sec = document.createElement('section')
     sec.id = 'sobre-mi'
-    // Altura 1200 > 800 + 8, top = -200
+    // Height 1200 > 800 + 8, top = -200
     sec.getBoundingClientRect = () => ({ top: -200, height: 1200, bottom: 1000 })
     const btn = document.createElement('button')
-    // Elemento visible en pantalla (top >= 0 y bottom <= 800)
+    // Element visible on screen (top >= 0 and bottom <= 800)
     btn.getBoundingClientRect = () => ({ top: 200, bottom: 240 })
     sec.appendChild(btn)
 
@@ -59,13 +59,13 @@ describe('slides logic', () => {
     expect(result).toBeNull()
   })
 
-  it('sección más alta con el elemento fuera de pantalla -> esa sección', () => {
+  it('taller section with element off screen -> that section', () => {
     const sec = document.createElement('section')
     sec.id = 'sobre-mi'
-    // Altura 1200 > 800 + 8, top = -50
+    // Height 1200 > 800 + 8, top = -50
     sec.getBoundingClientRect = () => ({ top: -50, height: 1200, bottom: 1150 })
     const btn = document.createElement('button')
-    // Elemento fuera de pantalla (bottom 900 > 800)
+    // Element off screen (bottom 900 > 800)
     btn.getBoundingClientRect = () => ({ top: 850, bottom: 900 })
     sec.appendChild(btn)
 
@@ -77,7 +77,7 @@ describe('slides logic', () => {
     expect(result).toBe(sec)
   })
 
-  it('Espacio sobre un button no se intercepta', () => {
+  it('Space over a button is not intercepted', () => {
     const btn = document.createElement('button')
     const event = {
       key: ' ',
@@ -92,7 +92,7 @@ describe('slides logic', () => {
     expect(getKeyDirection(event)).toBe(0)
   })
 
-  it('Espacio con body como target sí', () => {
+  it('Space with body as target is intercepted', () => {
     const event = {
       key: ' ',
       target: document.body,
@@ -106,7 +106,7 @@ describe('slides logic', () => {
     expect(getKeyDirection(event)).toBe(1)
   })
 
-  it('ctrl+rueda no', () => {
+  it('ctrl+wheel is not intercepted', () => {
     const event = {
       ctrlKey: true,
       metaKey: false,
@@ -118,7 +118,7 @@ describe('slides logic', () => {
     expect(shouldInterceptWheel(event)).toBe(false)
   })
 
-  it('rueda dentro de un contenedor con scroll disponible no', () => {
+  it('wheel inside container with available scroll is not intercepted', () => {
     const container = document.createElement('div')
     Object.defineProperty(container, 'scrollHeight', { value: 500, configurable: true })
     Object.defineProperty(container, 'clientHeight', { value: 200, configurable: true })
@@ -142,8 +142,8 @@ describe('slides logic', () => {
     document.body.removeChild(container)
   })
 
-  it('sección más alta que la pantalla con su borde inferior fuera de pantalla no salta', () => {
-    // Pantalla de 800px de alto, sección de 1200px de alto, bottom a 1100px (fuera de pantalla)
+  it('section taller than screen with its bottom edge off screen does not jump', () => {
+    // 800px high screen, 1200px high section, bottom at 1100px (off screen)
     const tallSection = {
       getBoundingClientRect: () => ({
         top: -100,
@@ -152,10 +152,10 @@ describe('slides logic', () => {
       })
     }
 
-    // Scroll hacia abajo (1): borde inferior fuera de pantalla -> no debe saltar de diapositiva
+    // Scroll down (1): bottom edge off screen -> must not jump slide
     expect(canAdvanceSlide(tallSection, 1, 800)).toBe(false)
 
-    // Scroll wheel tampoco debe interceptarse para permitir scroll nativo
+    // Scroll wheel must not be intercepted either to allow native scroll
     const event = {
       ctrlKey: false,
       metaKey: false,
@@ -165,7 +165,7 @@ describe('slides logic', () => {
     }
     expect(shouldInterceptWheel(event, { currentSection: tallSection, windowHeight: 800 })).toBe(false)
 
-    // Pero si el borde inferior ya está visible (bottom <= 808), sí salta
+    // But if bottom edge is already visible (bottom <= 808), it does jump
     const tallSectionVisibleBottom = {
       getBoundingClientRect: () => ({
         top: -400,
@@ -177,7 +177,7 @@ describe('slides logic', () => {
     expect(shouldInterceptWheel(event, { currentSection: tallSectionVisibleBottom, windowHeight: 800 })).toBe(true)
   })
 
-  it('con movimiento reducido no se intercepta', () => {
+  it('with reduced motion is not intercepted', () => {
     const event = {
       ctrlKey: false,
       metaKey: false,
@@ -189,7 +189,7 @@ describe('slides logic', () => {
     expect(shouldInterceptWheel(event, { isReducedMotion: true })).toBe(false)
   })
 
-  it('con minDelta: 0 un evento con deltaY = 2 sí se intercepta, y con el valor por defecto no', () => {
+  it('with minDelta: 0 an event with deltaY = 2 is intercepted, and with default value is not', () => {
     const event = {
       ctrlKey: false,
       metaKey: false,
@@ -203,79 +203,79 @@ describe('slides logic', () => {
   })
 
   describe('shouldRealignOnResize', () => {
-    it('mismo ancho, alto y dpr -> false', () => {
+    it('same width, height, and dpr -> false', () => {
       const prev = { width: 1024, height: 768, dpr: 1 }
       const cur = { width: 1024, height: 768, dpr: 1 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(false)
     })
 
-    it('escritorio, solo cambia el alto en 1px -> true', () => {
+    it('desktop, only height changes by 1px -> true', () => {
       const prev = { width: 1024, height: 768, dpr: 1 }
       const cur = { width: 1024, height: 769, dpr: 1 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('escritorio, cambia el ancho -> true', () => {
+    it('desktop, width changes -> true', () => {
       const prev = { width: 1024, height: 768, dpr: 1 }
       const cur = { width: 1200, height: 768, dpr: 1 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('escritorio, cambia dpr -> true', () => {
+    it('desktop, dpr changes -> true', () => {
       const prev = { width: 1024, height: 768, dpr: 1 }
       const cur = { width: 1024, height: 768, dpr: 1.25 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('móvil (<768), alto cambia 56px -> false', () => {
+    it('mobile (<768), height changes 56px -> false', () => {
       const prev = { width: 375, height: 611, dpr: 2 }
       const cur = { width: 375, height: 667, dpr: 2 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(false)
     })
 
-    it('móvil, alto cambia 107px -> true', () => {
+    it('mobile, height changes 107px -> true', () => {
       const prev = { width: 375, height: 611, dpr: 2 }
       const cur = { width: 375, height: 718, dpr: 2 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('móvil, cambia el ancho -> true', () => {
+    it('mobile, width changes -> true', () => {
       const prev = { width: 375, height: 667, dpr: 2 }
       const cur = { width: 390, height: 667, dpr: 2 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('cruza de 800 a 700 de ancho -> true', () => {
+    it('crosses from 800 to 700 width -> true', () => {
       const prev = { width: 800, height: 600, dpr: 1 }
       const cur = { width: 700, height: 600, dpr: 1 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('cruza de 700 a 800 -> true', () => {
+    it('crosses from 700 to 800 -> true', () => {
       const prev = { width: 700, height: 600, dpr: 1 }
       const cur = { width: 800, height: 600, dpr: 1 }
       expect(shouldRealignOnResize({ prev, cur })).toBe(true)
     })
 
-    it('coarse con solo el alto distinto -> false', () => {
-      // Móvil (<768px): alto cambia significativamente (ej. barra de URL 120px)
+    it('coarse with only height different -> false', () => {
+      // Mobile (<768px): height changes significantly (e.g. 120px URL bar)
       const prevMobile = { width: 390, height: 844, dpr: 3 }
       const curMobile = { width: 390, height: 724, dpr: 3 }
       expect(shouldRealignOnResize({ prev: prevMobile, cur: curMobile, coarse: true })).toBe(false)
 
-      // Tablet / apaisado (>=768px): alto cambia
+      // Tablet / landscape (>=768px): height changes
       const prevTablet = { width: 800, height: 600, dpr: 2 }
       const curTablet = { width: 800, height: 520, dpr: 2 }
       expect(shouldRealignOnResize({ prev: prevTablet, cur: curTablet, coarse: true })).toBe(false)
     })
 
-    it('coarse con ancho distinto -> true', () => {
+    it('coarse with different width -> true', () => {
       const prev = { width: 375, height: 667, dpr: 2 }
       const cur = { width: 390, height: 667, dpr: 2 }
       expect(shouldRealignOnResize({ prev, cur, coarse: true })).toBe(true)
     })
 
-    it('coarse cruzando 768px -> true', () => {
+    it('coarse crossing 768px -> true', () => {
       const prev = { width: 700, height: 600, dpr: 1 }
       const cur = { width: 800, height: 600, dpr: 1 }
       expect(shouldRealignOnResize({ prev, cur, coarse: true })).toBe(true)
@@ -285,20 +285,20 @@ describe('slides logic', () => {
       expect(shouldRealignOnResize({ prev: prev2, cur: cur2, coarse: true })).toBe(true)
     })
 
-    it('sin coarse (o coarse=false) conserva el mismo resultado que antes', () => {
-      // Escritorio con cambio de alto -> true
+    it('without coarse (or coarse=false) retains same result as before', () => {
+      // Desktop with height change -> true
       const prevDesk = { width: 1024, height: 768, dpr: 1 }
       const curDesk = { width: 1024, height: 769, dpr: 1 }
       expect(shouldRealignOnResize({ prev: prevDesk, cur: curDesk, coarse: false })).toBe(true)
       expect(shouldRealignOnResize({ prev: prevDesk, cur: curDesk })).toBe(true)
 
-      // Móvil con cambio de alto <96px -> false
+      // Mobile with height change <96px -> false
       const prevMob = { width: 375, height: 611, dpr: 2 }
       const curMobSmall = { width: 375, height: 667, dpr: 2 }
       expect(shouldRealignOnResize({ prev: prevMob, cur: curMobSmall, coarse: false })).toBe(false)
       expect(shouldRealignOnResize({ prev: prevMob, cur: curMobSmall })).toBe(false)
 
-      // Móvil con cambio de alto >=96px -> true
+      // Mobile with height change >=96px -> true
       const curMobLarge = { width: 375, height: 718, dpr: 2 }
       expect(shouldRealignOnResize({ prev: prevMob, cur: curMobLarge, coarse: false })).toBe(true)
       expect(shouldRealignOnResize({ prev: prevMob, cur: curMobLarge })).toBe(true)

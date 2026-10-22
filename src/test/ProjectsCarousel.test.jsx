@@ -16,14 +16,14 @@ describe('ProjectsCarousel', () => {
     }
   })
 
-  test('renderiza las 3 tarjetas con sus nombres en español', () => {
+  test('renders the 3 cards with their names in Spanish', () => {
     render(<ProjectsCarousel />)
     expect(screen.getByText(/Games Deal Tracker/i)).toBeInTheDocument()
     expect(screen.getByText(/Price Alert Bot/i)).toBeInTheDocument()
     expect(screen.getByText(/AI Memory Assistant/i)).toBeInTheDocument()
   })
 
-  test('al cambiar a inglés, los nombres y descripciones cambian', () => {
+  test('when switching to English, names and descriptions change', () => {
     render(<ProjectsCarousel />)
     act(() => {
       i18n.changeLanguage('en')
@@ -31,7 +31,7 @@ describe('ProjectsCarousel', () => {
     expect(screen.getByText(i18n.t('projects.items.aiMemoryAssistant.name'))).toBeInTheDocument()
   })
 
-  test('con scrollWidth <= clientWidth, los botones anterior/siguiente no existen', () => {
+  test('with scrollWidth <= clientWidth, prev/next buttons do not exist', () => {
     // Need to render and mock scrollWidth and clientWidth
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
@@ -42,7 +42,7 @@ describe('ProjectsCarousel', () => {
     expect(screen.queryByLabelText('Proyecto siguiente')).not.toBeInTheDocument()
   })
 
-  test('las flechas se actualizan tras evento de resize mediante observeScrollState', async () => {
+  test('arrows update after resize event via observeScrollState', async () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
@@ -57,7 +57,7 @@ describe('ProjectsCarousel', () => {
     })
   })
 
-  test('con scrollWidth > clientWidth, el botón siguiente llama a scrollBy con un left positivo', () => {
+  test('with scrollWidth > clientWidth, next button calls scrollBy with positive left', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
@@ -85,7 +85,7 @@ describe('ProjectsCarousel', () => {
     }))
   })
 
-  test('scrollIntoView se llama con inline: "start" para coincidir con snap-start', () => {
+  test('scrollIntoView is called with inline: "start" to match snap-start', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
@@ -114,7 +114,7 @@ describe('ProjectsCarousel', () => {
     })
   })
 
-  test('tarjeta con repoUrl: null y demoUrl: null no renderiza pie, y con repoUrl renderiza el enlace con rel', () => {
+  test('card with repoUrl: null and demoUrl: null does not render footer, and with repoUrl renders link with rel', () => {
     const projectEmpty = {
       id: 'gamesDealTracker',
       image: null,
@@ -138,7 +138,7 @@ describe('ProjectsCarousel', () => {
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
-  test('el ul incluye las clases short:py-6, short:-mt-6 y short:-mb-3', () => {
+  test('ul includes classes short:py-6, short:-mt-6, and short:-mb-3', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     expect(list.className).toContain('short:py-6')
@@ -153,7 +153,7 @@ describe('ProjectsCarousel', () => {
     expect(list.className).toContain('[-webkit-mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)]')
   })
 
-  test('las tarjetas li incluyen short:w-[58%], short:lg:w-[calc((100%-3rem)/3)], short:min-[960px]:max-lg:w-[calc((100%-1.5rem)/2)] y clase para landscape 768-1023px a 521-660px', () => {
+  test('li cards include short:w-[58%], short:lg:w-[calc((100%-3rem)/3)], short:min-[960px]:max-lg:w-[calc((100%-1.5rem)/2)] and class for landscape 768-1023px at 521-660px', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     const items = list.querySelectorAll('li')
@@ -166,7 +166,7 @@ describe('ProjectsCarousel', () => {
     })
   })
 
-  test('contador en pantalla baja: se oculta el inferior y se muestra en la cabecera entre las flechas', () => {
+  test('counter on short screen: bottom counter hides and header counter displays between arrows', () => {
     const { container } = render(<ProjectsCarousel />)
     const section = container.querySelector('section#proyectos')
     expect(section.className).not.toContain('short:h-[100dvh]')
@@ -177,7 +177,7 @@ describe('ProjectsCarousel', () => {
     Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 1500 })
     fireEvent.scroll(list)
 
-    // Contador de abajo
+    // Bottom counter
     const bottomCounterDiv = container.querySelector('div.mt-4')
     expect(bottomCounterDiv.className).toContain('short:hidden')
     expect(bottomCounterDiv.className).not.toContain('short:block')
@@ -187,7 +187,7 @@ describe('ProjectsCarousel', () => {
     const bottomSpan = bottomCounterDiv.querySelector('span')
     expect(bottomSpan.className).not.toContain('short:text-xs')
 
-    // Contador de la cabecera (actions)
+    // Header counter (actions)
     const headerCounter = container.querySelector('span.tabular-nums')
     expect(headerCounter).toBeInTheDocument()
     expect(headerCounter.className).toContain('hidden')
@@ -201,7 +201,7 @@ describe('ProjectsCarousel', () => {
     expect(headerCounter.textContent).toBe('1 / 3')
   })
 
-  test('al final del scroll el contador muestra el último ("3 / 3")', () => {
+  test('at the end of scroll, counter displays the last one ("3 / 3")', () => {
     const { container } = render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
@@ -225,7 +225,7 @@ describe('ProjectsCarousel', () => {
     expect(headerCounter.textContent).toBe('3 / 3')
   })
 
-  test('desde el final, prev apunta a la tarjeta 2 y no a la 1', () => {
+  test('from the end, prev targets card 2 and not card 1', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })
@@ -254,7 +254,7 @@ describe('ProjectsCarousel', () => {
     expect(mockChild0.scrollIntoView).not.toHaveBeenCalled()
   })
 
-  test('next no hace nada al final', () => {
+  test('next does nothing at the end', () => {
     render(<ProjectsCarousel />)
     const list = screen.getByRole('list')
     Object.defineProperty(list, 'clientWidth', { configurable: true, value: 500 })

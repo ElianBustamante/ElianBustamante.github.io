@@ -16,7 +16,7 @@ describe('Navbar', () => {
     }
   })
 
-  it('al abrir el menú móvil, el foco va al primer enlace del panel; Escape cierra y devuelve el foco al botón', async () => {
+  it('when opening mobile menu, focus moves to first link in panel; Escape closes and returns focus to button', async () => {
     const user = userEvent.setup()
     const { container } = render(<Navbar />)
 
@@ -32,13 +32,13 @@ describe('Navbar', () => {
     const firstLink = mobileMenu.querySelector('a')
     expect(firstLink).toHaveFocus()
 
-    // Escape cierra y devuelve el foco
+    // Escape closes and returns focus
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
     expect(menuButton).toHaveFocus()
   })
 
-  it('cierra el menú móvil al tocar fuera (pointerdown)', async () => {
+  it('closes mobile menu on outside touch (pointerdown)', async () => {
     const user = userEvent.setup()
     const { container } = render(<Navbar />)
 
@@ -50,7 +50,7 @@ describe('Navbar', () => {
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('la cabecera superior incluye la clase short:hidden', () => {
+  it('top header includes class short:hidden', () => {
     const { container } = render(<Navbar />)
     const header = container.querySelector('header')
     expect(header.className).toContain('short:hidden')

@@ -66,7 +66,7 @@ describe('TechGroup', () => {
 
     const { rerender } = render(<TechGroup label="Lenguajes" items={items} maxLines={1} />)
 
-    // Con maxLines=1 y ancho 200: 60 + 8 + 60 + 8 + 30 = 166 <= 200 -> 2 cápsulas visibles y "+4"
+    // With maxLines=1 and width 200: 60 + 8 + 60 + 8 + 30 = 166 <= 200 -> 2 visible capsules and "+4"
     const visibleLine1 = screen
       .getAllByRole('listitem')
       .map((li) => li.textContent)
@@ -85,7 +85,7 @@ describe('TechGroup', () => {
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    // Con maxLines=2: caben 3 en línea 1 (196) y 3 en línea 2 (196) -> se ven las 6 cápsulas
+    // With maxLines=2: 3 fit on line 1 (196) and 3 on line 2 (196) -> all 6 capsules are visible
     rerender(<TechGroup label="Lenguajes" items={items} maxLines={2} />)
     const visibleLine2 = screen
       .getAllByRole('listitem')
@@ -94,7 +94,7 @@ describe('TechGroup', () => {
     expect(visibleLine2.length).toBeGreaterThan(visibleLine1.length)
     expect(visibleLine2).toEqual(items)
 
-    // Sin pasar maxLines: usa el valor por defecto 1 y se comporta igual que maxLines=1
+    // Without passing maxLines: uses default value 1 and behaves identically to maxLines=1
     rerender(<TechGroup label="Lenguajes" items={items} />)
     const visibleDefault = screen
       .getAllByRole('listitem')

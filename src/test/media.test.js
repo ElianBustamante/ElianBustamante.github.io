@@ -10,19 +10,19 @@ describe('media queries and helpers', () => {
     window.matchMedia = originalMatchMedia
   })
 
-  it('exporta INNER_SCROLL_QUERY correctamente', () => {
+  it('exports INNER_SCROLL_QUERY correctly', () => {
     expect(INNER_SCROLL_QUERY).toBe('(max-width: 767.98px) and (pointer: coarse)')
   })
 
-  it('exporta SHORT_SCREEN_QUERY correctamente', () => {
+  it('exports SHORT_SCREEN_QUERY correctly', () => {
     expect(SHORT_SCREEN_QUERY).toBe('(orientation: landscape) and (max-height: 600px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)')
   })
 
-  it('exporta ABOUT_PAGED_QUERY correctamente', () => {
+  it('exports ABOUT_PAGED_QUERY correctly', () => {
     expect(ABOUT_PAGED_QUERY).toBe('(max-width: 767px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px)')
   })
 
-  it('SHORT_SCREEN_QUERY aparece tal cual dos veces en src/index.css (@custom-variant short y :root)', () => {
+  it('SHORT_SCREEN_QUERY appears verbatim twice in src/index.css (@custom-variant short and :root)', () => {
     const cssPath = '../index.css'
     const cssUrl = new URL(cssPath, import.meta.url)
     const css = readFileSync(cssUrl, 'utf8')
@@ -30,12 +30,12 @@ describe('media queries and helpers', () => {
     expect(occurrences).toBe(2)
   })
 
-  it('usesInnerScroll devuelve false si matchMedia no existe', () => {
+  it('usesInnerScroll returns false if matchMedia does not exist', () => {
     delete window.matchMedia
     expect(usesInnerScroll()).toBe(false)
   })
 
-  it('usesInnerScroll devuelve true si la query coincide', () => {
+  it('usesInnerScroll returns true if the query matches', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: query === INNER_SCROLL_QUERY,
       media: query,
@@ -48,7 +48,7 @@ describe('media queries and helpers', () => {
     expect(window.matchMedia).toHaveBeenCalledWith(INNER_SCROLL_QUERY)
   })
 
-  it('usesInnerScroll devuelve false si la query no coincide', () => {
+  it('usesInnerScroll returns false if the query does not match', () => {
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
