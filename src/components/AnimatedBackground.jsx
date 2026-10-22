@@ -1,5 +1,5 @@
 export default function AnimatedBackground() {
-  // Real formatted code blocks
+  // Formatted code snippets rendered along the left and right walls of the 3D corridor
   const codeBlocks = [
     // Left wall
     { code: "async function fetch() {\n  const res = await api.get('/data');\n  return res.json();\n}", top: '2%', delay: '-5s', duration: '35s', depth: 'far', dir: 'left' },
