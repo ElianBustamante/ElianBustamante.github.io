@@ -1,6 +1,7 @@
 [
   {
     "id": "01",
+    "file": "01.jpg",
     "thumb": {
       "src": "/photos/01-thumb.webp",
       "width": 800,
@@ -10,14 +11,6 @@
       "src": "/photos/01-large.webp",
       "width": 1599,
       "height": 2400
-    },
-    "alt": {
-      "es": "Cascada en un bosque con hojas rojas y anaranjadas",
-      "en": "Waterfall in a forest with red and orange leaves"
-    },
-    "title": {
-      "es": "Salto Amancay",
-      "en": "Amancay Waterfall"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -30,6 +23,7 @@
   },
   {
     "id": "02",
+    "file": "02.jpg",
     "thumb": {
       "src": "/photos/02-thumb.webp",
       "width": 800,
@@ -39,14 +33,6 @@
       "src": "/photos/02-large.webp",
       "width": 1599,
       "height": 2400
-    },
-    "alt": {
-      "es": "Volcán nevado bajo un cielo azul, con arbustos rojizos al frente",
-      "en": "Snow-capped volcano under a blue sky with reddish shrubs in front"
-    },
-    "title": {
-      "es": "Volcán Lanín",
-      "en": "Lanín Volcano"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -59,6 +45,7 @@
   },
   {
     "id": "03",
+    "file": "03.jpg",
     "thumb": {
       "src": "/photos/03-thumb.webp",
       "width": 800,
@@ -68,14 +55,6 @@
       "src": "/photos/03-large.webp",
       "width": 1600,
       "height": 2400
-    },
-    "alt": {
-      "es": "Ladera rocosa con bosque de otoño y araucarias en la cima",
-      "en": "Rocky hillside with autumn forest and araucaria trees on top"
-    },
-    "title": {
-      "es": "Camino al Paso Mamuil Malal",
-      "en": "Road to Mamuil Malal Pass"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -88,6 +67,7 @@
   },
   {
     "id": "04",
+    "file": "04.jpg",
     "thumb": {
       "src": "/photos/04-thumb.webp",
       "width": 800,
@@ -97,14 +77,6 @@
       "src": "/photos/04-large.webp",
       "width": 1599,
       "height": 2400
-    },
-    "alt": {
-      "es": "Árbol seco frente a picos de roca entre nubes",
-      "en": "Dead tree in front of rocky peaks among clouds"
-    },
-    "title": {
-      "es": "Cerro Las Peinetas",
-      "en": "Mount Las Peinetas"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -117,6 +89,7 @@
   },
   {
     "id": "05",
+    "file": "05.jpg",
     "thumb": {
       "src": "/photos/05-thumb.webp",
       "width": 800,
@@ -126,14 +99,6 @@
       "src": "/photos/05-large.webp",
       "width": 2400,
       "height": 1600
-    },
-    "alt": {
-      "es": "Picos de roca entre nubes sobre un bosque de otoño",
-      "en": "Rocky peaks among clouds above an autumn forest"
-    },
-    "title": {
-      "es": "Cerro Las Peinetas",
-      "en": "Mount Las Peinetas"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -146,6 +111,7 @@
   },
   {
     "id": "06",
+    "file": "06.jpg",
     "thumb": {
       "src": "/photos/06-thumb.webp",
       "width": 800,
@@ -155,14 +121,6 @@
       "src": "/photos/06-large.webp",
       "width": 2400,
       "height": 1600
-    },
-    "alt": {
-      "es": "Pequeña cumbre nevada sobre un bosque de otoño",
-      "en": "Small snowy peak above an autumn forest"
-    },
-    "title": {
-      "es": "Volcán Quinquilil",
-      "en": "Quinquilil Volcano"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -175,6 +133,7 @@
   },
   {
     "id": "07",
+    "file": "07.jpg",
     "thumb": {
       "src": "/photos/07-thumb.webp",
       "width": 800,
@@ -184,14 +143,6 @@
       "src": "/photos/07-large.webp",
       "width": 2400,
       "height": 1600
-    },
-    "alt": {
-      "es": "Cumbre nevada entre la niebla sobre un lago oscuro",
-      "en": "Snowy peak in the mist above a dark lake"
-    },
-    "title": {
-      "es": "Mirador del Lago Quillelhue",
-      "en": "Quillelhue Lake Viewpoint"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -204,6 +155,7 @@
   },
   {
     "id": "08",
+    "file": "08.jpg",
     "thumb": {
       "src": "/photos/08-thumb.webp",
       "width": 800,
@@ -213,14 +165,6 @@
       "src": "/photos/08-large.webp",
       "width": 1600,
       "height": 2400
-    },
-    "alt": {
-      "es": "Bosque nevado con araucarias junto a un lago, entre la niebla",
-      "en": "Snowy forest with araucaria trees beside a lake, in the mist"
-    },
-    "title": {
-      "es": "Mirador del Lago Quillelhue",
-      "en": "Quillelhue Lake Viewpoint"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -233,6 +177,7 @@
   },
   {
     "id": "09",
+    "file": "09.jpg",
     "thumb": {
       "src": "/photos/09-thumb.webp",
       "width": 800,
@@ -242,14 +187,6 @@
       "src": "/photos/09-large.webp",
       "width": 1600,
       "height": 2400
-    },
-    "alt": {
-      "es": "Camino rodeado de árboles cubiertos de nieve",
-      "en": "Road lined with snow-covered trees"
-    },
-    "title": {
-      "es": "Camino al Paso Mamuil Malal",
-      "en": "Road to Mamuil Malal Pass"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -262,6 +199,7 @@
   },
   {
     "id": "10",
+    "file": "10.jpg",
     "thumb": {
       "src": "/photos/10-thumb.webp",
       "width": 800,
@@ -271,14 +209,6 @@
       "src": "/photos/10-large.webp",
       "width": 1600,
       "height": 2400
-    },
-    "alt": {
-      "es": "Varias cascadas sobre una pared de roca en un bosque",
-      "en": "Several waterfalls over a rock wall in a forest"
-    },
-    "title": {
-      "es": "Saltos del Pichi Ignao",
-      "en": "Pichi Ignao Falls"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -291,6 +221,7 @@
   },
   {
     "id": "11",
+    "file": "11.jpg",
     "thumb": {
       "src": "/photos/11-thumb.webp",
       "width": 800,
@@ -300,14 +231,6 @@
       "src": "/photos/11-large.webp",
       "width": 1599,
       "height": 2400
-    },
-    "alt": {
-      "es": "Cascada entre rocas y bosque, con un río en primer plano",
-      "en": "Waterfall between rocks and forest, with a river in front"
-    },
-    "title": {
-      "es": "Salto del Nilahue",
-      "en": "Nilahue Waterfall"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -320,6 +243,7 @@
   },
   {
     "id": "12",
+    "file": "12.jpg",
     "thumb": {
       "src": "/photos/12-thumb.webp",
       "width": 800,
@@ -329,14 +253,6 @@
       "src": "/photos/12-large.webp",
       "width": 1599,
       "height": 2400
-    },
-    "alt": {
-      "es": "Isla Maiquillahue, conocida como Isla de los Pingüinos",
-      "en": "Maiquillahue Island, known locally as Isla de los Pingüinos"
-    },
-    "title": {
-      "es": "Isla Maiquillahue",
-      "en": "Maiquillahue Island"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -349,6 +265,7 @@
   },
   {
     "id": "13",
+    "file": "13.jpg",
     "thumb": {
       "src": "/photos/13-thumb.webp",
       "width": 800,
@@ -359,25 +276,18 @@
       "width": 1600,
       "height": 2400
     },
-    "alt": {
-      "es": "Dos cascadas entre rocas y bosque, con bruma de agua",
-      "en": "Two waterfalls between rocks and forest, with spray mist"
-    },
-    "title": {
-      "es": "Salto Huilo Huilo",
-      "en": "Huilo Huilo Waterfall"
-    },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
-      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "lens": null,
       "focalLength": "20 mm",
       "aperture": "f/10",
-      "shutter": "1/800 s",
+      "shutter": "1/833 s",
       "iso": 800
     }
   },
   {
     "id": "14",
+    "file": "14.jpg",
     "thumb": {
       "src": "/photos/14-thumb.webp",
       "width": 800,
@@ -387,14 +297,6 @@
       "src": "/photos/14-large.webp",
       "width": 1600,
       "height": 2400
-    },
-    "alt": {
-      "es": "Cima de un volcán nevado con una pequeña columna de humo",
-      "en": "Snow-covered volcano summit with a small plume of smoke"
-    },
-    "title": {
-      "es": "Volcán Villarrica",
-      "en": "Villarrica Volcano"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -407,6 +309,7 @@
   },
   {
     "id": "15",
+    "file": "15.jpg",
     "thumb": {
       "src": "/photos/15-thumb.webp",
       "width": 800,
@@ -416,14 +319,6 @@
       "src": "/photos/15-large.webp",
       "width": 2400,
       "height": 1600
-    },
-    "alt": {
-      "es": "Volcán nevado bajo un cielo nublado",
-      "en": "Snow-covered volcano under a cloudy sky"
-    },
-    "title": {
-      "es": "Volcán Villarrica",
-      "en": "Villarrica Volcano"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -436,6 +331,7 @@
   },
   {
     "id": "16",
+    "file": "16.jpg",
     "thumb": {
       "src": "/photos/16-thumb.webp",
       "width": 800,
@@ -445,14 +341,6 @@
       "src": "/photos/16-large.webp",
       "width": 2400,
       "height": 1599
-    },
-    "alt": {
-      "es": "Luna roja sobre un cielo negro",
-      "en": "Red Moon in a black sky"
-    },
-    "title": {
-      "es": "Eclipse lunar total (Temuco, 2022)",
-      "en": "Total lunar eclipse (Temuco, 2022)"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -465,6 +353,7 @@
   },
   {
     "id": "17",
+    "file": "17.jpg",
     "thumb": {
       "src": "/photos/17-thumb.webp",
       "width": 800,
@@ -474,14 +363,6 @@
       "src": "/photos/17-large.webp",
       "width": 2400,
       "height": 1600
-    },
-    "alt": {
-      "es": "Estelas de estrellas girando sobre siluetas de árboles",
-      "en": "Star trails circling above tree silhouettes"
-    },
-    "title": {
-      "es": "Estelas de estrellas (Molco, 2020)",
-      "en": "Star trails (Molco, 2020)"
     },
     "exif": {
       "camera": "Canon EOS Rebel T7i",
@@ -494,6 +375,7 @@
   },
   {
     "id": "18",
+    "file": "18.jpg",
     "thumb": {
       "src": "/photos/18-thumb.webp",
       "width": 800,
@@ -504,25 +386,18 @@
       "width": 1764,
       "height": 2400
     },
-    "alt": {
-      "es": "Laguna tranquila con reflejos de bosque y roca, y troncos caídos",
-      "en": "Calm lagoon reflecting forest and rock, with fallen logs"
-    },
-    "title": {
-      "es": "Laguna Chica (Huerquehue)",
-      "en": "Laguna Chica (Huerquehue)"
-    },
     "exif": {
-      "camera": "Canon EOS Rebel T6",
-      "lens": "EF-S 18-55mm f/4-5.6 IS STM",
-      "focalLength": "18 mm",
-      "aperture": "f/8",
-      "shutter": "1/2000 s",
-      "iso": 6400
+      "camera": null,
+      "lens": null,
+      "focalLength": null,
+      "aperture": null,
+      "shutter": null,
+      "iso": null
     }
   },
   {
     "id": "19",
+    "file": "19.jpg",
     "thumb": {
       "src": "/photos/19-thumb.webp",
       "width": 800,
@@ -533,25 +408,18 @@
       "width": 1599,
       "height": 2400
     },
-    "alt": {
-      "es": "Sol poniéndose tras el bosque, con nubes doradas y su reflejo en el agua",
-      "en": "Sun setting behind the forest, with golden clouds and its reflection on the water"
-    },
-    "title": {
-      "es": "Atardecer en Playa Linda",
-      "en": "Sunset at Playa Linda"
-    },
     "exif": {
-      "camera": "Canon EOS Rebel T6",
-      "lens": "EF75-300mm f/4-5.6",
-      "focalLength": "300 mm",
-      "aperture": "f/11",
-      "shutter": "1/2000 s",
-      "iso": 100
+      "camera": null,
+      "lens": null,
+      "focalLength": null,
+      "aperture": null,
+      "shutter": null,
+      "iso": null
     }
   },
   {
     "id": "20",
+    "file": "20.jpg",
     "thumb": {
       "src": "/photos/20-thumb.webp",
       "width": 800,
@@ -562,21 +430,13 @@
       "width": 2400,
       "height": 1600
     },
-    "alt": {
-      "es": "Volcán nevado en un cielo violeta, con un brillo rosado en la cima",
-      "en": "Snow-covered volcano in a violet sky with a pink glow at the summit"
-    },
-    "title": {
-      "es": "Volcán Villarrica",
-      "en": "Villarrica Volcano"
-    },
     "exif": {
-      "camera": "Canon EOS Rebel T6",
-      "lens": "EF75-300mm f/4-5.6",
-      "focalLength": "300 mm",
-      "aperture": "f/11",
-      "shutter": "30 s",
-      "iso": 100
+      "camera": null,
+      "lens": null,
+      "focalLength": null,
+      "aperture": null,
+      "shutter": null,
+      "iso": null
     }
   }
 ]
