@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Modo riel: debe mantenerse idéntico a :root y a SHORT_SCREEN_QUERY en src/lib/media.js */
+/* Rail mode: must remain identical to :root and SHORT_SCREEN_QUERY in src/lib/media.js */
 @custom-variant short {
   @media (orientation: landscape) and (max-height: 600px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px) {
     @slot;
@@ -61,7 +61,7 @@ html {
   --header-h: 5.5rem;
   --rail-w: 0px;
 }
-/* Modo riel: debe mantenerse idéntico a @custom-variant short y a SHORT_SCREEN_QUERY en src/lib/media.js */
+/* Rail mode: must remain identical to @custom-variant short and SHORT_SCREEN_QUERY in src/lib/media.js */
 @media (orientation: landscape) and (max-height: 600px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px) {
   :root {
     --header-h: 0px;
@@ -152,7 +152,7 @@ button:not(:disabled) {
   }
 }
 
-/* Animaciones GPU para el Corredor de Código 3D */
+/* GPU animations for the 3D code corridor */
 @keyframes corridor-left {
   0% { transform: translateX(100vw); }
   100% { transform: translateX(-100vw); }
@@ -168,7 +168,7 @@ button:not(:disabled) {
   animation: corridor-right linear infinite;
 }
 
-/* Transiciones cinematográficas suaves para el Lightbox */
+/* Smooth cinematic transitions for the Lightbox */
 ::view-transition-group(lightbox-image) {
   animation-duration: 320ms;
   animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -177,7 +177,7 @@ button:not(:disabled) {
 
 ::view-transition-old(lightbox-image),
 ::view-transition-new(lightbox-image) {
-  /* Al navegar entre fotos (siguiente/anterior), sí queremos un crossfade suave */
+  /* When navigating between photos (next/prev), enable smooth crossfade */
   animation-duration: 320ms;
   animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
   width: 100%;
@@ -185,7 +185,7 @@ button:not(:disabled) {
   object-fit: cover;
 }
 
-/* Solo al abrir: quitamos el crossfade y ocultamos la miniatura vieja para evitar el fantasma estirado */
+/* On open only: remove crossfade and hide old thumbnail to prevent stretched ghosting */
 html[data-vt='open']::view-transition-old(lightbox-image),
 html[data-vt='open']::view-transition-new(lightbox-image) {
   animation: none;
@@ -195,7 +195,7 @@ html[data-vt='open']::view-transition-old(lightbox-image) {
   opacity: 0; 
 }
 
-/* Evitar que toda la pantalla haga un "fantasma" cruzado (solo queremos que vuele la foto) */
+/* Prevent crossfade ghosting across the entire screen (only the photo should animate) */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
