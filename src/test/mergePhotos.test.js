@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mergePhotos } from './mergePhotos'
+import { mergePhotos } from '../lib/mergePhotos'
 
 describe('mergePhotos', () => {
   const basePhotos = [

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { observeScrollState } from './overflow'
-import { SHORT_SCREEN_QUERY } from './media'
+import { observeScrollState } from '../lib/overflow'
+import { SHORT_SCREEN_QUERY } from '../lib/media'
 
 describe('observeScrollState', () => {
   let list

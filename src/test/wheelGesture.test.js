@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { createWheelGesture, normalizeWheelDelta } from './wheelGesture'
+import { createWheelGesture, normalizeWheelDelta } from '../lib/wheelGesture'
 
 const ANIM = 600 // duración simulada de la transición de sección (ms)
 
