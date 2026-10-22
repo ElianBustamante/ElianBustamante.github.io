@@ -1,0 +1,442 @@
+[
+  {
+    "id": "01",
+    "file": "01.jpg",
+    "thumb": {
+      "src": "/photos/01-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/01-large.webp",
+      "width": 1599,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "18 mm",
+      "aperture": "f/13",
+      "shutter": "30 s",
+      "iso": 400
+    }
+  },
+  {
+    "id": "02",
+    "file": "02.jpg",
+    "thumb": {
+      "src": "/photos/02-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/02-large.webp",
+      "width": 1599,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "35 mm",
+      "aperture": "f/10",
+      "shutter": "1/1000 s",
+      "iso": 400
+    }
+  },
+  {
+    "id": "03",
+    "file": "03.jpg",
+    "thumb": {
+      "src": "/photos/03-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/03-large.webp",
+      "width": 1600,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "67 mm",
+      "aperture": "f/11",
+      "shutter": "1/200 s",
+      "iso": 400
+    }
+  },
+  {
+    "id": "04",
+    "file": "04.jpg",
+    "thumb": {
+      "src": "/photos/04-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/04-large.webp",
+      "width": 1599,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "35 mm",
+      "aperture": "f/13",
+      "shutter": "1/500 s",
+      "iso": 800
+    }
+  },
+  {
+    "id": "05",
+    "file": "05.jpg",
+    "thumb": {
+      "src": "/photos/05-thumb.webp",
+      "width": 800,
+      "height": 533
+    },
+    "large": {
+      "src": "/photos/05-large.webp",
+      "width": 2400,
+      "height": 1600
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "35 mm",
+      "aperture": "f/13",
+      "shutter": "1/500 s",
+      "iso": 800
+    }
+  },
+  {
+    "id": "06",
+    "file": "06.jpg",
+    "thumb": {
+      "src": "/photos/06-thumb.webp",
+      "width": 800,
+      "height": 533
+    },
+    "large": {
+      "src": "/photos/06-large.webp",
+      "width": 2400,
+      "height": 1600
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "135 mm",
+      "aperture": "f/11",
+      "shutter": "1/320 s",
+      "iso": 400
+    }
+  },
+  {
+    "id": "07",
+    "file": "07.jpg",
+    "thumb": {
+      "src": "/photos/07-thumb.webp",
+      "width": 800,
+      "height": 533
+    },
+    "large": {
+      "src": "/photos/07-large.webp",
+      "width": 2400,
+      "height": 1600
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "35 mm",
+      "aperture": "f/10",
+      "shutter": "1/250 s",
+      "iso": 800
+    }
+  },
+  {
+    "id": "08",
+    "file": "08.jpg",
+    "thumb": {
+      "src": "/photos/08-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/08-large.webp",
+      "width": 1600,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "135 mm",
+      "aperture": "f/10",
+      "shutter": "1/200 s",
+      "iso": 800
+    }
+  },
+  {
+    "id": "09",
+    "file": "09.jpg",
+    "thumb": {
+      "src": "/photos/09-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/09-large.webp",
+      "width": 1600,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "24 mm",
+      "aperture": "f/10",
+      "shutter": "1/250 s",
+      "iso": 800
+    }
+  },
+  {
+    "id": "10",
+    "file": "10.jpg",
+    "thumb": {
+      "src": "/photos/10-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/10-large.webp",
+      "width": 1600,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "29 mm",
+      "aperture": "f/11",
+      "shutter": "3.2 s",
+      "iso": 1600
+    }
+  },
+  {
+    "id": "11",
+    "file": "11.jpg",
+    "thumb": {
+      "src": "/photos/11-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/11-large.webp",
+      "width": 1599,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "35 mm",
+      "aperture": "f/22",
+      "shutter": "220 s",
+      "iso": 100
+    }
+  },
+  {
+    "id": "12",
+    "file": "12.jpg",
+    "thumb": {
+      "src": "/photos/12-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/12-large.webp",
+      "width": 1599,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "18 mm",
+      "aperture": "f/22",
+      "shutter": "13 s",
+      "iso": 100
+    }
+  },
+  {
+    "id": "13",
+    "file": "13.jpg",
+    "thumb": {
+      "src": "/photos/13-thumb.webp",
+      "width": 800,
+      "height": 1199
+    },
+    "large": {
+      "src": "/photos/13-large.webp",
+      "width": 1600,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": null,
+      "focalLength": "20 mm",
+      "aperture": "f/10",
+      "shutter": "1/833 s",
+      "iso": 800
+    }
+  },
+  {
+    "id": "14",
+    "file": "14.jpg",
+    "thumb": {
+      "src": "/photos/14-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/14-large.webp",
+      "width": 1600,
+      "height": 2400
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF75-300mm f/4-5.6",
+      "focalLength": "300 mm",
+      "aperture": "f/20",
+      "shutter": "1/1000 s",
+      "iso": 400
+    }
+  },
+  {
+    "id": "15",
+    "file": "15.jpg",
+    "thumb": {
+      "src": "/photos/15-thumb.webp",
+      "width": 800,
+      "height": 533
+    },
+    "large": {
+      "src": "/photos/15-large.webp",
+      "width": 2400,
+      "height": 1600
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "135 mm",
+      "aperture": "f/10",
+      "shutter": "1/1600 s",
+      "iso": 200
+    }
+  },
+  {
+    "id": "16",
+    "file": "16.jpg",
+    "thumb": {
+      "src": "/photos/16-thumb.webp",
+      "width": 800,
+      "height": 533
+    },
+    "large": {
+      "src": "/photos/16-large.webp",
+      "width": 2400,
+      "height": 1599
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF75-300mm f/4-5.6",
+      "focalLength": "290 mm",
+      "aperture": "f/5.6",
+      "shutter": "1/2 s",
+      "iso": 3200
+    }
+  },
+  {
+    "id": "17",
+    "file": "17.jpg",
+    "thumb": {
+      "src": "/photos/17-thumb.webp",
+      "width": 800,
+      "height": 533
+    },
+    "large": {
+      "src": "/photos/17-large.webp",
+      "width": 2400,
+      "height": 1600
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T7i",
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "focalLength": "18 mm",
+      "aperture": "f/4",
+      "shutter": "1801 s",
+      "iso": 200
+    }
+  },
+  {
+    "id": "18",
+    "file": "18.jpg",
+    "thumb": {
+      "src": "/photos/18-thumb.webp",
+      "width": 800,
+      "height": 1088
+    },
+    "large": {
+      "src": "/photos/18-large.webp",
+      "width": 1764,
+      "height": 2400
+    },
+    "exif": {
+      "camera": null,
+      "lens": null,
+      "focalLength": null,
+      "aperture": null,
+      "shutter": null,
+      "iso": null
+    }
+  },
+  {
+    "id": "19",
+    "file": "19.jpg",
+    "thumb": {
+      "src": "/photos/19-thumb.webp",
+      "width": 800,
+      "height": 1200
+    },
+    "large": {
+      "src": "/photos/19-large.webp",
+      "width": 1599,
+      "height": 2400
+    },
+    "exif": {
+      "camera": null,
+      "lens": null,
+      "focalLength": null,
+      "aperture": null,
+      "shutter": null,
+      "iso": null
+    }
+  },
+  {
+    "id": "20",
+    "file": "20.jpg",
+    "thumb": {
+      "src": "/photos/20-thumb.webp",
+      "width": 800,
+      "height": 533
+    },
+    "large": {
+      "src": "/photos/20-large.webp",
+      "width": 2400,
+      "height": 1600
+    },
+    "exif": {
+      "camera": null,
+      "lens": null,
+      "focalLength": null,
+      "aperture": null,
+      "shutter": null,
+      "iso": null
+    }
+  }
+]

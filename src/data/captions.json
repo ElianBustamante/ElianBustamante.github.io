@@ -1,0 +1,230 @@
+{
+  "01.jpg": {
+    "title": {
+      "es": "Salto Amancay",
+      "en": "Amancay Waterfall"
+    },
+    "alt": {
+      "es": "Cascada en un bosque con hojas rojas y anaranjadas",
+      "en": "Waterfall in a forest with red and orange leaves"
+    }
+  },
+  "02.jpg": {
+    "title": {
+      "es": "Volcán Lanín",
+      "en": "Lanín Volcano"
+    },
+    "alt": {
+      "es": "Volcán nevado bajo un cielo azul, con arbustos rojizos al frente",
+      "en": "Snow-capped volcano under a blue sky with reddish shrubs in front"
+    }
+  },
+  "03.jpg": {
+    "title": {
+      "es": "Camino al Paso Mamuil Malal",
+      "en": "Road to Mamuil Malal Pass"
+    },
+    "alt": {
+      "es": "Ladera rocosa con bosque de otoño y araucarias en la cima",
+      "en": "Rocky hillside with autumn forest and araucaria trees on top"
+    }
+  },
+  "04.jpg": {
+    "title": {
+      "es": "Cerro Las Peinetas",
+      "en": "Mount Las Peinetas"
+    },
+    "alt": {
+      "es": "Árbol seco frente a picos de roca entre nubes",
+      "en": "Dead tree in front of rocky peaks among clouds"
+    }
+  },
+  "05.jpg": {
+    "title": {
+      "es": "Cerro Las Peinetas",
+      "en": "Mount Las Peinetas"
+    },
+    "alt": {
+      "es": "Picos de roca entre nubes sobre un bosque de otoño",
+      "en": "Rocky peaks among clouds above an autumn forest"
+    }
+  },
+  "06.jpg": {
+    "title": {
+      "es": "Volcán Quinquilil",
+      "en": "Quinquilil Volcano"
+    },
+    "alt": {
+      "es": "Pequeña cumbre nevada sobre un bosque de otoño",
+      "en": "Small snowy peak above an autumn forest"
+    }
+  },
+  "07.jpg": {
+    "title": {
+      "es": "Mirador del Lago Quillelhue",
+      "en": "Quillelhue Lake Viewpoint"
+    },
+    "alt": {
+      "es": "Cumbre nevada entre la niebla sobre un lago oscuro",
+      "en": "Snowy peak in the mist above a dark lake"
+    }
+  },
+  "08.jpg": {
+    "title": {
+      "es": "Mirador del Lago Quillelhue",
+      "en": "Quillelhue Lake Viewpoint"
+    },
+    "alt": {
+      "es": "Bosque nevado con araucarias junto a un lago, entre la niebla",
+      "en": "Snowy forest with araucaria trees beside a lake, in the mist"
+    }
+  },
+  "09.jpg": {
+    "title": {
+      "es": "Camino al Paso Mamuil Malal",
+      "en": "Road to Mamuil Malal Pass"
+    },
+    "alt": {
+      "es": "Camino rodeado de árboles cubiertos de nieve",
+      "en": "Road lined with snow-covered trees"
+    }
+  },
+  "10.jpg": {
+    "title": {
+      "es": "Saltos del Pichi Ignao",
+      "en": "Pichi Ignao Falls"
+    },
+    "alt": {
+      "es": "Varias cascadas sobre una pared de roca en un bosque",
+      "en": "Several waterfalls over a rock wall in a forest"
+    }
+  },
+  "11.jpg": {
+    "title": {
+      "es": "Salto del Nilahue",
+      "en": "Nilahue Waterfall"
+    },
+    "alt": {
+      "es": "Cascada entre rocas y bosque, con un río en primer plano",
+      "en": "Waterfall between rocks and forest, with a river in front"
+    }
+  },
+  "12.jpg": {
+    "title": {
+      "es": "Isla Maiquillahue",
+      "en": "Maiquillahue Island"
+    },
+    "alt": {
+      "es": "Isla Maiquillahue, conocida como Isla de los Pingüinos",
+      "en": "Maiquillahue Island, known locally as Isla de los Pingüinos"
+    }
+  },
+  "13.jpg": {
+    "title": {
+      "es": "Salto Huilo Huilo",
+      "en": "Huilo Huilo Waterfall"
+    },
+    "alt": {
+      "es": "Dos cascadas entre rocas y bosque, con bruma de agua",
+      "en": "Two waterfalls between rocks and forest, with spray mist"
+    },
+    "exif": {
+      "lens": "EF-S18-135mm f/3.5-5.6 IS STM",
+      "shutter": "1/800 s"
+    }
+  },
+  "14.jpg": {
+    "title": {
+      "es": "Volcán Villarrica",
+      "en": "Villarrica Volcano"
+    },
+    "alt": {
+      "es": "Cima de un volcán nevado con una pequeña columna de humo",
+      "en": "Snow-covered volcano summit with a small plume of smoke"
+    }
+  },
+  "15.jpg": {
+    "title": {
+      "es": "Volcán Villarrica",
+      "en": "Villarrica Volcano"
+    },
+    "alt": {
+      "es": "Volcán nevado bajo un cielo nublado",
+      "en": "Snow-covered volcano under a cloudy sky"
+    }
+  },
+  "16.jpg": {
+    "title": {
+      "es": "Eclipse lunar total (Temuco, 2022)",
+      "en": "Total lunar eclipse (Temuco, 2022)"
+    },
+    "alt": {
+      "es": "Luna roja sobre un cielo negro",
+      "en": "Red Moon in a black sky"
+    }
+  },
+  "17.jpg": {
+    "title": {
+      "es": "Estelas de estrellas (Molco, 2020)",
+      "en": "Star trails (Molco, 2020)"
+    },
+    "alt": {
+      "es": "Estelas de estrellas girando sobre siluetas de árboles",
+      "en": "Star trails circling above tree silhouettes"
+    }
+  },
+  "18.jpg": {
+    "title": {
+      "es": "Laguna Chica (Huerquehue)",
+      "en": "Laguna Chica (Huerquehue)"
+    },
+    "alt": {
+      "es": "Laguna tranquila con reflejos de bosque y roca, y troncos caídos",
+      "en": "Calm lagoon reflecting forest and rock, with fallen logs"
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T6",
+      "lens": "EF-S 18-55mm f/4-5.6 IS STM",
+      "focalLength": "18 mm",
+      "aperture": "f/8",
+      "shutter": "1/2000 s",
+      "iso": 6400
+    }
+  },
+  "19.jpg": {
+    "title": {
+      "es": "Atardecer en Playa Linda",
+      "en": "Sunset at Playa Linda"
+    },
+    "alt": {
+      "es": "Sol poniéndose tras el bosque, con nubes doradas y su reflejo en el agua",
+      "en": "Sun setting behind the forest, with golden clouds and its reflection on the water"
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T6",
+      "lens": "EF75-300mm f/4-5.6",
+      "focalLength": "300 mm",
+      "aperture": "f/11",
+      "shutter": "1/2000 s",
+      "iso": 100
+    }
+  },
+  "20.jpg": {
+    "title": {
+      "es": "Volcán Villarrica",
+      "en": "Villarrica Volcano"
+    },
+    "alt": {
+      "es": "Volcán nevado en un cielo violeta, con un brillo rosado en la cima",
+      "en": "Snow-covered volcano in a violet sky with a pink glow at the summit"
+    },
+    "exif": {
+      "camera": "Canon EOS Rebel T6",
+      "lens": "EF75-300mm f/4-5.6",
+      "focalLength": "300 mm",
+      "aperture": "f/11",
+      "shutter": "30 s",
+      "iso": 100
+    }
+  }
+}

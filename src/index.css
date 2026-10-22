@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+/* Rail mode: must remain identical to :root and SHORT_SCREEN_QUERY in src/lib/media.js */
+@custom-variant short {
+  @media (orientation: landscape) and (max-height: 600px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px) {
+    @slot;
+  }
+}
+
+@custom-variant compact {
+  @media (orientation: landscape) and (max-height: 520px) {
+    @slot;
+  }
+}
+
+@custom-variant inner-scroll {
+  @media (max-width: 767.98px) and (pointer: coarse) {
+    @slot;
+  }
+}
+
+@theme {
+  --color-bg: #0a0a0a;
+  --color-surface: #141312;
+  --color-surface-2: #1c1a18;
+  --color-surface-3: #24211e;
+  --color-border: #2e2924;
+  --color-text: #f5f3f0;
+  --color-muted: #a8a29a;
+  --color-accent: #ff6a1a;
+  --color-accent-hover: #ff8340;
+  --color-on-accent: #0a0a0a;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 1rem;
+  --container-site: 81rem;
+  --animate-bounce-up: bounce-up 1s infinite;
+  --animate-bounce: nudge-down 1s infinite;
+
+  @keyframes bounce-up {
+    0%, 100% {
+      transform: translateY(12%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  @keyframes nudge-down {
+    0%, 100% {
+      transform: translateY(-12%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+}
+
+html, body {
+  overflow-x: clip;
+}
+html {
+  font-size: clamp(1rem, 0.5vw + 0.5rem, 1.375rem);
+  scroll-behavior: smooth;
+  background-color: var(--color-bg);
+}
+
+:root {
+  color-scheme: dark;
+  --header-h: 5.5rem;
+  --rail-w: 0px;
+}
+/* Rail mode: must remain identical to @custom-variant short and SHORT_SCREEN_QUERY in src/lib/media.js */
+@media (orientation: landscape) and (max-height: 600px), (orientation: landscape) and (max-width: 1023px) and (max-height: 660px) {
+  :root {
+    --header-h: 0px;
+    --rail-w: 4.5rem;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-in {
+  opacity: 0;
+  animation: hero-in 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-in { opacity: 1; animation: none; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 150ms ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in { animation: none; }
+}
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-menu-in {
+  animation: menu-in 200ms ease-out forwards;
+  transform-origin: top center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-menu-in { animation: none; }
+}
+
+@keyframes nav-in {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-nav-in {
+  opacity: 0;
+  animation: nav-in 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-nav-in { opacity: 1; animation: none; }
+}
+
+@media (max-width: 767.98px) and (pointer: coarse) {
+  html, body {
+    overflow: hidden;
+    height: 100dvh;
+  }
+}
+
+@media (pointer: coarse) and (min-width: 768px) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
+
+  section {
+    scroll-snap-align: start;
+  }
+}
+
+/* GPU animations for the 3D code corridor */
+@keyframes corridor-left {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100vw); }
+}
+@keyframes corridor-right {
+  0% { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
+}
+.animate-corridor-left {
+  animation: corridor-left linear infinite;
+}
+.animate-corridor-right {
+  animation: corridor-right linear infinite;
+}
+
+/* Smooth cinematic transitions for the Lightbox */
+::view-transition-group(lightbox-image) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: clip;
+}
+
+::view-transition-old(lightbox-image),
+::view-transition-new(lightbox-image) {
+  /* When navigating between photos (next/prev), enable smooth crossfade */
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* On open only: remove crossfade and hide old thumbnail to prevent stretched ghosting */
+html[data-vt='open']::view-transition-old(lightbox-image),
+html[data-vt='open']::view-transition-new(lightbox-image) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html[data-vt='open']::view-transition-old(lightbox-image) { 
+  opacity: 0; 
+}
+
+/* Prevent crossfade ghosting across the entire screen (only the photo should animate) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

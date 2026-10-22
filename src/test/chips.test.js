@@ -1,0 +1,80 @@
+import { describe, it, expect } from 'vitest'
+import { fitChipCount, fitChipLines } from '../lib/chips'
+
+describe('fitChipCount', () => {
+  it('empty list: returns 0', () => {
+    expect(fitChipCount([], 30, 200, 8)).toBe(0)
+    expect(fitChipCount(null, 30, 200, 8)).toBe(0)
+  })
+
+  it('all fit: returns widths.length', () => {
+    const widths = [40, 50, 60] // total: 40 + 50 + 60 + 2*8 = 166
+    expect(fitChipCount(widths, 30, 200, 8)).toBe(3)
+  })
+
+  it('exact boundary when all fit: returns widths.length', () => {
+    const widths = [40, 50, 60] // total: 40 + 50 + 60 + 16 = 166
+    expect(fitChipCount(widths, 30, 166, 8)).toBe(3)
+  })
+
+  it('exact boundary when k chips fit with "+N": returns k', () => {
+    const widths = [40, 50, 60] // 3 chips no caben en 165
+    // k = 2: 40 + 50 + 2*8 + 30 = 136
+    expect(fitChipCount(widths, 30, 136, 8)).toBe(2)
+  })
+
+  it('none fits: returns 0 if not even 1 chip fits with "+N"', () => {
+    const widths = [80, 90]
+    // k = 1: 80 + 8 + 30 = 118 > 100
+    expect(fitChipCount(widths, 30, 100, 8)).toBe(0)
+  })
+
+  it('non-positive available width: returns 0', () => {
+    expect(fitChipCount([40, 50], 30, 0, 8)).toBe(0)
+    expect(fitChipCount([40, 50], 30, -10, 8)).toBe(0)
+  })
+})
+
+describe('fitChipLines', () => {
+  it('all fit on 1 line: returns n', () => {
+    const widths = [40, 50, 60] // 40 + 8 + 50 + 8 + 60 = 166 <= 200
+    expect(fitChipLines(widths, 30, 200, 8, 1)).toBe(3)
+  })
+
+  it('do not fit on 1 line but fit on 2: returns n with maxLines = 2', () => {
+    const widths = [60, 60, 60, 60] // línea 1: 60+8+60+8+60=196 <= 200; línea 2: 60
+    expect(fitChipLines(widths, 30, 200, 8, 1)).toBe(2)
+    expect(fitChipLines(widths, 30, 200, 8, 2)).toBe(4)
+  })
+
+  it('do not fit within maxLines and returns k with "+N"', () => {
+    const widths = [60, 60, 60, 60, 60, 60, 60]
+    // Con available=200, gap=8:
+    // línea 1 caben tres de 60 (60+8+60+8+60 = 196)
+    // línea 2 caben dos de 60 + plusWidth 30 (60+8+60+8+30 = 166 <= 200), pero tres de 60 + 30 (196+8+30=234) pasa a línea 3
+    expect(fitChipLines(widths, 30, 200, 8, 2)).toBe(5)
+  })
+
+  it('maxLines = 1 matches fitChipCount across multiple cases', () => {
+    const cases = [
+      { widths: [40, 50, 60], plus: 30, avail: 200, gap: 8 },
+      { widths: [40, 50, 60], plus: 30, avail: 166, gap: 8 },
+      { widths: [40, 50, 60], plus: 30, avail: 165, gap: 8 },
+      { widths: [40, 50, 60], plus: 30, avail: 136, gap: 8 },
+      { widths: [40, 50, 60], plus: 30, avail: 135, gap: 8 },
+      { widths: [80, 90], plus: 30, avail: 100, gap: 8 },
+    ]
+    for (const c of cases) {
+      expect(fitChipLines(c.widths, c.plus, c.avail, c.gap, 1)).toBe(
+        fitChipCount(c.widths, c.plus, c.avail, c.gap)
+      )
+    }
+  })
+
+  it('empty widths or available <= 0: returns 0', () => {
+    expect(fitChipLines([], 30, 200, 8, 2)).toBe(0)
+    expect(fitChipLines(null, 30, 200, 8, 2)).toBe(0)
+    expect(fitChipLines([40, 50], 30, 0, 8, 2)).toBe(0)
+    expect(fitChipLines([40, 50], 30, -10, 8, 2)).toBe(0)
+  })
+})

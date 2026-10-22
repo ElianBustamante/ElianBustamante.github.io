@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "title": "Elian Bustamante | Software development and landscape photography",
+    "description": "Elian Bustamante's portfolio: software projects (bots, data and web) and landscape photography."
+  },
+  "nav": {
+    "aria": "Main navigation",
+    "home": "Home",
+    "projects": "Projects",
+    "photography": "Photography",
+    "about": "About me",
+    "contact": "Contact",
+    "cta": "Get in touch",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "switchToEn": "Switch language to English",
+    "switchToEs": "Switch language to Spanish",
+    "prevSection": "Previous section",
+    "nextSection": "Next section"
+  },
+  "hero": {
+    "titleLine1": "Capturing landscapes.",
+    "titleLine2": "Building software.",
+    "subtitle": "Software and landscape photography, from southern Chile.",
+    "education": "Graduated in Computer Engineering, Universidad de La Frontera.",
+    "ctaProjects": "View projects",
+    "ctaPhotography": "View photography"
+  },
+  "projects": {
+    "title": "Projects",
+    "prev": "Previous project",
+    "next": "Next project",
+    "viewCode": "View repository",
+    "viewDemo": "View demo",
+    "moreTechs": "{{count}} more technologies: {{list}}",
+    "items": {
+      "gamesDealTracker": {
+        "name": "Games Deal Tracker",
+        "category": "Discord bot",
+        "description": "Tracks Steam and Epic Games Store deals: discounts, all-time lows and weekly free games.",
+        "demoLabel": "Invite bot"
+      },
+      "priceAlertBot": {
+        "name": "Price Alert Bot",
+        "category": "WhatsApp bot",
+        "description": "Personal-use bot that sends WhatsApp price alerts from Google Shopping in Chile and the US, without a server, on GitHub Actions."
+      },
+      "aiMemoryAssistant": {
+        "name": "AI Memory Assistant",
+        "category": "AI assistant",
+        "description": "AI assistant with long-term memory: stores chat history in a vector database and retrieves context from past conversations."
+      }
+    }
+  },
+  "photography": {
+    "title": "Photography",
+    "intro": "A selection of photographs I have taken across southern Chile: landscapes, seasons and night skies.",
+    "viewDetails": "View details",
+    "lightboxLabel": "Photo viewer",
+    "close": "Close",
+    "prev": "Previous photo",
+    "next": "Next photo",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomLevel": "Zoom level",
+    "counter": "Photo {{current}} of {{total}}",
+    "exif": {
+      "camera": "Camera",
+      "lens": "Lens",
+      "focalLength": "Focal length",
+      "aperture": "Aperture",
+      "shutter": "Shutter speed",
+      "iso": "ISO"
+    },
+    "scrollPrev": "Previous photos",
+    "scrollNext": "More photos",
+    "pageCounter": "Page {{current}} of {{total}}"
+  },
+  "about": {
+    "title": "About me",
+    "prev": "Previous",
+    "next": "Next",
+    "p1": "I currently live in southern Chile, where I graduated with a bachelor's degree in Computer Engineering from Universidad de La Frontera, in Temuco.",
+    "p2": "I like turning ideas into tools that solve real problems. Some of them are in this portfolio.",
+    "p3": "Outside of computing, my main hobby is photography, especially landscapes. The gallery on this page is a selection of some of my photographs.",
+    "skills": {
+      "title": "Technologies",
+      "languages": "Languages",
+      "frameworks": "Frameworks and libraries",
+      "databases": "Databases",
+      "tools": "Tools"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "text": "Want to talk about a project or a collaboration? Write to me.",
+    "email": "Send email",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "copy": "Copy email",
+    "copied": "Copied"
+  },
+  "footer": {
+    "text": "© {{year}} Elian Bustamante. Built with React, Vite and Tailwind CSS."
+  }
+}

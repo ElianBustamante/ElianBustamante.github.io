@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "title": "Elian Bustamante | Desarrollo de software y fotografía de paisaje",
+    "description": "Portafolio de Elian Bustamante: proyectos de software (bots, datos y web) y fotografía de paisaje."
+  },
+  "nav": {
+    "aria": "Navegación principal",
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "photography": "Fotografía",
+    "about": "Sobre mí",
+    "contact": "Contacto",
+    "cta": "Contáctame",
+    "menuOpen": "Abrir menú",
+    "menuClose": "Cerrar menú",
+    "switchToEn": "Cambiar idioma a inglés",
+    "switchToEs": "Cambiar idioma a español",
+    "prevSection": "Sección anterior",
+    "nextSection": "Siguiente sección"
+  },
+  "hero": {
+    "titleLine1": "Capturando paisajes.",
+    "titleLine2": "Construyendo software.",
+    "subtitle": "Software y fotografía de paisaje, desde el sur de Chile.",
+    "education": "Titulado de Ingeniería Informática, Universidad de La Frontera.",
+    "ctaProjects": "Ver proyectos",
+    "ctaPhotography": "Ver fotografías"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "prev": "Proyecto anterior",
+    "next": "Proyecto siguiente",
+    "viewCode": "Ver repositorio",
+    "viewDemo": "Ver demo",
+    "moreTechs": "{{count}} tecnologías más: {{list}}",
+    "items": {
+      "gamesDealTracker": {
+        "name": "Games Deal Tracker",
+        "category": "Bot de Discord",
+        "description": "Rastrea ofertas de Steam y Epic Games Store: descuentos, mínimos históricos y juegos gratis semanales.",
+        "demoLabel": "Invitar Bot"
+      },
+      "priceAlertBot": {
+        "name": "Price Alert Bot",
+        "category": "Bot de WhatsApp",
+        "description": "Bot de uso personal que envía alertas de precios por WhatsApp desde Google Shopping de Chile y EE. UU., sin servidores, en GitHub Actions."
+      },
+      "aiMemoryAssistant": {
+        "name": "AI Memory Assistant",
+        "category": "Asistente de IA",
+        "description": "Asistente de IA con memoria a largo plazo: guarda el chat en una base vectorial y recupera contexto de conversaciones pasadas."
+      }
+    }
+  },
+  "photography": {
+    "title": "Fotografía",
+    "intro": "Una selección de fotografías que he ido tomando en el sur de Chile: paisajes, estaciones y cielos de noche.",
+    "viewDetails": "Ver detalles",
+    "lightboxLabel": "Visor de fotografías",
+    "close": "Cerrar",
+    "prev": "Foto anterior",
+    "next": "Foto siguiente",
+    "zoomIn": "Ampliar",
+    "zoomOut": "Reducir",
+    "zoomLevel": "Nivel de zoom",
+    "counter": "Foto {{current}} de {{total}}",
+    "exif": {
+      "camera": "Cámara",
+      "lens": "Lente",
+      "focalLength": "Distancia focal",
+      "aperture": "Apertura",
+      "shutter": "Obturador",
+      "iso": "ISO"
+    },
+    "scrollPrev": "Fotos anteriores",
+    "scrollNext": "Más fotos",
+    "pageCounter": "Página {{current}} de {{total}}"
+  },
+  "about": {
+    "title": "Sobre mí",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "p1": "Actualmente vivo en el sur de Chile, donde me titulé en Ingeniería Informática en la Universidad de La Frontera, en Temuco.",
+    "p2": "Me gusta convertir ideas en herramientas que resuelvan problemas concretos. Algunas de ellas están en este portafolio.",
+    "p3": "Fuera de la informática, mi pasatiempo principal es la fotografía, sobre todo de paisajes. La galería de esta página es una selección de algunas de mis fotografías.",
+    "skills": {
+      "title": "Tecnologías",
+      "languages": "Lenguajes",
+      "frameworks": "Frameworks y librerías",
+      "databases": "Bases de datos",
+      "tools": "Herramientas"
+    }
+  },
+  "contact": {
+    "title": "Contacto",
+    "text": "¿Quieres conversar sobre un proyecto o una colaboración? Escríbeme.",
+    "email": "Enviar correo",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "copy": "Copiar correo",
+    "copied": "Copiado"
+  },
+  "footer": {
+    "text": "© {{year}} Elian Bustamante. Hecho con React, Vite y Tailwind CSS."
+  }
+}

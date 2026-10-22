@@ -1,0 +1,72 @@
+import { useTranslation } from 'react-i18next'
+
+const bgModules = import.meta.glob('../assets/hero-bg.webp', { eager: true, query: '?url', import: 'default' })
+const bgUrl = bgModules['../assets/hero-bg.webp']
+
+export default function Hero() {
+  const { t } = useTranslation()
+
+  return (
+    <section
+      id="inicio"
+      className="snap-start relative z-0 min-h-[100svh] flex flex-col justify-center pt-32 pb-20 short:pb-8 short:pt-3 [@media(orientation:portrait)_and_(max-height:700px)]:pt-24 [@media(orientation:portrait)_and_(max-height:700px)]:pb-16"
+    >
+      {bgUrl && (
+        <div 
+          className="absolute inset-y-0 right-0 left-[calc(var(--rail-w)*-1)] -z-10"
+          style={{
+            backgroundImage: `url(${bgUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          <div 
+            className="absolute inset-0 md:hidden"
+            style={{
+              backgroundImage: 'linear-gradient(to top, #0a0a0a 0%, transparent 6rem), linear-gradient(to bottom, rgba(10,10,10,0.65), rgba(10,10,10,0.55))'
+            }}
+          />
+          <div 
+            className="absolute inset-0 hidden md:block"
+            style={{
+              backgroundImage: 'linear-gradient(to top, #0a0a0a 0%, transparent 6rem), linear-gradient(to right, rgba(10,10,10,0.9), rgba(10,10,10,0.4))'
+            }}
+          />
+        </div>
+      )}
+      <div className="w-full max-w-site mx-auto px-4 md:px-6 lg:px-8 text-left">
+        <h1 className="uppercase font-extrabold text-[clamp(1.7rem,6vw,4rem)] short:!text-[clamp(1.5rem,4vh,2.5rem)] leading-[1.05] max-w-[60rem]">
+          <span className="block text-accent hero-in lg:whitespace-nowrap" style={{ animationDelay: '0ms' }}>
+            {t('hero.titleLine1')}
+          </span>
+          <span className="block text-text hero-in lg:whitespace-nowrap" style={{ animationDelay: '120ms' }}>
+            {t('hero.titleLine2')}
+          </span>
+        </h1>
+        <div className="max-w-[42rem] xl:max-w-[46rem] short:max-w-[42rem]!">
+          <p className="text-[1.125rem] md:text-[1.25rem] xl:text-[1.5rem] short:text-[1rem]! [@media(max-height:500px)]:text-[1rem] text-text mt-6 [@media(max-height:500px)]:mt-2 [@media(orientation:portrait)_and_(max-height:700px)]:mt-4 hero-in" style={{ animationDelay: '240ms' }}>
+            {t('hero.subtitle')}
+          </p>
+          <p className="text-muted md:text-[1.125rem] xl:text-[1.25rem] text-pretty short:text-base! mt-4 [@media(max-height:500px)]:mt-2 hero-in" style={{ animationDelay: '360ms' }}>
+            {t('hero.education')}
+          </p>
+          <div className="flex flex-wrap gap-4 mt-8 [@media(max-height:500px)]:mt-4 [@media(orientation:portrait)_and_(max-height:700px)]:mt-6 hero-in" style={{ animationDelay: '480ms' }}>
+            <a
+              href="#proyectos"
+              className="min-h-11 inline-flex items-center justify-center px-6 bg-accent text-on-accent rounded-full font-semibold hover:bg-accent-hover transition-colors"
+            >
+              {t('hero.ctaProjects')}
+            </a>
+            <a
+              href="#fotografia"
+              className="min-h-11 inline-flex items-center justify-center px-6 border border-text/40 rounded-full font-semibold hover:bg-surface-2 transition-colors"
+            >
+              {t('hero.ctaPhotography')}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
