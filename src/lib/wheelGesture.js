@@ -1,19 +1,19 @@
 /**
- * Detección de gestos de rueda/touchpad para cambiar de diapositiva.
- * Una rueda o un touchpad generan decenas de eventos por gesto (con "cola" de inercia).
- * Esta máquina de estados decide cuándo un evento inicia un cambio de sección
- * y cuándo es solo la continuación (inercia) del gesto anterior.
+ * Detection of wheel/touchpad gestures for slide navigation.
+ * A wheel or touchpad emits dozens of events per gesture (with inertial tail).
+ * This state machine decides when an event starts a section change
+ * and when it is merely continuation (inertia) of the previous gesture.
  */
 
 export const WHEEL = {
-  IDLE_MS: 120, // una pausa mayor a esto separa dos gestos
-  TRIGGER_PX: 30, // recorrido acumulado mínimo para que un gesto cambie de sección
-  ACCEL_MIN_PX: 24, // un evento más grande que esto y que crece rápido = nuevo gesto
-  ACCEL_RATIO: 1.8, // cuánto debe superar al promedio reciente (la inercia siempre decrece)
+  IDLE_MS: 120, // pause longer than this separates two gestures
+  TRIGGER_PX: 30, // minimum accumulated travel for a gesture to trigger a section change
+  ACCEL_MIN_PX: 24, // an event larger than this that accelerates = new gesture
+  ACCEL_RATIO: 1.8, // threshold ratio over recent average (inertia always decays)
   EMA_ALPHA: 0.3
 }
 
-/** Normaliza deltaY a píxeles (deltaMode: 0 píxeles, 1 líneas, 2 páginas). */
+/** Normalizes deltaY to pixels (deltaMode: 0 pixels, 1 lines, 2 pages). */
 export function normalizeWheelDelta(e, pageHeight = 800) {
   const mode = e?.deltaMode ?? 0
   const dy = e?.deltaY ?? 0
@@ -25,7 +25,7 @@ export function normalizeWheelDelta(e, pageHeight = 800) {
 export function createWheelGesture(opts = {}) {
   const cfg = { ...WHEEL, ...opts }
   let lastTime = -Infinity
-  let ema = 0 // promedio móvil del tamaño reciente de los eventos
+  let ema = 0 // exponential moving average of recent event magnitude
   let lastDir = 0
   let acc = 0
   let handled = false
@@ -37,8 +37,8 @@ export function createWheelGesture(opts = {}) {
 
   return {
     /**
-     * Evento que controlamos nosotros (preventDefault).
-     * busy = hay una transición en curso. Devuelve +1/-1 si debe cambiar de sección, 0 si no.
+     * Event handled by our controller (preventDefault).
+     * busy = transition in progress. Returns +1/-1 to change section, 0 otherwise.
      */
     push({ delta, time, busy = false }) {
       const abs = Math.abs(delta)
@@ -51,7 +51,7 @@ export function createWheelGesture(opts = {}) {
       if (dir !== 0) lastDir = dir
 
       if (busy) {
-        // Todo lo que llega durante la transición (incluida la inercia) se descarta
+        // Everything arriving during transition (including inertia) is discarded
         handled = true
         acc = 0
         return 0
@@ -65,7 +65,7 @@ export function createWheelGesture(opts = {}) {
       return dir
     },
 
-    /** Evento que dejamos pasar al navegador (scroll interno, sección alta, diálogo...). */
+    /** Event passed through to the browser (inner scroll, tall section, dialog...). */
     consume({ delta = 0, time }) {
       lastTime = time
       ema = Math.abs(delta)

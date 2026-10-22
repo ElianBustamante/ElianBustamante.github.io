@@ -1,10 +1,10 @@
 /**
- * Combina los datos técnicos de photosData con los títulos, textos alternativos
- * y posibles correcciones de metadatos EXIF de captions.
+ * Merges technical photo data from photosData with titles, alt text,
+ * and optional EXIF metadata overrides from captions.
  *
- * @param {Array<Object>} photosData - Lista de fotos con datos técnicos generados.
- * @param {Record<string, Object>} captions - Diccionario de pies de foto indexado por nombre de archivo ('file').
- * @returns {Array<Object>} Lista de fotos combinadas con la forma esperada por los componentes.
+ * @param {Array<Object>} photosData - List of photos with generated technical data.
+ * @param {Record<string, Object>} captions - Captions dictionary indexed by filename ('file').
+ * @returns {Array<Object>} List of merged photos matching the shape expected by components.
  */
 export function mergePhotos(photosData, captions) {
   if (!Array.isArray(photosData)) return []

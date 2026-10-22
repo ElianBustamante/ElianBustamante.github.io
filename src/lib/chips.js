@@ -1,14 +1,14 @@
 /**
- * Devuelve cuántos chips (0..widths.length) caben en una sola línea.
- * Si todos caben juntos, devuelve widths.length (sin chip "+N").
- * Si no todos caben, devuelve el mayor k (0 <= k < widths.length) tal que
- * k chips + gap + plusWidth caben en el ancho disponible.
+ * Returns how many chips (0..widths.length) fit on a single line.
+ * If all fit together, returns widths.length (without a "+N" chip).
+ * If not all fit, returns the largest k (0 <= k < widths.length) such that
+ * k chips + gap + plusWidth fit within the available width.
  *
- * @param {number[]} widths Anchos de cada chip en orden.
- * @param {number} plusWidth Ancho del chip indicador "+N".
- * @param {number} available Ancho disponible del contenedor.
- * @param {number} gap Espacio entre elementos en píxeles.
- * @returns {number} Cantidad de chips visibles.
+ * @param {number[]} widths Widths of each chip in order.
+ * @param {number} plusWidth Width of the "+N" indicator chip.
+ * @param {number} available Available container width.
+ * @param {number} gap Gap between elements in pixels.
+ * @returns {number} Number of visible chips.
  */
 export function fitChipCount(widths, plusWidth, available, gap = 8) {
   if (!widths || widths.length === 0) return 0
@@ -51,17 +51,17 @@ function countLines(items, available, gap) {
 }
 
 /**
- * Devuelve cuántos chips (0..widths.length) caben en hasta maxLines líneas.
- * Si todos caben en <= maxLines líneas, devuelve widths.length (sin "+N").
- * Si no, devuelve el mayor k (0 <= k < widths.length) tal que los k primeros
- * chips más plusWidth caben en <= maxLines líneas.
+ * Returns how many chips (0..widths.length) fit in up to maxLines lines.
+ * If all fit in <= maxLines lines, returns widths.length (without "+N").
+ * Otherwise, returns the largest k (0 <= k < widths.length) such that the first
+ * k chips plus plusWidth fit in <= maxLines lines.
  *
- * @param {number[]} widths Anchos de cada chip en orden.
- * @param {number} plusWidth Ancho del chip indicador "+N".
- * @param {number} available Ancho disponible del contenedor.
- * @param {number} gap Espacio entre elementos en píxeles.
- * @param {number} maxLines Máximo de líneas permitidas.
- * @returns {number} Cantidad de chips visibles.
+ * @param {number[]} widths Widths of each chip in order.
+ * @param {number} plusWidth Width of the "+N" indicator chip.
+ * @param {number} available Available container width.
+ * @param {number} gap Gap between elements in pixels.
+ * @param {number} maxLines Maximum allowed lines.
+ * @returns {number} Number of visible chips.
  */
 export function fitChipLines(widths, plusWidth, available, gap = 8, maxLines = 1) {
   if (!widths || widths.length === 0) return 0

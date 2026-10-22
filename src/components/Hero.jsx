@@ -69,7 +69,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Flecha Abajo en Hero */}
+      {/* Down arrow in Hero */}
       <button 
         type="button"
         onClick={(e) => {

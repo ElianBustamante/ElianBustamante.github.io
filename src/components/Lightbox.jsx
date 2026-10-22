@@ -41,7 +41,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     }
   }, [])
 
-  // Si el foco se pierde (por ejemplo, al desmontarse el slider), devuélvelo al visor
+  // If focus is lost (e.g. when slider unmounts), return it to the dialog
   useEffect(() => {
     if (!isZoomed && document.activeElement === document.body) {
       dialogRef.current?.focus()
@@ -58,7 +58,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     img2.src = photos[next].large.src
   }, [index, photos, total])
 
-  // El zoom mantiene el centro de la vista
+  // Zoom maintains the viewport center
   useLayoutEffect(() => {
     const el = scrollContainerRef.current
     if (!el) return
@@ -120,7 +120,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     if (e.target === dialogRef.current) onClose()
   }
 
-  // ---- Táctil: deslizar entre fotos (sin zoom) y pellizcar ----
+  // ---- Touch: swipe between photos (unzoomed) and pinch ----
   const pinchDistance = (touches) =>
     Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY)
 
@@ -168,7 +168,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
     }
   }
 
-  // ---- Mouse: arrastrar para moverse con la foto ampliada ----
+  // ---- Mouse: drag to pan when photo is zoomed ----
   const endDrag = (e) => {
     const d = dragRef.current
     if (d.started && e?.currentTarget?.hasPointerCapture?.(e.pointerId)) {
@@ -278,7 +278,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
           </button>
         </div>
 
-        {/* Contenedor que recibe toques/clics: disuasión contra descarga fácil (no es seguridad real) */}
+        {/* Container receiving touch/clicks: casual download deterrent (not true security) */}
         <div
           ref={scrollContainerRef}
           className={`flex flex-1 relative min-h-0 ${
@@ -322,7 +322,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }) {
               </div>
             )}
 
-            {/* Disuasión contra descarga fácil (no es seguridad real) */}
+            {/* Casual download deterrent (not true security) */}
             <img
               ref={imgRef}
               src={photo.large.src}

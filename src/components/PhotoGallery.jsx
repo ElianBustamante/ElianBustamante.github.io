@@ -39,10 +39,10 @@ export default function PhotoGallery() {
     
     const H = window.innerHeight
 
-    // Calculamos el ratio de la pantalla (Ancho / Alto) para hacer el carrusel hiper-responsivo
+    // Compute screen ratio (Width / Height) for a responsive carousel
     const ratio = W / H;
     
-    // Altura base puramente fluida
+    // Pure fluid base height
     let h = H * 0.50; 
     
     if (window.matchMedia(SHORT_SCREEN_QUERY).matches) {
@@ -53,23 +53,22 @@ export default function PhotoGallery() {
       }
     } else {
       if (ratio > 2) {
-        // Pantallas extremadamente chatas / súper horizontales (ej. celulares apaisados)
+        // Ultra-wide / short screens (e.g. landscape phones)
         h = H * 0.60;
       } else if (ratio > 1.2) {
-        // Pantallas normales horizontales (ej. Laptops, Monitores)
+        // Standard landscape screens (e.g. laptops, monitors)
         h = H * 0.59; 
       } else if (ratio < 0.6) {
-        // Pantallas súper verticales (ej. Celulares muy altos y estrechos):
-        // un poco menos para dejar aire junto a las flechas de subir y bajar
+        // Tall vertical screens (e.g. narrow tall phones):
+        // slightly smaller to leave room beside vertical navigation arrows
         h = H * 0.52;
       } else {
-        // Pantallas cuadradas o ligeramente verticales
+        // Square or slightly vertical screens
         h = H * 0.50;
       }
 
-      // Eliminamos los topes rígidos (Math.min de 400px o 800px) y dejamos que escale de forma fluida infinita.
-      // Solo dejamos un tope mínimo por seguridad absoluta para no romper el CSS interno en pantallas minúsculas.
-      h = Math.max(h, H * 0.25); // Nunca será menor al 25% del alto
+      // Allow fluid scaling with a safety minimum for tiny screens
+      h = Math.max(h, H * 0.25); // Never smaller than 25% of height
     }
 
 
@@ -131,7 +130,7 @@ export default function PhotoGallery() {
     isTransitioningRef.current = true
     if (containerRef.current) containerRef.current.style.pointerEvents = 'none'
 
-    // Apuntamos EXACTAMENTE a la etiqueta <img> para un morphing puro y limpio
+    // Target <img> element directly for clean view transition morphing
     const imgEl = event.currentTarget.querySelector('img')
 
     try {
@@ -141,7 +140,7 @@ export default function PhotoGallery() {
       await pre.decode().catch(() => {})
     } catch {}
 
-    // Limpiamos nombres de transiciones anteriores por seguridad
+    // Clean up previous transition names for safety
     document.querySelectorAll('button[id^="thumb-"] img').forEach(img => {
       img.style.removeProperty('view-transition-name')
     })
@@ -232,15 +231,14 @@ export default function PhotoGallery() {
     }
   }
 
-  // Sincronizar el scroll del carrusel oculto con el índice del lightbox
-  // Así cuando cerramos, la animación vuela a la foto correcta en pantalla
+  // Sync hidden carousel scroll with lightbox index so closing animation targets the active photo
   useEffect(() => {
     if (lightboxIndex !== null && listRef.current) {
       const imgEl = document.getElementById(`thumb-${lightboxIndex}`)
       if (imgEl) {
         const li = imgEl.closest('li')
         if (li) {
-          // Centramos la foto en el carrusel de fondo sin animación
+          // Center photo in background carousel without animation
           li.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' })
         }
       }
@@ -306,7 +304,7 @@ export default function PhotoGallery() {
                   >
                     <div className="absolute inset-0 z-0 bg-surface-2/60 animate-pulse"></div>
                     
-                    {/* Disuasión contra descarga fácil (no es seguridad real) */}
+                    {/* Casual download deterrent (not true security) */}
                     <img
                       src={photo.thumb.src}
                       width={photo.thumb.width}

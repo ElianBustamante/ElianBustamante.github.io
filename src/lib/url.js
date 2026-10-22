@@ -1,5 +1,5 @@
 /**
- * Valida si una URL es una cadena válida y comienza con el protocolo https://
+ * Validates whether a URL is a valid string starting with https://
  * @param {unknown} url
  * @returns {boolean}
  */

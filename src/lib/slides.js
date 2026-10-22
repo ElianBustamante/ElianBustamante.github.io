@@ -1,9 +1,9 @@
 /**
- * Lógica pura del controlador de diapositivas y navegación
+ * Pure logic for slide controller and navigation
  */
 
 /**
- * Determina si una tecla debe ser interceptada para navegar entre diapositivas.
+ * Determines if a key event should be intercepted for slide navigation.
  */
 export function shouldInterceptKey(e) {
   if (!e) return false;
@@ -15,20 +15,20 @@ export function shouldInterceptKey(e) {
 
   if (!target) return false;
 
-  // Nunca si el target es button, a, input, select, textarea, summary, [role=button], [role=slider] o [contenteditable]
+  // Never if target is button, a, input, select, textarea, summary, [role=button], [role=slider] or [contenteditable]
   const interactiveSelector = 'button, a, input, select, textarea, summary, [role="button"], [role="slider"], [contenteditable]';
   if (target.matches?.(interactiveSelector) || target.closest?.(interactiveSelector) || target.isContentEditable) {
     return false;
   }
 
-  // Solo si e.target es document.body o main
+  // Only if e.target is document.body or main
   const isBody = target === target.ownerDocument?.body || target.tagName === 'BODY';
   const isMain = target.tagName === 'MAIN' || target.id === 'main';
   return isBody || isMain;
 }
 
 /**
- * Devuelve la dirección de desplazamiento de una tecla (+1 abajo, -1 arriba, 0 no interceptar).
+ * Returns scroll direction for a key (+1 down, -1 up, 0 do not intercept).
  */
 export function getKeyDirection(e) {
   if (!shouldInterceptKey(e)) return 0;
@@ -38,7 +38,7 @@ export function getKeyDirection(e) {
 }
 
 /**
- * Comprueba si un ancestro del elemento tiene scroll vertical disponible en la dirección indicada.
+ * Checks if an ancestor of the element has vertical scroll available in the given direction.
  */
 export function canElementScroll(target, direction) {
   if (!target) return false;
@@ -65,8 +65,8 @@ export function canElementScroll(target, direction) {
 }
 
 /**
- * Determina si se puede avanzar/retroceder de diapositiva o si la sección actual
- * es más alta que la pantalla y debe continuar su scroll nativo.
+ * Determines whether to advance/retreat slide or if current section
+ * is taller than the screen and should continue native scrolling.
  */
 export function canAdvanceSlide(section, direction, windowHeight) {
   if (!section) return true;
@@ -76,14 +76,14 @@ export function canAdvanceSlide(section, direction, windowHeight) {
   if (!rect || typeof rect.height !== 'number') return true;
 
   if (rect.height > wHeight + 8) {
-    // Si la sección es más alta que la pantalla:
+    // If section is taller than screen:
     if (direction > 0) {
-      // Hacia abajo: solo salta si el borde inferior ya es visible
+      // Downward: only advance if bottom edge is already visible
       if (rect.bottom > wHeight + 8) {
         return false;
       }
     } else if (direction < 0) {
-      // Hacia arriba: solo salta si el borde superior ya está en pantalla
+      // Upward: only advance if top edge is already on screen
       if (rect.top < -8) {
         return false;
       }
@@ -94,7 +94,7 @@ export function canAdvanceSlide(section, direction, windowHeight) {
 }
 
 /**
- * Determina si un evento de rueda (wheel) debe interceptarse para cambiar de diapositiva.
+ * Determines if a wheel event should be intercepted to change slides.
  */
 export function shouldInterceptWheel(e, { isReducedMotion, windowHeight, currentSection, minDelta = 5 } = {}) {
   if (!e) return false;
@@ -123,7 +123,7 @@ export function shouldInterceptWheel(e, { isReducedMotion, windowHeight, current
 }
 
 /**
- * Encuentra el índice de la sección que actualmente domina la pantalla.
+ * Finds the index of the section currently dominating the screen.
  */
 export function findClosestSectionIndex(sections) {
   if (!sections || !sections.length) return 0;
@@ -143,9 +143,9 @@ export function findClosestSectionIndex(sections) {
 }
 
 /**
- * Decisión pura: a qué sección alinear la ventana cuando un elemento recibe foco con teclado.
- * Devuelve la sección objetivo si se debe alinear (|rect.top| > 2), o null si ya está alineada
- * o si la sección es más alta que la pantalla y el elemento ya está visible.
+ * Pure decision: which section to align window to when an element receives keyboard focus.
+ * Returns target section if alignment is needed (|rect.top| > 2), or null if already aligned
+ * or if section is taller than screen and element is already visible.
  */
 export function getSectionOnFocus({ focusedElement, windowHeight }) {
   if (!focusedElement) return null;
@@ -172,8 +172,8 @@ export function getSectionOnFocus({ focusedElement, windowHeight }) {
 }
 
 /**
- * Determina si se debe realinear la diapositiva actual tras un evento resize/zoom.
- * prev y cur son de la forma { width, height, dpr }.
+ * Determines whether to realign current slide after resize/zoom event.
+ * prev and cur have the shape { width, height, dpr }.
  */
 export function shouldRealignOnResize({ prev, cur, coarse = false } = {}) {
   if (!prev || !cur) return false;

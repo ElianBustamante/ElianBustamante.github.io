@@ -19,8 +19,8 @@ export default function ProjectCard({ project, isActive }) {
   const { t } = useTranslation()
   const [activeTooltip, setActiveTooltip] = useState(null)
 
-  // chips se memoiza con useMemo para evitar crear un nuevo array en cada render
-  // (por ejemplo al hacer hover o abrir el tooltip), lo que re-ejecutaría innecesariamente el efecto de medición.
+  // Memoize chips with useMemo to avoid recreating an array on every render
+  // (e.g. on hover or tooltip open), which would re-trigger the measurement effect.
   const chips = useMemo(() => (project.tags || []).slice(1), [project.tags])
   const visibleCount = useMediaQuery('(min-width: 640px)') ? 3 : 2
   const [chipCount, setChipCount] = useState(visibleCount)
@@ -62,8 +62,8 @@ export default function ProjectCard({ project, isActive }) {
     let ro
     if (typeof ResizeObserver !== 'undefined') {
       ro = new ResizeObserver(measure)
-      // Se observan el contenedor y cada hijo de la fila de medición porque
-      // el ancho de los chips puede cambiar sin que cambie el contenedor (ej. al cargar la fuente Inter Variable).
+      // Observe container and each child of the measurement row because
+      // chip widths can change without container resizing (e.g. when Inter Variable font loads).
       ro.observe(container)
       Array.from(measureEl.children).forEach((el) => ro.observe(el))
     }
@@ -239,10 +239,10 @@ export default function ProjectCard({ project, isActive }) {
         </div>
       ) : (
         <div className="relative w-full shrink-0 h-[clamp(72px,12dvh,112px)] md:h-[clamp(80px,13dvh,200px)] flex items-center justify-center rounded-t-[calc(var(--radius-card)-1px)] bg-surface-2 border-b border-border/50 overflow-hidden compact:hidden">
-          {/* Fondo abstracto de resplandor (Spotlight) */}
+          {/* Abstract glow background (spotlight) */}
           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/60 via-surface to-surface"></div>
           
-          {/* Ícono gigante y animado con brillo */}
+          {/* Animated icon with glow */}
           <div className={`relative z-10 h-[56%] aspect-square flex items-center justify-center text-accent/80 transition-all duration-500 drop-shadow-[0_0_15px_rgba(255,106,26,0.4)] lg:group-hover:text-accent lg:group-hover:scale-110 lg:group-hover:-translate-y-1 ${isActive ? 'max-lg:text-accent max-lg:scale-110 max-lg:-translate-y-1' : ''}`}>
             {project.icon ? (() => {
               const Icon = IconMap[project.icon] || IconTerminal;
@@ -335,7 +335,7 @@ export default function ProjectCard({ project, isActive }) {
                   }`}>
                     +{ocultas.length}
                   </span>
-                  {/* Área táctil de 44x44 */}
+                  {/* 44x44 touch target area */}
                   <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 min-w-full min-h-full opacity-0 pointer-events-auto"></span>
                 </button>
               </div>

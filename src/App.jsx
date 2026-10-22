@@ -23,7 +23,7 @@ function App() {
   const currentSectionRef = useRef(null)
   const resizingRef = useRef(false)
 
-  // Enlace profundo y ScrollSpy
+  // Deep linking and ScrollSpy
   useEffect(() => {
     const hash = window.location.hash ? window.location.hash.slice(1) : ''
     let initialElement = null
@@ -47,12 +47,12 @@ function App() {
         rootMargin: '-50% 0px -50% 0px'
       })
 
-      // Observa solo section[id] (no header)
+      // Observe only section[id] (not header)
       const sections = document.querySelectorAll('section[id]')
       sections.forEach(sec => observer.observe(sec))
     }
 
-    // Inicia ScrollSpy después de que la posición inicial por hash se haya aplicado
+    // Start ScrollSpy after the initial hash position has been applied
     const spyTimer = setTimeout(startScrollSpy, initialElement ? 80 : 0)
 
     return () => {
@@ -61,7 +61,7 @@ function App() {
     }
   }, [])
 
-  // Controlador de Diapositivas
+  // Slide controller
   useEffect(() => {
     let isTransitioning = false
     let fallbackTimeout = null
@@ -107,8 +107,8 @@ function App() {
       const currentSection = sections[findClosestSectionIndex(sections)]
       const delta = normalizeWheelDelta(e, window.innerHeight)
 
-      // minDelta: 0 → también los eventos pequeños de la cola de inercia los controlamos
-      // nosotros; así el navegador nunca desplaza la página por su cuenta en este modo
+      // minDelta: 0 -> we also handle small inertial tail events
+      // so the browser never scrolls the page on its own in this mode
       if (!shouldInterceptWheel(e, { currentSection, windowHeight: window.innerHeight, minDelta: 0 })) {
         gesture.consume({ delta, time: e.timeStamp })
         return
@@ -141,7 +141,7 @@ function App() {
     }
   }, [])
 
-  // Foco con teclado: alinear con el inicio de la sección en focusin
+  // Keyboard focus: align with section start on focusin
   useEffect(() => {
     const mainEl = mainRef.current
     if (!mainEl) return
@@ -168,7 +168,7 @@ function App() {
     }
   }, [])
 
-  // Realinear la diapositiva actual cuando cambia el zoom o el tamaño de la ventana
+  // Realign current slide when zoom or window size changes
   useEffect(() => {
     let prev = {
       width: typeof window !== 'undefined' ? window.innerWidth : 0,
@@ -221,7 +221,7 @@ function App() {
     document.addEventListener('scroll', handleScroll, { capture: true, passive: true })
     window.addEventListener('resize', handleResize)
 
-    // Actualiza también una vez al montar, después de aplicar el enlace profundo
+    // Also update once on mount, after applying deep link
     updateCurrentSection()
     const mountTimer = setTimeout(updateCurrentSection, 100)
 
@@ -238,7 +238,7 @@ function App() {
     <div className="w-full relative overflow-x-clip min-h-screen inner-scroll:min-h-0 inner-scroll:h-[100dvh] inner-scroll:overflow-y-auto inner-scroll:snap-y inner-scroll:snap-mandatory [@media(orientation:portrait)_and_(max-height:600px)]:snap-none scroll-smooth">
       <AnimatedBackground />
       
-      {/* Contenido protegido por encima del fondo */}
+      {/* Protected content above the background */}
       <div className="relative z-10">
         <Navbar />
         <main ref={mainRef} className="pl-[var(--rail-w)]">

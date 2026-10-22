@@ -146,7 +146,7 @@ export default function NavRail({ activeId, canPrev = false, canNext = true }) {
         <LanguageToggle compact={true} />
       </nav>
 
-      {/* Panel del menú */}
+      {/* Menu panel */}
       {menuOpen && (
         <div 
           id="rail-menu"

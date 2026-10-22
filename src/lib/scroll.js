@@ -5,11 +5,11 @@ export function scrollToElement(el, options = {}) {
 }
 
 /**
- * Devuelve true si el desplazamiento respecto al tope está dentro del rango que amerita ajuste fino.
+ * Returns true if offset from the top is within range for fine settling.
  *
- * @param {number} top Distancia al borde superior (getBoundingClientRect().top).
- * @param {number} [maxOffset=6] Desplazamiento máximo a corregir en píxeles.
- * @param {number} [epsilon=0.25] Desplazamiento mínimo perceptible en píxeles.
+ * @param {number} top Distance to top edge (getBoundingClientRect().top).
+ * @param {number} [maxOffset=6] Maximum offset to correct in pixels.
+ * @param {number} [epsilon=0.25] Minimum perceptible offset in pixels.
  * @returns {boolean}
  */
 export function needsSettle(top, maxOffset = 6, epsilon = 0.25) {
@@ -18,10 +18,10 @@ export function needsSettle(top, maxOffset = 6, epsilon = 0.25) {
 }
 
 /**
- * Espera a que el scroll suave termine para asentar la sección si quedó a pocos píxeles del tope.
- * Si el usuario interactúa durante la espera o reduce-motion está activo, cancela sin corregir.
+ * Waits for smooth scroll to finish to settle section if left a few pixels from the top.
+ * Cancels without correcting if the user interacts or reduce-motion is active.
  *
- * @param {HTMLElement} el Elemento destino.
+ * @param {HTMLElement} el Target element.
  * @param {object} [options]
  * @param {number} [options.maxOffset=6]
  * @param {number} [options.idleMs=140]

@@ -1,12 +1,12 @@
 import { SHORT_SCREEN_QUERY } from './media'
 
 /**
- * Observa el estado de scroll de una lista o contenedor y sus hijos directos,
- * notificando cambios de forma debouncada con requestAnimationFrame.
+ * Observes scroll state of a list or container and its direct children,
+ * notifying changes debounced via requestAnimationFrame.
  *
  * @param {HTMLElement | null} list
  * @param {() => void} onChange
- * @returns {() => void} Función de limpieza
+ * @returns {() => void} Cleanup function
  */
 export function observeScrollState(list, onChange) {
   if (!list) return () => {}
@@ -32,10 +32,10 @@ export function observeScrollState(list, onChange) {
     }
   }
 
-  // Se agenda una vez al inicio
+  // Schedule once initially
   scheduleChange()
 
-  // (a) ResizeObserver que observa el list y cada uno de sus hijos directos
+  // (a) ResizeObserver observing the list and each direct child
   let ro = null
   if (typeof ResizeObserver !== 'undefined') {
     ro = new ResizeObserver(() => {
@@ -48,7 +48,7 @@ export function observeScrollState(list, onChange) {
     }
   }
 
-  // (b) window.matchMedia(SHORT_SCREEN_QUERY) evento 'change'
+  // (b) window.matchMedia(SHORT_SCREEN_QUERY) 'change' event
   let mql = null
   const handleMqlChange = () => {
     if (active) scheduleChange()
@@ -64,7 +64,7 @@ export function observeScrollState(list, onChange) {
         }
       }
     } catch {
-      // Ignorar errores en entornos con mocks parciales
+      // Ignore errors in environments with partial mocks
     }
   }
 

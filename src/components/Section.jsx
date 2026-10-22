@@ -49,7 +49,7 @@ export default function Section({ id, titleKey, children, actions, fill = false,
         innerContent
       )}
       
-      {/* Flecha Arriba */}
+      {/* Up arrow */}
       <button 
         type="button"
         onClick={scrollPrev} 
@@ -59,7 +59,7 @@ export default function Section({ id, titleKey, children, actions, fill = false,
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6"/></svg>
       </button>
 
-      {/* Flecha Abajo */}
+      {/* Down arrow */}
       {id !== 'contacto' && (
         <button 
           type="button"

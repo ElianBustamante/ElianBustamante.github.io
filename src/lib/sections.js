@@ -1,14 +1,14 @@
 /**
- * Funciones puras para determinar la sección activa y la navegación entre secciones.
+ * Pure functions to determine active section and navigation between sections.
  */
 
 /**
- * Devuelve el índice de la sección activa según la posición de una línea de escaneo en el viewport.
+ * Returns index of the active section based on scanline position in viewport.
  * 
- * @param {Array<{ top: number, bottom: number }>} rects Rectángulos de las secciones.
- * @param {number} viewportHeight Altura del viewport en píxeles.
- * @param {number} [ratio=0.4] Fracción del viewport para situar la línea de escaneo.
- * @returns {number} Índice de la sección activa (0 si lista vacía o ninguna cumple).
+ * @param {Array<{ top: number, bottom: number }>} rects Section bounding rects.
+ * @param {number} viewportHeight Viewport height in pixels.
+ * @param {number} [ratio=0.4] Viewport fraction where scanline is placed.
+ * @returns {number} Active section index (0 if empty or none matches).
  */
 export function getActiveSectionIndex(rects, viewportHeight, ratio = 0.4) {
   if (!rects || rects.length === 0) return 0;
@@ -30,11 +30,11 @@ export function getActiveSectionIndex(rects, viewportHeight, ratio = 0.4) {
 }
 
 /**
- * Devuelve el último índice de sección cuyo top haya quedado por encima de la pantalla.
+ * Returns the last section index whose top edge is above the screen.
  * 
- * @param {Array<{ top: number, bottom: number }>} rects Rectángulos de las secciones.
- * @param {number} [tolerance=4] Margen de tolerancia en píxeles.
- * @returns {number} Índice de la sección anterior destino.
+ * @param {Array<{ top: number, bottom: number }>} rects Section bounding rects.
+ * @param {number} [tolerance=4] Tolerance margin in pixels.
+ * @returns {number} Target previous section index.
  */
 export function getPrevSectionIndex(rects, tolerance = 4) {
   if (!rects || rects.length === 0) return 0;
@@ -49,11 +49,11 @@ export function getPrevSectionIndex(rects, tolerance = 4) {
 }
 
 /**
- * Devuelve el primer índice de sección cuyo top esté por debajo del margen superior.
+ * Returns the first section index whose top edge is below the top margin.
  * 
- * @param {Array<{ top: number, bottom: number }>} rects Rectángulos de las secciones.
- * @param {number} [tolerance=4] Margen de tolerancia en píxeles.
- * @returns {number} Índice de la siguiente sección destino.
+ * @param {Array<{ top: number, bottom: number }>} rects Section bounding rects.
+ * @param {number} [tolerance=4] Tolerance margin in pixels.
+ * @returns {number} Target next section index.
  */
 export function getNextSectionIndex(rects, tolerance = 4) {
   if (!rects || rects.length === 0) return 0;
@@ -68,10 +68,10 @@ export function getNextSectionIndex(rects, tolerance = 4) {
 }
 
 /**
- * Indica si es posible retroceder a una sección anterior (alguna sección tiene top < -tolerance).
+ * Indicates whether navigating back to a previous section is possible (any section top < -tolerance).
  * 
- * @param {Array<{ top: number, bottom: number }>} rects Rectángulos de las secciones.
- * @param {number} [tolerance=4] Margen de tolerancia en píxeles.
+ * @param {Array<{ top: number, bottom: number }>} rects Section bounding rects.
+ * @param {number} [tolerance=4] Tolerance margin in pixels.
  * @returns {boolean}
  */
 export function canGoPrev(rects, tolerance = 4) {
@@ -80,10 +80,10 @@ export function canGoPrev(rects, tolerance = 4) {
 }
 
 /**
- * Indica si es posible avanzar a una sección siguiente (alguna sección tiene top > tolerance).
+ * Indicates whether navigating forward to a next section is possible (any section top > tolerance).
  * 
- * @param {Array<{ top: number, bottom: number }>} rects Rectángulos de las secciones.
- * @param {number} [tolerance=4] Margen de tolerancia en píxeles.
+ * @param {Array<{ top: number, bottom: number }>} rects Section bounding rects.
+ * @param {number} [tolerance=4] Tolerance margin in pixels.
  * @returns {boolean}
  */
 export function canGoNext(rects, tolerance = 4) {
