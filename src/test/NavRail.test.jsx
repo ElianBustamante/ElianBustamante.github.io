@@ -38,7 +38,7 @@ describe('NavRail', () => {
     
     // Focus should be on first link per NavRail code (EB logo or first item in list)
     const firstLink = screen.getAllByRole('link', { name: /inicio/i, hidden: true })[1] // The menu item
-    // Wait, the code focuses `menuRef.current.querySelector('a')`, which is the first item inside rail-menu.
+    // Verify that focus moves to the first navigable link inside the expanded menu panel
     expect(firstLink).toHaveFocus()
     
     // Press Escape
