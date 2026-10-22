@@ -2,9 +2,8 @@ import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useRef } from 'react'
 import LanguageToggle from './LanguageToggle'
 import { IconMenu, IconClose } from './icons'
-import { scrollToElement, settleScroll } from '../lib/scroll'
 import { SHORT_SCREEN_QUERY } from '../lib/media'
-import { getPrevSectionIndex, getNextSectionIndex } from '../lib/sections'
+import { goToPrevSection, goToNextSection } from '../lib/sectionNav'
 
 const links = [
   { href: '#inicio', key: 'nav.home' },
@@ -75,24 +74,6 @@ export default function NavRail({ activeId, canPrev = false, canNext = true }) {
   const isFirst = !canPrev
   const isLast = !canNext
 
-  const handlePrev = () => {
-    const sections = Array.from(document.querySelectorAll('section[id]'))
-    if (!sections.length) return
-    const rects = sections.map((sec) => sec.getBoundingClientRect())
-    const targetIdx = getPrevSectionIndex(rects)
-    scrollToElement(sections[targetIdx])
-    settleScroll(sections[targetIdx])
-  }
-
-  const handleNext = () => {
-    const sections = Array.from(document.querySelectorAll('section[id]'))
-    if (!sections.length) return
-    const rects = sections.map((sec) => sec.getBoundingClientRect())
-    const targetIdx = getNextSectionIndex(rects)
-    scrollToElement(sections[targetIdx])
-    settleScroll(sections[targetIdx])
-  }
-
   return (
     <>
       <nav 
@@ -110,7 +91,7 @@ export default function NavRail({ activeId, canPrev = false, canNext = true }) {
 
         <button
           type="button"
-          onClick={handlePrev}
+          onClick={goToPrevSection}
           disabled={isFirst}
           tabIndex={isFirst ? -1 : undefined}
           aria-hidden={isFirst ? "true" : undefined}
@@ -133,7 +114,7 @@ export default function NavRail({ activeId, canPrev = false, canNext = true }) {
 
         <button
           type="button"
-          onClick={handleNext}
+          onClick={goToNextSection}
           disabled={isLast}
           tabIndex={isLast ? -1 : undefined}
           aria-hidden={isLast ? "true" : undefined}
