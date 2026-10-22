@@ -23,7 +23,14 @@ describe('Lightbox', () => {
     render(<Lightbox photos={mockPhotos} index={0} onClose={() => {}} onIndexChange={() => {}} />)
     expect(screen.getByText('Foto 1 de 3')).toBeInTheDocument()
     expect(screen.getByAltText('F1')).toBeInTheDocument()
-    expect(screen.getByText('T1')).toBeInTheDocument()
+    const title = screen.getByText('T1')
+    expect(title).toBeInTheDocument()
+    expect(title.className).toContain('text-text')
+    expect(title.className).not.toContain('text-accent')
+
+    const dialog = screen.getByRole('dialog')
+    expect(dialog.className).toContain('bg-black')
+    expect(dialog.className).not.toContain('bg-black/')
   })
 
   it('ArrowRight advances, ArrowLeft goes back, with wrap-around', async () => {
@@ -117,6 +124,8 @@ describe('Lightbox', () => {
     const title = screen.getByText('T1')
     expect(title.className).toContain('[@media(min-height:800px)]:text-base')
     expect(title.className).toContain('short:text-[12px]')
+    expect(title.className).toContain('text-text')
+    expect(title.className).not.toContain('text-accent')
 
     const dataLine = container.querySelector('figcaption div.flex')
     expect(dataLine.className).toContain('[@media(min-height:800px)]:text-xs')
