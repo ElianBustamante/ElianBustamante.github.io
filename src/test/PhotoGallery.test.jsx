@@ -13,8 +13,9 @@ const { mockPhotos } = vi.hoisted(() => ({
   ]
 }))
 
-vi.mock('../data/photos.json', () => ({
-  default: mockPhotos
+vi.mock('../data/gallery', () => ({
+  default: mockPhotos,
+  gallery: mockPhotos,
 }))
 
 describe('PhotoGallery', () => {

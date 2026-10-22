@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import photosData from '../data/photos.json'
+import photosData from '../data/gallery'
 
 describe('photos.json data validation', () => {
   if (!photosData || photosData.length === 0) {

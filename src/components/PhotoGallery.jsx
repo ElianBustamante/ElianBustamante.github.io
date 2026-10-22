@@ -4,7 +4,7 @@ import { flushSync } from 'react-dom'
 import Section from './Section'
 import { IconChevronLeft, IconChevronRight } from './icons'
 import Lightbox from './Lightbox'
-import photosData from '../data/photos.json'
+import photosData from '../data/gallery'
 import { SHORT_SCREEN_QUERY } from '../lib/media'
 import { observeScrollState } from '../lib/overflow'
 

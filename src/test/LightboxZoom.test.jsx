@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import Lightbox from '../components/Lightbox'
-import photos from '../data/photos.json'
+import photos from '../data/gallery'
 
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
