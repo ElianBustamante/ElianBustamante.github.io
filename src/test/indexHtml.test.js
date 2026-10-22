@@ -50,3 +50,76 @@ describe('index.html <noscript>', () => {
     expect(html).not.toMatch(/villarrica/i)
   })
 })
+
+describe('index.html sharing meta tags and canonical link', () => {
+  function getMetaContent(nameOrProperty) {
+    const match = headContent.match(new RegExp(`<meta\\s+(?:property|name)="${nameOrProperty}"\\s+content="([^"]*)"`, 'i'))
+      || headContent.match(new RegExp(`<meta\\s+content="([^"]*)"\\s+(?:property|name)="${nameOrProperty}"`, 'i'))
+    return match?.[1]
+  }
+
+  function getCanonicalHref() {
+    const match = headContent.match(/<link\s+rel="canonical"\s+href="([^"]*)"/i)
+      || headContent.match(/<link\s+href="([^"]*)"\s+rel="canonical"/i)
+    return match?.[1]
+  }
+
+  it('contains canonical tag with absolute https URL, and matching origins for og:url, og:image, twitter:image', () => {
+    const canonicalHref = getCanonicalHref()
+    expect(canonicalHref).toBeDefined()
+    expect(canonicalHref).toMatch(/^https:\/\/[^/]+\/.*$/)
+
+    const canonicalOrigin = new URL(canonicalHref).origin
+    const ogUrl = getMetaContent('og:url')
+    const ogImage = getMetaContent('og:image')
+    const twitterImage = getMetaContent('twitter:image')
+
+    expect(ogUrl).toBeDefined()
+    expect(ogImage).toBeDefined()
+    expect(twitterImage).toBeDefined()
+
+    expect(new URL(ogUrl).origin).toBe(canonicalOrigin)
+    expect(new URL(ogImage).origin).toBe(canonicalOrigin)
+    expect(new URL(twitterImage).origin).toBe(canonicalOrigin)
+    expect(ogImage).toBe(twitterImage)
+  })
+
+  it('defines og:image:width and og:image:height as 1200 and 630 matching real dimensions of public/og-image.png', () => {
+    const ogWidth = getMetaContent('og:image:width')
+    const ogHeight = getMetaContent('og:image:height')
+    expect(ogWidth).toBe('1200')
+    expect(ogHeight).toBe('630')
+
+    const pngBuffer = fs.readFileSync(new URL('../../public/og-image.png', metaUrl))
+    const realWidth = pngBuffer.readUInt32BE(16)
+    const realHeight = pngBuffer.readUInt32BE(20)
+
+    expect(realWidth).toBe(1200)
+    expect(realHeight).toBe(630)
+    expect(Number(ogWidth)).toBe(realWidth)
+    expect(Number(ogHeight)).toBe(realHeight)
+  })
+
+  it('sets twitter:card to summary_large_image and non-empty og:image:alt', () => {
+    const twitterCard = getMetaContent('twitter:card')
+    expect(twitterCard).toBe('summary_large_image')
+
+    const ogImageAlt = getMetaContent('og:image:alt')
+    expect(ogImageAlt).toBeDefined()
+    expect(ogImageAlt.trim().length).toBeGreaterThan(0)
+  })
+
+  it('matches og:title with twitter:title and og:description with twitter:description', () => {
+    const ogTitle = getMetaContent('og:title')
+    const twitterTitle = getMetaContent('twitter:title')
+    expect(ogTitle).toBeDefined()
+    expect(twitterTitle).toBeDefined()
+    expect(ogTitle).toBe(twitterTitle)
+
+    const ogDescription = getMetaContent('og:description')
+    const twitterDescription = getMetaContent('twitter:description')
+    expect(ogDescription).toBeDefined()
+    expect(twitterDescription).toBeDefined()
+    expect(ogDescription).toBe(twitterDescription)
+  })
+})
