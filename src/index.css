@@ -34,10 +34,22 @@
   --radius-card: 1rem;
   --container-site: 81rem;
   --animate-bounce-up: bounce-up 1s infinite;
+  --animate-bounce: nudge-down 1s infinite;
 
   @keyframes bounce-up {
     0%, 100% {
-      transform: translateY(25%);
+      transform: translateY(12%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  @keyframes nudge-down {
+    0%, 100% {
+      transform: translateY(-12%);
       animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
     }
     50% {
