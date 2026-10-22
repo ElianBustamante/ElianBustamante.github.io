@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import LanguageToggle from './LanguageToggle'
 import { IconMenu, IconClose } from './icons'
 import NavRail from './NavRail'
+import SectionArrows from './SectionArrows'
 import { getActiveSectionIndex, canGoPrev, canGoNext } from '../lib/sections'
 
 const links = [
@@ -117,6 +118,7 @@ export default function Navbar() {
   return (
     <>
       <NavRail activeId={activeId} canPrev={canPrev} canNext={canNext} />
+      <SectionArrows canPrev={canPrev} canNext={canNext} />
       
       {menuOpen && (
         <div 
