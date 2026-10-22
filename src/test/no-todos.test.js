@@ -5,10 +5,13 @@ import captions from '../data/captions.json'
 
 const dataModules = import.meta.glob('../data/*.js', { eager: true })
 
+const TODO_REGEX = /\bTODO\b/
+const FIXME_REGEX = /\bFIXME\b/
+
 function findForbiddenStrings(obj, path = '') {
   const matches = []
   if (typeof obj === 'string') {
-    if (obj.includes('TODO') || obj.includes('FIXME')) {
+    if (TODO_REGEX.test(obj) || FIXME_REGEX.test(obj)) {
       matches.push({ path, value: obj })
     }
   } else if (Array.isArray(obj)) {
@@ -49,7 +52,20 @@ describe('Content cleanliness (no TODO or FIXME)', () => {
     }
   })
 
-  it('findForbiddenStrings correctly flags test objects with TODO or FIXME', () => {
+  it('matches standalone TODO, TODO(elian): and FIXME, but permits TODOS and sobre todo', () => {
+    // Failing cases (must be detected)
+    expect(findForbiddenStrings('TODO(elian): x', 'sample')).toHaveLength(1)
+    expect(findForbiddenStrings('TODO', 'sample')).toHaveLength(1)
+    expect(findForbiddenStrings('FIXME', 'sample')).toHaveLength(1)
+    expect(findForbiddenStrings('FIXME: pendiente', 'sample')).toHaveLength(1)
+
+    // Allowed cases (must NOT be flagged)
+    expect(findForbiddenStrings('VER TODOS', 'sample')).toEqual([])
+    expect(findForbiddenStrings('sobre todo', 'sample')).toEqual([])
+    expect(findForbiddenStrings('métodos y herramientas', 'sample')).toEqual([])
+  })
+
+  it('findForbiddenStrings correctly flags nested test objects with TODO or FIXME', () => {
     const dirty = {
       nested: {
         item: 'TODO(elian): write this',
