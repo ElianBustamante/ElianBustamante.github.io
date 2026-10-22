@@ -50,30 +50,14 @@ describe('Section', () => {
     expect(revealContainer.className).toContain('short:flex-col')
   })
 
-  it('top arrow uses motion-safe:animate-bounce-up and bottom arrow uses motion-safe:animate-bounce', () => {
+  it('does not contain previous or next section navigation buttons', () => {
     render(
       <Section id="proyectos" titleKey="projects.title">
         <div>Contenido</div>
       </Section>
     )
-    const prevBtn = screen.getByRole('button', { name: /sección anterior/i })
-    const nextBtn = screen.getByRole('button', { name: /siguiente sección/i })
-
-    expect(prevBtn.className).toContain('motion-safe:animate-bounce-up')
-    expect(nextBtn.className).toContain('motion-safe:animate-bounce')
-    expect(nextBtn.className).not.toContain('motion-safe:animate-bounce-up')
-  })
-
-  it('top arrow includes top-[95px], max-[380px]:top-[83px], and [@media(max-width:380px)_and_(max-height:600px)]:top-[68px]!', () => {
-    render(
-      <Section id="proyectos" titleKey="projects.title">
-        <div>Contenido</div>
-      </Section>
-    )
-    const prevBtn = screen.getByRole('button', { name: /sección anterior/i })
-    expect(prevBtn.className).toContain('top-[95px]')
-    expect(prevBtn.className).toContain('max-[380px]:top-[83px]')
-    expect(prevBtn.className).toContain('[@media(max-width:380px)_and_(max-height:600px)]:top-[68px]!')
+    expect(screen.queryByRole('button', { name: /sección anterior/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /siguiente sección/i })).not.toBeInTheDocument()
   })
 
   it('without footer does not change: retains same classes, without pb-0! or my-auto container', () => {

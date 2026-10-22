@@ -159,6 +159,8 @@ describe('About', () => {
     const pEduEn = screen.getByText(en.hero.education)
     expect(pEduEn).toBe(pEduEs)
     expect(section.querySelectorAll('p')).toHaveLength(2)
+    expect(screen.queryByRole('button', { name: /siguiente sección/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /sección anterior/i })).not.toBeInTheDocument()
   })
 
   it('renders the 4 technology groups and all skill values without translating them', () => {

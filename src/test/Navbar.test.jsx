@@ -55,4 +55,20 @@ describe('Navbar', () => {
     const header = container.querySelector('header')
     expect(header.className).toContain('short:hidden')
   })
+
+  it('renders section navigation arrows with top arrow hidden and bottom arrow visible at initial section', () => {
+    const { container } = render(<Navbar />)
+
+    const prevArrow = container.querySelector('button.short\\:hidden[aria-label="Sección anterior"]')
+    const nextArrow = container.querySelector('button.short\\:hidden[aria-label="Siguiente sección"]')
+
+    expect(prevArrow).toBeInTheDocument()
+    expect(prevArrow).toBeDisabled()
+    expect(prevArrow.className).toContain('opacity-0')
+    expect(prevArrow.className).toContain('invisible')
+
+    expect(nextArrow).toBeInTheDocument()
+    expect(nextArrow).not.toBeDisabled()
+    expect(nextArrow.className).toContain('opacity-100')
+  })
 })
