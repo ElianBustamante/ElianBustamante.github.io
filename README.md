@@ -2,7 +2,7 @@
 
 [![Deploy to GitHub Pages](https://github.com/ElianBustamante/ElianBustamante.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/ElianBustamante/ElianBustamante.github.io/actions/workflows/deploy.yml)
 
-**Live site: <https://elianbustamante.github.io/>**
+**Live site: <https://elianbustamante.cl/>**
 
 Personal portfolio with software projects (bots, data and web) and landscape photography from southern Chile. Bilingual: Spanish and English.
 
@@ -55,5 +55,7 @@ scripts/          Python photo pipeline and its tests
 ## Deployment
 
 Work happens on `dev`. Pushing to `main` makes GitHub Actions run `npm run check`, build the site and publish it to GitHub Pages. Pull requests into `main` run the same checks without publishing, and the Python tests run in a separate job. Dependabot proposes updates weekly.
+
+The site is served on the custom domain <https://elianbustamante.cl/>; the `elianbustamante.github.io` subdomain redirects automatically.
 
 When changing the domain, update the absolute URLs for `canonical`, `og:url`, `og:image`, and `twitter:image` in `index.html` (all must share the same origin, enforced by automated tests).

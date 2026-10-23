@@ -10,6 +10,12 @@ const headNoscriptMatch = headContent.match(/<noscript>([\s\S]*?)<\/noscript>/)
 const noscriptMatch = bodyContent.match(/<noscript>([\s\S]*?)<\/noscript>/)
 const noscriptContent = noscriptMatch ? noscriptMatch[1] : ''
 
+function getCanonicalHref() {
+  const match = headContent.match(/<link\s+rel="canonical"\s+href="([^"]*)"/i)
+    || headContent.match(/<link\s+href="([^"]*)"\s+rel="canonical"/i)
+  return match?.[1]
+}
+
 describe('index.html <noscript>', () => {
   it('contains a <noscript> in <head> with background:#0a0a0a before </head>', () => {
     expect(headNoscriptMatch).not.toBeNull()
@@ -58,30 +64,27 @@ describe('index.html sharing meta tags and canonical link', () => {
     return match?.[1]
   }
 
-  function getCanonicalHref() {
-    const match = headContent.match(/<link\s+rel="canonical"\s+href="([^"]*)"/i)
-      || headContent.match(/<link\s+href="([^"]*)"\s+rel="canonical"/i)
-    return match?.[1]
-  }
-
-  it('contains canonical tag with absolute https URL, and matching origins for og:url, og:image, twitter:image', () => {
+  it('canonical, og:url, og:image, and twitter:image use the same origin https://elianbustamante.cl', () => {
     const canonicalHref = getCanonicalHref()
-    expect(canonicalHref).toBeDefined()
-    expect(canonicalHref).toMatch(/^https:\/\/[^/]+\/.*$/)
+    expect(canonicalHref).toBe('https://elianbustamante.cl/')
 
-    const canonicalOrigin = new URL(canonicalHref).origin
     const ogUrl = getMetaContent('og:url')
     const ogImage = getMetaContent('og:image')
     const twitterImage = getMetaContent('twitter:image')
 
-    expect(ogUrl).toBeDefined()
-    expect(ogImage).toBeDefined()
-    expect(twitterImage).toBeDefined()
+    expect(ogUrl).toBe('https://elianbustamante.cl/')
+    expect(ogImage).toBe('https://elianbustamante.cl/og-image.png')
+    expect(twitterImage).toBe('https://elianbustamante.cl/og-image.png')
 
-    expect(new URL(ogUrl).origin).toBe(canonicalOrigin)
-    expect(new URL(ogImage).origin).toBe(canonicalOrigin)
-    expect(new URL(twitterImage).origin).toBe(canonicalOrigin)
-    expect(ogImage).toBe(twitterImage)
+    const origin = 'https://elianbustamante.cl'
+    expect(new URL(canonicalHref).origin).toBe(origin)
+    expect(new URL(ogUrl).origin).toBe(origin)
+    expect(new URL(ogImage).origin).toBe(origin)
+    expect(new URL(twitterImage).origin).toBe(origin)
+  })
+
+  it('does not contain the old elianbustamante.github.io origin in index.html', () => {
+    expect(html).not.toContain('elianbustamante.github.io')
   })
 
   it('defines og:image:width and og:image:height as 1200 and 630 matching real dimensions of public/og-image.png', () => {
@@ -123,3 +126,35 @@ describe('index.html sharing meta tags and canonical link', () => {
     expect(ogDescription).toBe(twitterDescription)
   })
 })
+
+describe('public/sitemap.xml and public/robots.txt', () => {
+  const sitemapUrl = new URL('../../public/sitemap.xml', metaUrl)
+  const robotsUrl = new URL('../../public/robots.txt', metaUrl)
+
+  it('public/sitemap.xml exists, is valid XML, and contains <loc> matching the canonical href', () => {
+    expect(fs.existsSync(sitemapUrl)).toBe(true)
+    const sitemapContent = fs.readFileSync(sitemapUrl, 'utf8')
+
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(sitemapContent, 'application/xml')
+    const parserError = doc.querySelector('parsererror')
+    expect(parserError).toBeNull()
+
+    const canonicalHref = getCanonicalHref()
+    expect(canonicalHref).toBe('https://elianbustamante.cl/')
+
+    const locElement = doc.querySelector('urlset > url > loc')
+    expect(locElement).not.toBeNull()
+    expect(locElement?.textContent?.trim()).toBe('https://elianbustamante.cl/')
+    expect(locElement?.textContent?.trim()).toBe(canonicalHref)
+  })
+
+  it('public/robots.txt contains the Sitemap directive', () => {
+    expect(fs.existsSync(robotsUrl)).toBe(true)
+    const robotsContent = fs.readFileSync(robotsUrl, 'utf8')
+    expect(robotsContent).toContain('Sitemap: https://elianbustamante.cl/sitemap.xml')
+    expect(robotsContent).toContain('User-agent: *')
+    expect(robotsContent).toContain('Allow: /')
+  })
+})
+
