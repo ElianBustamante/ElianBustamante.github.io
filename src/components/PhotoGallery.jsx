@@ -182,18 +182,24 @@ export default function PhotoGallery() {
     }
   }
 
-  const restoreFocus = () => {
+  const restoreFocus = (targetIndex) => {
+    const currentThumbBtn = typeof targetIndex === 'number' ? document.getElementById(`thumb-${targetIndex}`) : null
+    if (currentThumbBtn && document.contains(currentThumbBtn)) {
+      currentThumbBtn?.focus?.({ preventScroll: true })
+      return
+    }
     if (lastFocusRef.current && document.contains(lastFocusRef.current)) {
-      lastFocusRef.current?.focus()
+      lastFocusRef.current?.focus?.({ preventScroll: true })
     }
   }
 
   const closeLightbox = () => {
     if (isTransitioningRef.current) return
+    const targetIndex = lightboxIndex
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (!document.startViewTransition || reduce) {
       setLightboxIndex(null)
-      restoreFocus()
+      restoreFocus(targetIndex)
       return
     }
 
@@ -204,7 +210,7 @@ export default function PhotoGallery() {
       img.style.removeProperty('view-transition-name')
     })
 
-    const imgEl = document.querySelector(`#thumb-${lightboxIndex} img`)
+    const imgEl = document.querySelector(`#thumb-${targetIndex} img`)
 
     try {
       const transition = document.startViewTransition(() => {
@@ -226,7 +232,7 @@ export default function PhotoGallery() {
         }
         if (containerRef.current) containerRef.current.style.pointerEvents = ''
         isTransitioningRef.current = false
-        restoreFocus()
+        restoreFocus(targetIndex)
       })
     } catch (e) {
       console.error(e)
@@ -236,7 +242,7 @@ export default function PhotoGallery() {
       }
       if (containerRef.current) containerRef.current.style.pointerEvents = ''
       isTransitioningRef.current = false
-      restoreFocus()
+      restoreFocus(targetIndex)
     }
   }
 
