@@ -6,6 +6,8 @@
 
 Personal portfolio with software projects (bots, data and web) and landscape photography from southern Chile. Bilingual: Spanish and English.
 
+<img src="preview.png" alt="Screenshot of the portfolio home page" width="800">
+
 ## Features
 
 - Single page with slide-style sections (Home, Projects, Photography, About, Contact), navigable by mouse wheel, keyboard and touch, with deep links per section and previous/next arrows.
@@ -59,3 +61,14 @@ Work happens on `dev`. Pushing to `main` makes GitHub Actions run `npm run check
 The site is served on the custom domain <https://elianbustamante.cl/>; the `elianbustamante.github.io` subdomain redirects automatically.
 
 When changing the domain, update the absolute URLs for `canonical`, `og:url`, `og:image`, and `twitter:image` in `index.html` (all must share the same origin, enforced by automated tests).
+
+## Contributing and reuse
+
+This is a personal portfolio. Bug reports and accessibility fixes are welcome—please see [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+The code may be reused under the [MIT License](LICENSE), while all photographs and written content remain all rights reserved under [LICENSE-ASSETS.md](LICENSE-ASSETS.md).
+
+## License
+
+The source code is licensed under the [MIT License](LICENSE).
+Photographs, visual assets, and written content are all rights reserved (see [LICENSE-ASSETS.md](LICENSE-ASSETS.md)).
+
