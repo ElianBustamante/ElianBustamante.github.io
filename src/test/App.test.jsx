@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import App from '../App'
 import '../i18n'
@@ -163,5 +163,137 @@ describe('App scroll mode (inner-scroll vs window)', () => {
     document.dispatchEvent(nextGestureWheel)
 
     expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('Keyboard focus alignment', () => {
+  const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView
+
+  beforeEach(() => {
+    window.HTMLElement.prototype.scrollIntoView = vi.fn()
+    window.innerHeight = 800
+    window.innerWidth = 1024
+  })
+
+  afterEach(() => {
+    window.HTMLElement.prototype.scrollIntoView = originalScrollIntoView
+    vi.restoreAllMocks()
+  })
+
+  const waitForRaf = () => new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(resolve, 50)
+      })
+    })
+  })
+
+  it('keyboard focus inside a different section aligns that section', async () => {
+    let container
+    await act(async () => {
+      const res = render(<App />)
+      container = res.container
+    })
+    const projectsSection = container.querySelector('section#proyectos')
+    expect(projectsSection).toBeInTheDocument()
+
+    vi.spyOn(projectsSection, 'getBoundingClientRect').mockReturnValue({
+      top: -300,
+      height: 600,
+      bottom: 300,
+      left: 0,
+      right: 1024,
+      width: 1024,
+    })
+
+    const interactive = projectsSection.querySelector('a, button')
+    expect(interactive).toBeInTheDocument()
+
+    vi.spyOn(interactive, 'matches').mockImplementation((selector) => selector === ':focus-visible')
+
+    await act(async () => {
+      interactive.focus()
+      await waitForRaf()
+    })
+
+    expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'auto',
+      block: 'start',
+    })
+  })
+
+  it('mouse or touch focus on a link does not trigger scrollToElement', async () => {
+    let container
+    await act(async () => {
+      const res = render(<App />)
+      container = res.container
+    })
+    const projectsSection = container.querySelector('section#proyectos')
+    expect(projectsSection).toBeInTheDocument()
+
+    vi.spyOn(projectsSection, 'getBoundingClientRect').mockReturnValue({
+      top: -300,
+      height: 600,
+      bottom: 300,
+      left: 0,
+      right: 1024,
+      width: 1024,
+    })
+
+    const link = projectsSection.querySelector('a') || projectsSection.querySelector('button')
+    expect(link).toBeInTheDocument()
+
+    // Mouse or touch focus does not match :focus-visible
+    vi.spyOn(link, 'matches').mockImplementation((selector) => {
+      if (selector === ':focus-visible') return false
+      return false
+    })
+
+    await act(async () => {
+      link.focus()
+      await waitForRaf()
+    })
+
+    expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled()
+  })
+
+  it('preserves alignment if :focus-visible is not supported', async () => {
+    let container
+    await act(async () => {
+      const res = render(<App />)
+      container = res.container
+    })
+    const projectsSection = container.querySelector('section#proyectos')
+    expect(projectsSection).toBeInTheDocument()
+
+    vi.spyOn(projectsSection, 'getBoundingClientRect').mockReturnValue({
+      top: -300,
+      height: 600,
+      bottom: 300,
+      left: 0,
+      right: 1024,
+      width: 1024,
+    })
+
+    const interactive = projectsSection.querySelector('a, button')
+    expect(interactive).toBeInTheDocument()
+
+    // Simulate environment where :focus-visible selector is unsupported and throws
+    vi.spyOn(interactive, 'matches').mockImplementation((selector) => {
+      if (selector.includes('focus-visible')) {
+        throw new Error("SyntaxError: ':focus-visible' is not a valid selector")
+      }
+      return false
+    })
+
+    await act(async () => {
+      interactive.focus()
+      await waitForRaf()
+    })
+
+    expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'auto',
+      block: 'start',
+    })
   })
 })

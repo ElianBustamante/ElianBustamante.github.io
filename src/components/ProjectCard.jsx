@@ -268,7 +268,7 @@ export default function ProjectCard({ project, isActive }) {
           </h3>
         </div>
         <div className="flex justify-between items-center mb-2 sm:mb-3">
-          <p className="text-accent/60 font-bold text-[0.75rem] min-[1920px]:text-[0.8125rem] tracking-wider uppercase">
+          <p className="text-accent/90 font-bold text-[0.75rem] min-[1920px]:text-[0.8125rem] tracking-wider uppercase">
             {t(`projects.items.${project.id}.category`)}
           </p>
           {project.tags && project.tags.length > 0 && (

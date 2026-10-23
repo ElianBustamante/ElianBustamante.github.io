@@ -48,7 +48,7 @@ src/data/         site data, photos.json (generated) and captions.json (hand-wri
 src/i18n/         es.json and en.json translations
 src/lib/          pure helpers (sections, scrolling, photos, ...)
 src/test/         Vitest tests
-e2e/              Playwright tests (planned)
+e2e/              Playwright tests
 scripts/          Python photo pipeline and its tests
 ```
 

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect, useLayoutEffect, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import Section from './Section'
 import { IconChevronLeft, IconChevronRight } from './icons'
@@ -75,7 +75,7 @@ export default function PhotoGallery() {
     setGalleryHeight(h)
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!photosData || photosData.length === 0) return
     recalculate()
     const currentContainer = containerRef.current
@@ -182,11 +182,18 @@ export default function PhotoGallery() {
     }
   }
 
+  const restoreFocus = () => {
+    if (lastFocusRef.current && document.contains(lastFocusRef.current)) {
+      lastFocusRef.current?.focus()
+    }
+  }
+
   const closeLightbox = () => {
     if (isTransitioningRef.current) return
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (!document.startViewTransition || reduce) {
       setLightboxIndex(null)
+      restoreFocus()
       return
     }
 
@@ -219,6 +226,7 @@ export default function PhotoGallery() {
         }
         if (containerRef.current) containerRef.current.style.pointerEvents = ''
         isTransitioningRef.current = false
+        restoreFocus()
       })
     } catch (e) {
       console.error(e)
@@ -228,6 +236,7 @@ export default function PhotoGallery() {
       }
       if (containerRef.current) containerRef.current.style.pointerEvents = ''
       isTransitioningRef.current = false
+      restoreFocus()
     }
   }
 

@@ -148,8 +148,24 @@ function App() {
 
     const handleFocusIn = (e) => {
       const focusedElement = e.target
+      if (!focusedElement) return
+
+      let isKeyboardFocus = true
+      try {
+        if (typeof focusedElement.matches === 'function') {
+          isKeyboardFocus = focusedElement.matches(':focus-visible')
+        }
+      } catch {
+        // Fall back to current behavior if :focus-visible is not supported
+        isKeyboardFocus = true
+      }
+
+      if (!isKeyboardFocus) return
+
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
+          if (document.activeElement !== focusedElement) return
+
           const targetSection = getSectionOnFocus({
             focusedElement,
             windowHeight: window.innerHeight
