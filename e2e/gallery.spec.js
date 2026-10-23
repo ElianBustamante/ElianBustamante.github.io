@@ -50,10 +50,6 @@ test.describe('Photo Gallery and Lightbox', () => {
   })
 
   test('closing lightbox restores focus to thumbnail button', async ({ page }) => {
-    test.fixme(
-      true,
-      'Accessibility finding (WCAG 2.4.3): PhotoGallery.jsx records lastFocusRef on open, but never restores focus to the trigger element when closed'
-    )
     const firstThumb = page.locator('#thumb-0')
     await firstThumb.click()
     const dialog = page.getByRole('dialog', { name: es.photography.lightboxLabel })

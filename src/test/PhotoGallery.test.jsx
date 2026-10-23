@@ -189,6 +189,24 @@ describe('PhotoGallery', () => {
     expect(screen.getByText('Foto 2 de 3')).toBeInTheDocument()
   })
 
+  it('restores focus to trigger button when closing lightbox', async () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
+    Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
+    render(<PhotoGallery />)
+    const images = screen.getAllByRole('button').filter(b => b.querySelector('img'))
+    const user = userEvent.setup()
+
+    await user.click(images[0])
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toBeInTheDocument()
+
+    // Press Escape to close
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(document.activeElement).toBe(images[0])
+  })
+
   it('aligns all pages to flex-start', () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 400 }) // Forces multiple pages
     Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
