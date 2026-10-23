@@ -59,3 +59,9 @@ Work happens on `dev`. Pushing to `main` makes GitHub Actions run `npm run check
 The site is served on the custom domain <https://elianbustamante.cl/>; the `elianbustamante.github.io` subdomain redirects automatically.
 
 When changing the domain, update the absolute URLs for `canonical`, `og:url`, `og:image`, and `twitter:image` in `index.html` (all must share the same origin, enforced by automated tests).
+
+## License
+
+The source code is licensed under the [MIT License](LICENSE).
+Photographs, visual assets, and written content are all rights reserved (see [LICENSE-ASSETS.md](LICENSE-ASSETS.md)).
+
