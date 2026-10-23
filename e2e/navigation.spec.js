@@ -23,22 +23,14 @@ test.describe('Navigation', () => {
     }
   })
 
-  test('hero CTA button "Ver proyectos" navigates to projects section', async ({ page, browserName }) => {
-    test.fixme(
-      browserName === 'chromium',
-      'In Chromium, clicking an anchor inside <main> fires focusin, which causes App.jsx handleFocusIn to scroll back to section#inicio'
-    )
+  test('hero CTA button "Ver proyectos" navigates to projects section', async ({ page }) => {
     const projectsBtn = page.getByRole('link', { name: es.hero.ctaProjects })
     await projectsBtn.click()
     await expect(page).toHaveURL(/#proyectos$/)
     await expect(page.locator('section#proyectos')).toBeInViewport()
   })
 
-  test('hero CTA button "Ver fotografía" navigates to photography section', async ({ page, browserName }) => {
-    test.fixme(
-      browserName === 'chromium',
-      'In Chromium, clicking an anchor inside <main> fires focusin, which causes App.jsx handleFocusIn to scroll back to section#inicio'
-    )
+  test('hero CTA button "Ver fotografía" navigates to photography section', async ({ page }) => {
     const photoBtn = page.getByRole('link', { name: es.hero.ctaPhotography })
     await photoBtn.click()
     await expect(page).toHaveURL(/#fotografia$/)
