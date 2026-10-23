@@ -58,4 +58,59 @@ test.describe('Photo Gallery and Lightbox', () => {
     await expect(dialog).not.toBeVisible()
     await expect(firstThumb).toBeFocused()
   })
+
+  test('navigating in lightbox to distant photo and closing restores focus without scrolling carousel back', async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, 'Desktop carousel scroll test is specific to desktop viewports')
+
+    const list = page.locator('#fotografia ul[role="list"]')
+    await expect(list).toBeVisible()
+
+    const total = photos.length
+    const lastIndex = total - 1
+    const lastThumb = page.locator(`#thumb-${lastIndex}`)
+
+    // Scroll to the end of the carousel
+    await list.evaluate((el) => {
+      el.scrollLeft = el.scrollWidth
+    })
+    await expect(lastThumb).toBeVisible()
+
+    // Open the last photo
+    await lastThumb.click()
+    const dialog = page.getByRole('dialog', { name: es.photography.lightboxLabel })
+    await expect(dialog).toBeVisible()
+
+    const lastCounterText = es.photography.counter
+      .replace('{{current}}', String(total))
+      .replace('{{total}}', String(total))
+    await expect(dialog.getByText(lastCounterText)).toBeVisible()
+
+    // Press ArrowRight to wrap around to the first photo
+    await page.keyboard.press('ArrowRight')
+    const firstCounterText = es.photography.counter
+      .replace('{{current}}', '1')
+      .replace('{{total}}', String(total))
+    await expect(dialog.getByText(firstCounterText)).toBeVisible()
+
+    // Wait for carousel background sync effect to align thumbnail
+    await page.waitForTimeout(200)
+    const scrollBeforeClose = await list.evaluate((el) => el.scrollLeft)
+
+    // Press Escape to close
+    await page.keyboard.press('Escape')
+    await expect(dialog).not.toBeVisible()
+
+    // (i) Focused element is the first photo thumbnail
+    const firstThumb = page.locator('#thumb-0')
+    await expect(firstThumb).toBeFocused()
+
+    // (ii) Carousel scrollLeft does not jump back to the last page
+    await expect.poll(async () => {
+      const currentScroll = await list.evaluate((el) => el.scrollLeft)
+      return Math.abs(currentScroll - scrollBeforeClose)
+    }).toBeLessThanOrEqual(50)
+  })
 })
