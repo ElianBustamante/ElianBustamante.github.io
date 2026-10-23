@@ -6,6 +6,8 @@
 
 Personal portfolio with software projects (bots, data and web) and landscape photography from southern Chile. Bilingual: Spanish and English.
 
+<img src="preview.png" alt="Screenshot of the portfolio home page" width="800">
+
 ## Features
 
 - Single page with slide-style sections (Home, Projects, Photography, About, Contact), navigable by mouse wheel, keyboard and touch, with deep links per section and previous/next arrows.
