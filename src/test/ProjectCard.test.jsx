@@ -316,6 +316,13 @@ describe('ProjectCard +N tooltip', () => {
     const path = container.querySelector('path[d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"]')
     expect(path).toBeInTheDocument()
   })
+
+  it('category label uses text-accent/90 for WCAG AA color contrast compliance', () => {
+    const { container } = render(<ProjectCard project={project} />)
+    const category = container.querySelector('p.uppercase')
+    expect(category.className).toContain('text-accent/90')
+    expect(category.className).not.toContain('text-accent/60')
+  })
 })
 
 

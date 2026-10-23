@@ -10,10 +10,6 @@ test.describe('Accessibility (Axe)', () => {
   })
 
   test('no accessibility violations on default Spanish page', async ({ page }) => {
-    test.fixme(
-      true,
-      'color-contrast (serious): ProjectCard category labels (.text-accent/60) have 3.03:1 contrast on #141312 (expected >= 4.5:1)'
-    )
     await page.goto('/')
     await page.waitForLoadState('domcontentloaded')
 
@@ -25,10 +21,6 @@ test.describe('Accessibility (Axe)', () => {
   })
 
   test('no accessibility violations on English page', async ({ page }) => {
-    test.fixme(
-      true,
-      'color-contrast (serious): ProjectCard category labels (.text-accent/60) have 3.03:1 contrast on #141312 (expected >= 4.5:1)'
-    )
     await page.goto('/')
     await page.waitForLoadState('domcontentloaded')
 
@@ -44,10 +36,6 @@ test.describe('Accessibility (Axe)', () => {
   })
 
   test('no accessibility violations with lightbox open', async ({ page }) => {
-    test.fixme(
-      true,
-      'color-contrast (serious): ProjectCard category labels in background have 3.03:1 contrast on #141312 (expected >= 4.5:1)'
-    )
     await page.goto('/#fotografia')
     await page.waitForLoadState('domcontentloaded')
 
