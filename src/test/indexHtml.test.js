@@ -10,6 +10,12 @@ const headNoscriptMatch = headContent.match(/<noscript>([\s\S]*?)<\/noscript>/)
 const noscriptMatch = bodyContent.match(/<noscript>([\s\S]*?)<\/noscript>/)
 const noscriptContent = noscriptMatch ? noscriptMatch[1] : ''
 
+function getCanonicalHref() {
+  const match = headContent.match(/<link\s+rel="canonical"\s+href="([^"]*)"/i)
+    || headContent.match(/<link\s+href="([^"]*)"\s+rel="canonical"/i)
+  return match?.[1]
+}
+
 describe('index.html <noscript>', () => {
   it('contains a <noscript> in <head> with background:#0a0a0a before </head>', () => {
     expect(headNoscriptMatch).not.toBeNull()
@@ -55,12 +61,6 @@ describe('index.html sharing meta tags and canonical link', () => {
   function getMetaContent(nameOrProperty) {
     const match = headContent.match(new RegExp(`<meta\\s+(?:property|name)="${nameOrProperty}"\\s+content="([^"]*)"`, 'i'))
       || headContent.match(new RegExp(`<meta\\s+content="([^"]*)"\\s+(?:property|name)="${nameOrProperty}"`, 'i'))
-    return match?.[1]
-  }
-
-  function getCanonicalHref() {
-    const match = headContent.match(/<link\s+rel="canonical"\s+href="([^"]*)"/i)
-      || headContent.match(/<link\s+href="([^"]*)"\s+rel="canonical"/i)
     return match?.[1]
   }
 
@@ -126,3 +126,35 @@ describe('index.html sharing meta tags and canonical link', () => {
     expect(ogDescription).toBe(twitterDescription)
   })
 })
+
+describe('public/sitemap.xml and public/robots.txt', () => {
+  const sitemapUrl = new URL('../../public/sitemap.xml', metaUrl)
+  const robotsUrl = new URL('../../public/robots.txt', metaUrl)
+
+  it('public/sitemap.xml exists, is valid XML, and contains <loc> matching the canonical href', () => {
+    expect(fs.existsSync(sitemapUrl)).toBe(true)
+    const sitemapContent = fs.readFileSync(sitemapUrl, 'utf8')
+
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(sitemapContent, 'application/xml')
+    const parserError = doc.querySelector('parsererror')
+    expect(parserError).toBeNull()
+
+    const canonicalHref = getCanonicalHref()
+    expect(canonicalHref).toBe('https://elianbustamante.cl/')
+
+    const locElement = doc.querySelector('urlset > url > loc')
+    expect(locElement).not.toBeNull()
+    expect(locElement?.textContent?.trim()).toBe('https://elianbustamante.cl/')
+    expect(locElement?.textContent?.trim()).toBe(canonicalHref)
+  })
+
+  it('public/robots.txt contains the Sitemap directive', () => {
+    expect(fs.existsSync(robotsUrl)).toBe(true)
+    const robotsContent = fs.readFileSync(robotsUrl, 'utf8')
+    expect(robotsContent).toContain('Sitemap: https://elianbustamante.cl/sitemap.xml')
+    expect(robotsContent).toContain('User-agent: *')
+    expect(robotsContent).toContain('Allow: /')
+  })
+})
+

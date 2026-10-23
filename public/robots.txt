@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://elianbustamante.cl/sitemap.xml
