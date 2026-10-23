@@ -189,7 +189,52 @@ describe('PhotoGallery', () => {
     expect(screen.getByText('Foto 2 de 3')).toBeInTheDocument()
   })
 
-  it('restores focus to trigger button when closing lightbox', async () => {
+  it('leaves focus on photo B thumbnail and not photo A after navigating and closing', async () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
+    Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
+    render(<PhotoGallery />)
+    const images = screen.getAllByRole('button').filter(b => b.querySelector('img'))
+    const user = userEvent.setup()
+
+    // Open photo A (index 0)
+    await user.click(images[0])
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toBeInTheDocument()
+
+    // Navigate to photo B (index 1) via ArrowRight
+    fireEvent.keyDown(dialog, { key: 'ArrowRight' })
+    expect(screen.getByText('Foto 2 de 3')).toBeInTheDocument()
+
+    // Close with Escape
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(document.activeElement).toBe(images[1])
+    expect(document.activeElement).not.toBe(images[0])
+  })
+
+  it('applies focus with preventScroll: true when closing lightbox', async () => {
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
+    Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
+    render(<PhotoGallery />)
+    const images = screen.getAllByRole('button').filter(b => b.querySelector('img'))
+    const user = userEvent.setup()
+
+    const focusSpy = vi.spyOn(HTMLElement.prototype, 'focus')
+
+    await user.click(images[0])
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toBeInTheDocument()
+
+    focusSpy.mockClear()
+
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true })
+  })
+
+  it('restores focus to trigger thumbnail when opening and closing without changing photo', async () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 1200 })
     Object.defineProperty(HTMLElement.prototype, 'scrollLeft', { configurable: true, writable: true, value: 0 })
     render(<PhotoGallery />)
