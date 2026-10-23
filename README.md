@@ -60,6 +60,11 @@ The site is served on the custom domain <https://elianbustamante.cl/>; the `elia
 
 When changing the domain, update the absolute URLs for `canonical`, `og:url`, `og:image`, and `twitter:image` in `index.html` (all must share the same origin, enforced by automated tests).
 
+## Contributing and reuse
+
+This is a personal portfolio. Bug reports and accessibility fixes are welcome—please see [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+The code may be reused under the [MIT License](LICENSE), while all photographs and written content remain all rights reserved under [LICENSE-ASSETS.md](LICENSE-ASSETS.md).
+
 ## License
 
 The source code is licensed under the [MIT License](LICENSE).
