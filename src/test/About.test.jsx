@@ -173,18 +173,8 @@ describe('About', () => {
     expect(screen.getByRole('heading', { level: 4, name: es.about.skills.tools })).toBeInTheDocument()
 
     const visibleItems = screen.getAllByRole('listitem').map((li) => li.textContent)
-    expect(visibleItems).toContain('FastAPI')
-    expect(visibleItems).toContain('PostgreSQL')
-    expect(visibleItems).toContain('TypeScript')
-    expect(visibleItems).toContain('ChromaDB')
-    expect(visibleItems).toContain('Node.js')
-
-    const allSkills = [
-      ...skills.languages,
-      ...skills.frameworks,
-      ...skills.databases,
-      ...skills.tools,
-    ]
+    const allSkills = Object.values(skills).flat()
+    expect(visibleItems).toHaveLength(allSkills.length)
     for (const tech of allSkills) {
       expect(visibleItems).toContain(tech)
     }
