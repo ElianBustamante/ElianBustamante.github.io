@@ -33,6 +33,7 @@ Requires Node.js 22 or newer.
 | `npm run check` | Runs oxlint, the tests and the build (same as CI) |
 | `npm run test:e2e` | Runs the Playwright end-to-end tests (on demand, not in CI) |
 | `npm run photos` | Processes the photos (see below) |
+| `python scripts/make_icons.py` | Regenerates PNG and ICO favicons in `public/` |
 | `pytest scripts/tests` | Runs the Python tests |
 
 ## Photos

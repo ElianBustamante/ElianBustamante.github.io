@@ -158,3 +158,72 @@ describe('public/sitemap.xml and public/robots.txt', () => {
   })
 })
 
+describe('favicon and apple-touch-icon head links and public files', () => {
+  const publicDirUrl = new URL('../../public/', metaUrl)
+
+  const expectedLinks = [
+    { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+    { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+    { rel: 'icon', href: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+    { rel: 'icon', href: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+    { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+  ]
+
+  it('contains all required icon <link> tags in <head>', () => {
+    for (const expected of expectedLinks) {
+      const escapedHref = expected.href.replace(/[/.]/g, '\\$&')
+      const tagPattern = new RegExp(`<link[^>]*href="${escapedHref}"[^>]*>`, 'i')
+      const tagMatch = headContent.match(tagPattern)
+      expect(tagMatch, `Missing <link> tag for ${expected.href}`).not.toBeNull()
+
+      const tag = tagMatch[0]
+      expect(tag).toContain(`rel="${expected.rel}"`)
+      if (expected.sizes) {
+        expect(tag).toContain(`sizes="${expected.sizes}"`)
+      }
+      if (expected.type) {
+        expect(tag).toContain(`type="${expected.type}"`)
+      }
+    }
+  })
+
+  it('verifies every icon file referenced by the <link> tags exists in public/', () => {
+    for (const expected of expectedLinks) {
+      const relPath = expected.href.replace(/^\//, '')
+      const fileUrl = new URL(relPath, publicDirUrl)
+      expect(fs.existsSync(fileUrl), `Expected ${relPath} to exist in public/`).toBe(true)
+      const stats = fs.statSync(fileUrl)
+      expect(stats.size).toBeGreaterThan(0)
+    }
+  })
+
+  it('verifies icon-512.png exists in public/ for PWA and high-res manifests', () => {
+    const fileUrl = new URL('icon-512.png', publicDirUrl)
+    expect(fs.existsSync(fileUrl)).toBe(true)
+    const stats = fs.statSync(fileUrl)
+    expect(stats.size).toBeGreaterThan(0)
+  })
+
+  it('verifies favicon.ico contains 16, 32, and 48 px icon sizes', () => {
+    const icoPath = new URL('favicon.ico', publicDirUrl)
+    const buffer = fs.readFileSync(icoPath)
+    expect(buffer.readUInt16LE(0)).toBe(0)
+    expect(buffer.readUInt16LE(2)).toBe(1)
+    const imageCount = buffer.readUInt16LE(4)
+    expect(imageCount).toBe(3)
+
+    const sizes = []
+    for (let i = 0; i < imageCount; i++) {
+      const offset = 6 + i * 16
+      const width = buffer.readUInt8(offset)
+      const height = buffer.readUInt8(offset + 1)
+      sizes.push({ width, height })
+    }
+
+    expect(sizes).toContainEqual({ width: 16, height: 16 })
+    expect(sizes).toContainEqual({ width: 32, height: 32 })
+    expect(sizes).toContainEqual({ width: 48, height: 48 })
+  })
+})
+
+
